@@ -1,0 +1,10 @@
+[
+  "init",
+  "contract-project",
+  "--id",
+  "contract_project",
+  "--brief",
+  "A bench",
+  "--asset",
+  "bench"
+]

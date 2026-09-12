@@ -1,0 +1,14 @@
+weights:
+  semantic_fit: 0.25
+  geometry_quality: 0.15
+  style_fit: 0.15
+  licensing: 0.15
+  editability: 0.10
+  texture_quality: 0.10
+  cleanup_cost: 0.10
+thresholds:
+  direct_use_score: 0.80
+  refinement_score: 0.55
+  direct_style_min: 0.75
+  geometry_min: 0.50
+supported_formats: [glb, obj]

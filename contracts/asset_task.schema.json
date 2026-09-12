@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+    },
+    "group_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required": {
+      "type": "boolean"
+    },
+    "asset_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scale_hint": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        }
+      },
+      "required": [
+        "description",
+        "scale_hint"
+      ],
+      "additionalProperties": false
+    },
+    "style": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "enum": [
+            "style_bible"
+          ]
+        },
+        "overrides": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "source",
+        "overrides"
+      ],
+      "additionalProperties": false
+    },
+    "search": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "const": true
+        },
+        "preferred_providers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "enabled",
+        "preferred_providers",
+        "keywords"
+      ],
+      "additionalProperties": false
+    },
+    "routing": {
+      "type": "object",
+      "properties": {
+        "preferred_route": {
+          "enum": [
+            "auto",
+            "library_direct",
+            "library_hy3d_refine",
+            "hy3d_generate"
+          ]
+        },
+        "allow_route_a": {
+          "type": "boolean"
+        },
+        "allow_route_b": {
+          "type": "boolean"
+        },
+        "allow_route_c": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "preferred_route",
+        "allow_route_a",
+        "allow_route_b",
+        "allow_route_c"
+      ],
+      "additionalProperties": false
+    },
+    "hy3d": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "mode": {
+          "enum": [
+            "auto",
+            "shape",
+            "textured",
+            "retexture"
+          ]
+        },
+        "reference_images": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+          }
+        },
+        "prompt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "enabled",
+        "mode",
+        "reference_images",
+        "prompt"
+      ],
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "max_revisions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        }
+      },
+      "required": [
+        "required",
+        "max_revisions"
+      ],
+      "additionalProperties": false
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "searching",
+        "candidate_found",
+        "route_selected",
+        "generating",
+        "review_required",
+        "revision_requested",
+        "reworking",
+        "approved",
+        "failed"
+      ]
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "result": {
+      "anyOf": [
+        {
+          "$ref": "stage1_result.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "asset_id",
+    "group_id",
+    "name",
+    "required",
+    "asset_role",
+    "target",
+    "style",
+    "search",
+    "routing",
+    "hy3d",
+    "review",
+    "status",
+    "revision",
+    "result"
+  ],
+  "additionalProperties": false
+}

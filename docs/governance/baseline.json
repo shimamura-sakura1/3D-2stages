@@ -1,0 +1,28 @@
+{
+  "baseline": "pre-migration",
+  "date": "2026-09-11",
+  "pytest": {
+    "passed": 95
+  },
+  "characterization": {
+    "plan_only_unchanged": true,
+    "route": "library_direct",
+    "asset_review_required": true,
+    "unapproved_stage2_blocked": true,
+    "approved_preflight": true,
+    "mcp_preparation_is_not_build": true,
+    "incomplete_outputs_blocked": true,
+    "asset_delivery_with_provenance": true
+  },
+  "historical_test_sha256": {
+    "tests/test_blender_mcp.py": "8f5ea147307a941f7db04e9e51377d375489772b641138e2b367a749c89cf569",
+    "tests/test_hy3d_client.py": "e7ad9ecbe2c3c5b1e707aa517ebeb70b228b75fb10e26eb35f79f445530147ce",
+    "tests/test_manifest_validation.py": "461a0440ec25028c35069647068b36424901638c65d69bb76852541aa9f041c9",
+    "tests/test_routing.py": "b6f2623ffa4c01b5b5756ae2286a8e734abe2a75e7db41403b4ebcde7fab057b",
+    "tests/test_ssh_transport.py": "7671fe59469f07aea1cfce5ea08c51707800582c3f0313e8c9d0c59acbbadaac",
+    "tests/test_stage_boundaries.py": "827082bb0f8960fade8a61c18649d9ca6fd09c70dae3fbe3cbbbb19c7c14e16a",
+    "tests/test_state_machine.py": "445725dd113477e3125415b13127f26bf088c6399aa7d976801cc707e9378419",
+    "tests/test_workflow.py": "3a0877265f55f62bbed778f31f93f2f5f54a7a7405cf7c7e21e646edd23f43cb"
+  },
+  "scope": "Offline runtime and process doubles only; no live Blender, SSH server, HY3D inference or artistic judgment validation."
+}

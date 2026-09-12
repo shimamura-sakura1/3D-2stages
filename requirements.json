@@ -1,0 +1,165 @@
+{
+  "version": "0.1",
+  "requirements": [
+    {
+      "id": "REQ-BASE-001",
+      "description": "Preserve the verified offline two-stage behavior while migrating the existing Skill into governance.",
+      "claims": [
+        {
+          "id": "REQ-BASE-001-C1",
+          "statement": "plan_only leaves execution state unchanged; prohibited stage modes reject execution.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C2",
+          "statement": "Completed library search precedes A/B/C routing; missing providers do not trigger generation.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C3",
+          "statement": "Unverified/disallowed licenses and missing CC BY attribution cannot enter the selected asset path.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C4",
+          "statement": "Stage 1 results require review; unapproved assets cannot cross Stage 2; automatic approval requires explicit configuration.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C5",
+          "statement": "Rework preserves original versions and unrelated assets and obeys the revision limit.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C6",
+          "statement": "MCP is the default; preparation/queued work are not completed builds; stale or incomplete outputs reject finalization.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C7",
+          "statement": "SSH configuration is validated; occupied forwarding ports are rejected and owned tunnel processes are cleaned up.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C8",
+          "statement": "Asset delivery retains provenance; stale scene inputs block reviewed scene delivery.",
+          "kind": "invariant"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-LEGACY-001",
+        "T-CLI-001"
+      ],
+      "introduced_in": "S0",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
+    },
+    {
+      "id": "REQ-GOV-001",
+      "description": "Provide executable structural I/O audit and a tested operator example for this governed baseline.",
+      "claims": [
+        {
+          "id": "REQ-GOV-001-C1",
+          "statement": "All seven production document shapes are validated by the production validators and emitted unchanged by structural audit.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-GOV-001-C2",
+          "statement": "An incomplete structural bundle returns exit 2 and a JSON error before producing output files.",
+          "kind": "rejection"
+        },
+        {
+          "id": "REQ-GOV-001-C3",
+          "statement": "The documented operator command example creates and runs a plan-only project and reports the missing-plan rejection.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "contract-audit",
+        "workflow-cli",
+        "operator-guide"
+      ],
+      "verified_by": [
+        "T-AUDIT-001",
+        "T-AUDIT-CONTRACT",
+        "T-DOC-001",
+        "T-INIT-VALID",
+        "T-INIT-INVALID"
+      ],
+      "introduced_in": "S0",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-ENV-001",
+      "description": "Keep deployment-specific HY3D endpoint, SSH identity, and credentials in an ignored root .env file and resolve configuration through the existing CLI.",
+      "claims": [
+        {
+          "id": "REQ-ENV-001-C1",
+          "statement": "The CLI loads the repository-root .env file, resolves exact environment placeholders in YAML configuration with scalar types preserved, and gives an already-set process environment variable precedence.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-ENV-001-C2",
+          "statement": "Configuration without environment placeholders retains its existing behavior and values.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-ENV-001-C3",
+          "statement": "An environment placeholder whose variable is absent is rejected before any provider or SSH operation starts.",
+          "kind": "rejection"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-ENV-001"
+      ],
+      "introduced_in": "S1",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
+    },
+    {
+      "id": "REQ-LIVE-001",
+      "description": "Validate actual remote GPU inference and Blender MCP rendering after hosts become available.",
+      "claims": [
+        {
+          "id": "REQ-LIVE-001-C1",
+          "statement": "One real remote HY3D inference and one real Blender MCP render complete successfully.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [],
+      "introduced_in": "S0",
+      "status": "unresolved",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-ART-001",
+      "description": "Assess artistic intent interpretation and generated asset quality with real agent/user review, beyond command examples.",
+      "claims": [
+        {
+          "id": "REQ-ART-001-C1",
+          "statement": "The agent preserves artistic intent and assets meet the user-reviewed scene brief.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "operator-guide"
+      ],
+      "verified_by": [],
+      "introduced_in": "S0",
+      "status": "unresolved",
+      "supersedes": []
+    }
+  ]
+}

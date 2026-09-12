@@ -1,0 +1,6 @@
+asset_id: bench
+revision: 0
+decision: revision_requested
+issues: [Texture is too noisy for the requested style]
+instruction: Simplify the wood grain while preserving the silhouette.
+reviewer: user

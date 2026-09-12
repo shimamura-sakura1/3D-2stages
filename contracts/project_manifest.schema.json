@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.1"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "mode": {
+      "enum": [
+        "plan_only",
+        "stage1_only",
+        "stage2_only",
+        "full_pipeline",
+        "repair"
+      ]
+    },
+    "user_brief": {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refined": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "raw",
+        "refined"
+      ],
+      "additionalProperties": false
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+      }
+    },
+    "style_bible": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+    },
+    "plan_approved": {
+      "type": "boolean"
+    },
+    "auto_approve": {
+      "type": "boolean"
+    },
+    "allow_partial": {
+      "type": "boolean"
+    },
+    "assets": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+      },
+      "additionalProperties": {
+        "$ref": "asset_task.schema.json"
+      }
+    },
+    "supplied_assets": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "type": "string",
+                "minLength": 1
+              },
+              "asset_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "original_url": {
+                "type": "string",
+                "minLength": 1
+              },
+              "creator": {
+                "type": "string",
+                "minLength": 1
+              },
+              "license": {
+                "type": "string",
+                "minLength": 1
+              },
+              "license_verified": {
+                "type": "boolean"
+              },
+              "attribution_required": {
+                "type": "boolean"
+              },
+              "modification_allowed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "provider",
+              "asset_id",
+              "original_url",
+              "creator",
+              "license",
+              "license_verified",
+              "attribution_required",
+              "modification_allowed"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "model",
+          "sha256",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "asset_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "time",
+          "action",
+          "asset_id",
+          "detail"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "stage2": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "not_started",
+            "built",
+            "approved",
+            "stale"
+          ]
+        },
+        "plan": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+          }
+        },
+        "input_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "plan",
+        "outputs",
+        "input_digest"
+      ],
+      "additionalProperties": false
+    },
+    "delivery": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "enum": [
+            "asset",
+            "scene",
+            "web"
+          ]
+        },
+        "web_deploy": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "target",
+        "web_deploy"
+      ],
+      "additionalProperties": false
+    },
+    "state": {
+      "enum": [
+        "planned",
+        "stage1",
+        "review_required",
+        "stage2",
+        "complete"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "version",
+    "mode",
+    "user_brief",
+    "assumptions",
+    "groups",
+    "style_bible",
+    "plan_approved",
+    "auto_approve",
+    "allow_partial",
+    "assets",
+    "supplied_assets",
+    "history",
+    "stage2",
+    "delivery",
+    "state"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,1674 @@
+{
+  "spec_version": "0.1",
+  "skill": {
+    "id": "two-stage-3d",
+    "version": "S1"
+  },
+  "artifacts": [
+    {
+      "id": "gitignore",
+      "type": "knowledge",
+      "path": ".gitignore",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "dotenv.example",
+      "path": ".env.example",
+      "type": "example",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "configs.hy3d_ssh",
+      "type": "example",
+      "path": "configs/hy3d_ssh.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "contracts.__init__",
+      "type": "script",
+      "path": "contracts/__init__.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "contracts.asset_candidate.schema",
+      "type": "schema",
+      "path": "contracts/asset_candidate.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.asset_task.schema",
+      "type": "schema",
+      "path": "contracts/asset_task.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.audit_bundle.schema",
+      "type": "schema",
+      "path": "contracts/audit_bundle.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.blender_plan.schema",
+      "type": "schema",
+      "path": "contracts/blender_plan.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.cli_arguments.schema",
+      "type": "schema",
+      "path": "contracts/cli_arguments.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.delivery.schema",
+      "type": "schema",
+      "path": "contracts/delivery.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.error.schema",
+      "type": "schema",
+      "path": "contracts/error.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.project_manifest.schema",
+      "type": "schema",
+      "path": "contracts/project_manifest.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.review_report.schema",
+      "type": "schema",
+      "path": "contracts/review_report.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.stage1_result.schema",
+      "type": "schema",
+      "path": "contracts/stage1_result.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "docs.governance.baseline",
+      "type": "knowledge",
+      "path": "docs/governance/baseline.json",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "docs.governance.EVOLVE",
+      "type": "knowledge",
+      "path": "docs/governance/EVOLVE.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "docs.governance.MIGRATION",
+      "type": "knowledge",
+      "path": "docs/governance/MIGRATION.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "docs.hy3d_gateway",
+      "type": "knowledge",
+      "path": "docs/hy3d_gateway.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "docs.mcp_and_ssh",
+      "type": "knowledge",
+      "path": "docs/mcp_and_ssh.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "operator-guide",
+      "type": "knowledge",
+      "path": "docs/workflow.md",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "examples.library.bench",
+      "type": "example",
+      "path": "examples/library/bench.obj",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "examples.library.catalog",
+      "type": "example",
+      "path": "examples/library/catalog.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "examples.library.LICENSE",
+      "type": "example",
+      "path": "examples/library/LICENSE.txt",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "policies.__init__",
+      "type": "script",
+      "path": "policies/__init__.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "policies.licensing_policy",
+      "type": "knowledge",
+      "path": "policies/licensing_policy.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "policies.routing_policy",
+      "type": "knowledge",
+      "path": "policies/routing_policy.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "policies.stage_transitions",
+      "type": "knowledge",
+      "path": "policies/stage_transitions.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "prompts.asset_planner",
+      "type": "knowledge",
+      "path": "prompts/asset_planner.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "prompts.blender_builder",
+      "type": "knowledge",
+      "path": "prompts/blender_builder.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "prompts.parent",
+      "type": "knowledge",
+      "path": "prompts/parent.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "prompts.stage1_reviewer",
+      "type": "knowledge",
+      "path": "prompts/stage1_reviewer.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "providers.__init__",
+      "type": "script",
+      "path": "providers/__init__.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "providers.base",
+      "type": "script",
+      "path": "providers/base.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "providers.local_library",
+      "type": "script",
+      "path": "providers/local_library.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "pyproject",
+      "type": "knowledge",
+      "path": "pyproject.toml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "README",
+      "type": "knowledge",
+      "path": "README.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "requirements-tested",
+      "type": "knowledge",
+      "path": "requirements-tested.txt",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.__init__",
+      "type": "script",
+      "path": "runtime/__init__.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.asset_router",
+      "type": "script",
+      "path": "runtime/asset_router.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.asset_search",
+      "type": "script",
+      "path": "runtime/asset_search.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.blender_mcp",
+      "type": "script",
+      "path": "runtime/blender_mcp.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.blender_worker",
+      "type": "script",
+      "path": "runtime/blender_worker.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "workflow-cli",
+      "type": "script",
+      "path": "runtime/cli.py",
+      "enforcement": {
+        "mode": "runtime"
+      },
+      "runtime_binding": {
+        "runner": [
+          "python",
+          "runtime/cli.py"
+        ],
+        "input": {
+          "mode": "arguments",
+          "schema": "contracts/cli_arguments.schema.json"
+        },
+        "outputs": [
+          {
+            "kind": "stdout-json",
+            "schema": "contracts/project_manifest.schema.json"
+          }
+        ],
+        "error_contract": {
+          "nonzero_on_invalid_input": true
+        },
+        "timeout_seconds": 30
+      },
+      "description": "Actual CLI entry. This binding checks init I/O; command characterization covers later stateful commands. It does not claim every subcommand returns a project manifest."
+    },
+    {
+      "id": "runtime.delivery_executor",
+      "type": "script",
+      "path": "runtime/delivery_executor.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.errors",
+      "type": "script",
+      "path": "runtime/errors.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.hy3d_client",
+      "type": "script",
+      "path": "runtime/hy3d_client.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.io",
+      "type": "script",
+      "path": "runtime/io.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.manifest_manager",
+      "type": "script",
+      "path": "runtime/manifest_manager.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.planning",
+      "type": "script",
+      "path": "runtime/planning.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.ssh_transport",
+      "type": "script",
+      "path": "runtime/ssh_transport.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.stage1_executor",
+      "type": "script",
+      "path": "runtime/stage1_executor.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.stage2_executor",
+      "type": "script",
+      "path": "runtime/stage2_executor.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.state_machine",
+      "type": "script",
+      "path": "runtime/state_machine.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "runtime.validators",
+      "type": "script",
+      "path": "runtime/validators.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "contract-audit",
+      "type": "script",
+      "path": "scripts/check_contracts.py",
+      "enforcement": {
+        "mode": "runtime"
+      },
+      "runtime_binding": {
+        "runner": [
+          "python",
+          "scripts/check_contracts.py"
+        ],
+        "input": {
+          "mode": "stdin-json",
+          "schema": "contracts/audit_bundle.schema.json"
+        },
+        "outputs": [
+          {
+            "kind": "file",
+            "path": "audit-output/project_manifest.json",
+            "schema": "contracts/project_manifest.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "audit-output/asset_task.json",
+            "schema": "contracts/asset_task.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "audit-output/asset_candidate.json",
+            "schema": "contracts/asset_candidate.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "audit-output/stage1_result.json",
+            "schema": "contracts/stage1_result.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "audit-output/blender_plan.json",
+            "schema": "contracts/blender_plan.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "audit-output/review_report.json",
+            "schema": "contracts/review_report.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "audit-output/delivery.json",
+            "schema": "contracts/delivery.schema.json"
+          }
+        ],
+        "error_contract": {
+          "nonzero_on_invalid_input": true,
+          "schema": "contracts/error.schema.json",
+          "channel": "stderr"
+        },
+        "timeout_seconds": 30
+      }
+    },
+    {
+      "id": "runtime.env_config",
+      "path": "runtime/env_config.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "scripts.demo",
+      "type": "script",
+      "path": "scripts/demo.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "scripts.govern.ps1",
+      "type": "script",
+      "path": "scripts/govern.ps1",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "scripts.govern",
+      "type": "script",
+      "path": "scripts/govern.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "scripts.python-env.ps1",
+      "type": "script",
+      "path": "scripts/python-env.ps1",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "scripts.test.ps1",
+      "type": "script",
+      "path": "scripts/test.ps1",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "scripts.two-stage-3d.ps1",
+      "type": "script",
+      "path": "scripts/two-stage-3d.ps1",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "SKILL",
+      "type": "knowledge",
+      "path": "SKILL.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "templates.__init__",
+      "type": "script",
+      "path": "templates/__init__.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Supporting implementation or host-executed helper; no independent skillctl subprocess binding. Runtime behavior is exercised through the public CLI and regression tests."
+    },
+    {
+      "id": "templates.asset_task",
+      "type": "example",
+      "path": "templates/asset_task.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "templates.blender_plan",
+      "type": "example",
+      "path": "templates/blender_plan.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "templates.hy3d_config",
+      "type": "example",
+      "path": "templates/hy3d_config.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "templates.project_manifest",
+      "type": "example",
+      "path": "templates/project_manifest.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "templates.review_report",
+      "type": "example",
+      "path": "templates/review_report.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "templates.style_bible",
+      "type": "example",
+      "path": "templates/style_bible.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "two_stage_3d_skill_codex_spec_v0.1",
+      "type": "knowledge",
+      "path": "two_stage_3d_skill_codex_spec_v0.1.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-001",
+      "type": "uses",
+      "from": {
+        "artifact": "providers.local_library"
+      },
+      "to": {
+        "artifact": "providers.base"
+      }
+    },
+    {
+      "id": "rel-002",
+      "type": "uses",
+      "from": {
+        "artifact": "providers.local_library"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-003",
+      "type": "uses",
+      "from": {
+        "artifact": "providers.local_library"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-004",
+      "type": "uses",
+      "from": {
+        "artifact": "providers.local_library"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-005",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.asset_router"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-006",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.asset_router"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-007",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.asset_router"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-008",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.asset_search"
+      },
+      "to": {
+        "artifact": "providers.base"
+      }
+    },
+    {
+      "id": "rel-009",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.asset_search"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-010",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.asset_search"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-011",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.blender_mcp"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-012",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.blender_mcp"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-013",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.blender_mcp"
+      },
+      "to": {
+        "artifact": "runtime.stage2_executor"
+      }
+    },
+    {
+      "id": "rel-014",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.blender_mcp"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-015",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "providers.local_library"
+      }
+    },
+    {
+      "id": "rel-016",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.delivery_executor"
+      }
+    },
+    {
+      "id": "rel-017",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-018",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.hy3d_client"
+      }
+    },
+    {
+      "id": "rel-019",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-020",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.manifest_manager"
+      }
+    },
+    {
+      "id": "rel-021",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.planning"
+      }
+    },
+    {
+      "id": "rel-022",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.stage1_executor"
+      }
+    },
+    {
+      "id": "rel-023",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.stage2_executor"
+      }
+    },
+    {
+      "id": "rel-024",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.blender_mcp"
+      }
+    },
+    {
+      "id": "rel-025",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.ssh_transport"
+      }
+    },
+    {
+      "id": "rel-026",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.delivery_executor"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-027",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.delivery_executor"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-028",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.delivery_executor"
+      },
+      "to": {
+        "artifact": "runtime.stage2_executor"
+      }
+    },
+    {
+      "id": "rel-029",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.delivery_executor"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-030",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.hy3d_client"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-031",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.hy3d_client"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-032",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.hy3d_client"
+      },
+      "to": {
+        "artifact": "runtime.ssh_transport"
+      }
+    },
+    {
+      "id": "rel-033",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.io"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-034",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-035",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-036",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.state_machine"
+      }
+    },
+    {
+      "id": "rel-037",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-038",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.asset_router"
+      }
+    },
+    {
+      "id": "rel-039",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.delivery_executor"
+      }
+    },
+    {
+      "id": "rel-040",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.planning"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-041",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.planning"
+      },
+      "to": {
+        "artifact": "runtime.manifest_manager"
+      }
+    },
+    {
+      "id": "rel-042",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.planning"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-043",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.ssh_transport"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-044",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage1_executor"
+      },
+      "to": {
+        "artifact": "runtime.asset_router"
+      }
+    },
+    {
+      "id": "rel-045",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage1_executor"
+      },
+      "to": {
+        "artifact": "runtime.asset_search"
+      }
+    },
+    {
+      "id": "rel-046",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage1_executor"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-047",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage1_executor"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-048",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage1_executor"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-049",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage2_executor"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-050",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage2_executor"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-051",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage2_executor"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-052",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage2_executor"
+      },
+      "to": {
+        "artifact": "runtime.blender_mcp"
+      }
+    },
+    {
+      "id": "rel-053",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.state_machine"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-054",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.state_machine"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-055",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-056",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-057",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "runtime.asset_router"
+      }
+    },
+    {
+      "id": "rel-058",
+      "type": "uses",
+      "from": {
+        "artifact": "contract-audit"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-059",
+      "type": "uses",
+      "from": {
+        "artifact": "contract-audit"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-060",
+      "type": "uses",
+      "from": {
+        "artifact": "contract-audit"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-061",
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.demo"
+      },
+      "to": {
+        "artifact": "providers.local_library"
+      }
+    },
+    {
+      "id": "rel-062",
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.demo"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "rel-063",
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.demo"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "rel-064",
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.demo"
+      },
+      "to": {
+        "artifact": "runtime.manifest_manager"
+      }
+    },
+    {
+      "id": "rel-065",
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.demo"
+      },
+      "to": {
+        "artifact": "runtime.planning"
+      }
+    },
+    {
+      "id": "rel-066",
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.demo"
+      },
+      "to": {
+        "artifact": "runtime.stage1_executor"
+      }
+    },
+    {
+      "id": "rel-067",
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.demo"
+      },
+      "to": {
+        "artifact": "runtime.stage2_executor"
+      }
+    },
+    {
+      "id": "rel-068",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.asset_candidate.schema"
+      }
+    },
+    {
+      "id": "rel-069",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.asset_task.schema"
+      }
+    },
+    {
+      "id": "rel-070",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.audit_bundle.schema"
+      }
+    },
+    {
+      "id": "rel-071",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.blender_plan.schema"
+      }
+    },
+    {
+      "id": "rel-072",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.cli_arguments.schema"
+      }
+    },
+    {
+      "id": "rel-073",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.delivery.schema"
+      }
+    },
+    {
+      "id": "rel-074",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.error.schema"
+      }
+    },
+    {
+      "id": "rel-075",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.project_manifest.schema"
+      }
+    },
+    {
+      "id": "rel-076",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.review_report.schema"
+      }
+    },
+    {
+      "id": "rel-077",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.stage1_result.schema"
+      }
+    },
+    {
+      "id": "rel-078",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.asset_router"
+      },
+      "to": {
+        "artifact": "policies.routing_policy"
+      }
+    },
+    {
+      "id": "rel-079",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.asset_router"
+      },
+      "to": {
+        "artifact": "policies.licensing_policy"
+      }
+    },
+    {
+      "id": "rel-080",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.state_machine"
+      },
+      "to": {
+        "artifact": "policies.stage_transitions"
+      }
+    },
+    {
+      "id": "rel-081",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.blender_mcp"
+      },
+      "to": {
+        "artifact": "runtime.blender_worker"
+      }
+    },
+    {
+      "id": "rel-082",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.stage2_executor"
+      },
+      "to": {
+        "artifact": "runtime.blender_worker"
+      }
+    },
+    {
+      "id": "rel-083",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.planning"
+      },
+      "to": {
+        "artifact": "templates.asset_task"
+      }
+    },
+    {
+      "id": "rel-084",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.planning"
+      },
+      "to": {
+        "artifact": "templates.project_manifest"
+      }
+    },
+    {
+      "id": "rel-085",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.planning"
+      },
+      "to": {
+        "artifact": "templates.style_bible"
+      }
+    },
+    {
+      "id": "rel-086",
+      "type": "uses",
+      "from": {
+        "artifact": "operator-guide"
+      },
+      "to": {
+        "artifact": "workflow-cli"
+      }
+    },
+    {
+      "id": "rel-087",
+      "type": "uses",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "workflow-cli"
+      }
+    },
+    {
+      "id": "rel-088",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "operator-guide"
+      }
+    },
+    {
+      "id": "rel-089",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "prompts.parent"
+      }
+    },
+    {
+      "id": "rel-090",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "prompts.asset_planner"
+      }
+    },
+    {
+      "id": "rel-091",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "prompts.stage1_reviewer"
+      }
+    },
+    {
+      "id": "rel-092",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "prompts.blender_builder"
+      }
+    },
+    {
+      "id": "rel-093",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "docs.mcp_and_ssh"
+      }
+    },
+    {
+      "id": "rel-094",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "docs.governance.EVOLVE"
+      }
+    },
+    {
+      "id": "rel-095",
+      "type": "reads",
+      "from": {
+        "artifact": "docs.governance.EVOLVE"
+      },
+      "to": {
+        "artifact": "scripts.govern"
+      }
+    },
+    {
+      "id": "rel-096",
+      "type": "reads",
+      "from": {
+        "artifact": "docs.governance.EVOLVE"
+      },
+      "to": {
+        "artifact": "docs.governance.MIGRATION"
+      }
+    },
+    {
+      "id": "rel-097",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.io"
+      },
+      "to": {
+        "artifact": "runtime.env_config"
+      }
+    },
+    {
+      "id": "rel-098",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.env_config"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    }
+  ],
+  "invariants": [
+    "claim-coverage",
+    "artifact-enforcement",
+    "runtime-evidence",
+    "historical-regression"
+  ],
+  "capabilities": [
+    {
+      "id": "mode-selection",
+      "router_step": "2",
+      "requirement": "REQ-BASE-001"
+    }
+  ]
+}

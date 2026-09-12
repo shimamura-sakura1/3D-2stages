@@ -1,0 +1,3 @@
+# Metadata must come from a verified catalog, not inferred from website text.
+allowed_licenses: [cc0, cc_by]
+require_verified: true

@@ -1,0 +1,25 @@
+schema_version: '0.1'
+project_id: untitled
+version: 0
+mode: plan_only
+user_brief:
+  raw: Describe the requested scene or asset.
+  refined: Describe the requested scene or asset.
+assumptions: []
+groups: []
+style_bible: style_bible.yaml
+plan_approved: false
+auto_approve: false
+allow_partial: false
+assets: {}
+supplied_assets: {}
+history: []
+stage2:
+  status: not_started
+  plan: null
+  outputs: []
+  input_digest: null
+delivery:
+  target: scene
+  web_deploy: false
+state: planned
