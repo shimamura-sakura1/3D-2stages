@@ -2,6 +2,8 @@
 
 Read the approved inputs and shared style bible. Build a contract-valid plan with explicit meter-based dimensions, XYZ locations, XYZ Euler rotations in degrees, and positive scale factors. Camera focal length is in millimeters. `railway` dimensions mean length, gauge and rail height; count means sleepers. `box` dimensions mean width, depth and height.
 
+Use Blender 4.2 or newer; 4.5 LTS is the deployment baseline, and the fixed worker checks the minimum before modifying scenes. Its embedded Python is independent of the project/MCP Conda environments and remote HY3D's bpy. Check current host MCP availability instead of assuming tools are preinstalled. After moving between macOS and Windows, regenerate execution packets with the new host paths; see docs/platforms.md.
+
 Run Stage 2 preflight. Required assets must appear in the plan unless partial mode is explicitly enabled. A listed unapproved or missing asset is never a placeholder. Use a procedural box if the user approved a placeholder.
 
 Default to Codex Blender MCP. Obtain the runtime's `mcp_calls.json`, call the addon status tool, then invoke `execute_blender_code` with each prepared step in order. Use the actual user prompt in `user_prompt`. These commands require that Blender can access the same local project paths. Do not mark a prepared or queued job complete. After render is queued, inspect its status and files before calling `stage2-complete`; never repeat assembly/export/render after an ambiguous timeout. Request a new job if inputs changed, preserving the previous artifacts for diagnosis.

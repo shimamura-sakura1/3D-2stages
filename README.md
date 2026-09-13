@@ -4,7 +4,7 @@
 
 工作分成两阶段：**Stage 1 先获得并审核单个资产；Stage 2 再把获批资产放入 Blender 构建场景。** 可以只做规划、只交付资产，或使用已有资产直接构建场景。
 
-当前约定是 Codex 通过 MCP 控制 Blender，HY3D 在远程 GPU 服务器推理，通过 SSH 隧道接入。根据用户提供的部署记录，Hunyuan3D-2.1 的环境、扩展和权重已就绪，但记录明确没有启动 API 服务，也没有完成端到端推理。本仓库尚未完成网关适配和真实联调。
+当前约定是 Codex 通过 MCP 控制 Blender，HY3D 在远程 GPU 服务器推理，通过 SSH 隧道接入。macOS 与 Windows 共用运行时；本机自动发现、独立 Conda 环境和项目搬迁规则见 [平台说明](docs/platforms.md)。服务是否已部署、推理或渲染是否已验证，以该机器当前检查和实际产物为准；早期部署报告不能代表所有后续环境状态。
 
 ## 一次建模任务怎样运行
 
@@ -87,13 +87,19 @@ projects/<项目名>/
 
 本地运行时需要 Python 3.11+。在仓库根目录安装：
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -e '.[dev]'
+先用 `conda env list` 确认目标名称未被其他用途占用，再创建新的独立环境：
+
+```text
+conda create --name two-stage-3d python=3.11 pip --copy -y
+conda activate two-stage-3d
+conda env config vars set PYTHONNOUSERSITE=1
+python -I -m pip --isolated install -r requirements-tested.txt -e '.[dev]'
+python -m runtime.cli doctor
 ```
 
-当前开发机也可使用 `scripts/two-stage-3d.ps1`，它优先寻找项目虚拟环境或系统 Python，再寻找 Codex 自带 Python，并加载现有 `.deps/`。以下命令中的 `python -m runtime.cli` 可替换为 `.\scripts\two-stage-3d.ps1`。依赖声明见 `pyproject.toml`，已测试版本见 `requirements-tested.txt`。
+`doctor` 不连接服务。不要向 base 或已有的其他环境安装依赖；MCP 使用另一个独立环境。
+
+两平台优先使用当前隔离环境中的 `python -m runtime.cli`。Windows 另有 `scripts/two-stage-3d.ps1` 帮助脚本（含 Windows 特有的解释器与 `.deps/` 路径处理），不能原样用作 macOS 入口。依赖声明见 `pyproject.toml`，已测试版本见 `requirements-tested.txt`。
 
 以下示例使用新项目目录，只复制仓库内的长椅，不连接远程服务器或 Blender。执行计划批准命令前应确认示例任务符合意图。
 
@@ -177,18 +183,18 @@ Copy-Item templates/blender_plan.yaml projects/readme_demo/stage2/blender_plan.y
 
 已实现本地资产库检索、A/B/C 路由、审批和返工、远程模型客户端、默认 Blender MCP 操作包及输出回收、资产/场景交付。支持嵌入资源的 GLB 和不引用 MTL 的纯几何 OBJ；输出许可当前仅接受已核实的 `cc0` 或 `cc_by`，后者需要归属声明。
 
-远程资产库、B2/B3 细化、自动视觉评分、并行 Worker 调度和 Web 交付尚未实现。Blender 工作者面向 4.2+，不会自动修复复杂拓扑或推断全部尺寸；技术文件检查不等于美术验收。默认按 Blender 能访问本机项目路径设计，若 Blender 也放到远程，仍需文件同步与路径映射。批处理后端必须显式选择，MCP 断开时不自动切换。
+远程资产库、B2/B3 细化、自动视觉评分、并行 Worker 调度和 Web 交付尚未实现。Blender 工作者要求 4.2+ 并在场景修改前检查版本，4.5 LTS 为部署基线；它不会自动修复复杂拓扑或推断全部尺寸；技术文件检查不等于美术验收。默认按 Blender 能访问本机项目路径设计，若 Blender 也放到远程，仍需文件同步与路径映射。批处理后端必须显式选择，MCP 断开时不自动切换。批处理可执行文件按 `--blender`、`BLENDER_EXECUTABLE`、PATH 和平台常规安装目录顺序发现；显式配置错误不会静默回退。
 
-自动测试包含实际文件流和本地 HTTP 网关交互；SSH/MCP 进程边界使用测试替身。本次文档更新不宣称已连接用户服务器或完成真实 Blender 渲染。真实集成与美术质量仍保留为未完成验证项。
+自动测试包含实际文件流和本地 HTTP 网关交互；SSH/MCP 进程边界使用测试替身。本机另有真实 Blender 导出/渲染和远程 shape 客户端测试记录，见 `AGENTS.md` 中的证据位置；它们不能证明 Windows 实机、完整远程 Stage 1 或美术质量已通过。完整 Stage 1 的真实生成仍需补齐参考图和输出许可，再经过正式审核与交付。
 
 ## 怎样迭代这个 Skill
 
-所有迭代必须遵循 `D:/contract-govern skill/` 定义的范式和 [项目迭代步骤](docs/governance/EVOLVE.md)：需求与 claims → 测试先行 → 影响分析 → 修改 → 契约与历史回归 → 正式验收。
+所有迭代必须严格遵循用户指定的 `/Users/tachibanakanade/contract-govern-skil` 定义和 [项目迭代步骤](docs/governance/EVOLVE.md)；其他宿主定位同一规范的本地 checkout，不能套用本机绝对路径。项目持久要求见 [AGENTS.md](AGENTS.md)：需求与 claims → 测试先行 → 影响分析 → 修改 → 契约与历史回归 → 正式验收。
 
 ```powershell
-.\scripts\govern.ps1 validate
-.\scripts\govern.ps1 contract-test
-.\scripts\govern.ps1 test
+python scripts/govern.py validate
+python scripts/govern.py contract-test
+python scripts/govern.py test
 ```
 
 版本接受使用该文档中的 `accept` 流程，由工具生成 `changes/` 记录，不能手写成功证据或弱化历史测试。治理版本记录在 `interface.json`，独立于 Python 包版本 `0.1.0` 和生产数据 Schema 版本 `0.1`。治理副本不包含实际 `projects/`、`.deps/`、`.env`；报告位于 `.skillctl/reports/`。

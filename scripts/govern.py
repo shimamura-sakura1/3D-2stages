@@ -12,9 +12,14 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from runtime.platform_support import find_framework
+from runtime.errors import BoundaryError
+
 DIRECTORIES = ("runtime", "providers", "contracts", "policies", "templates", "prompts", "configs",
                "examples", "tests", "docs", "scripts")
-FILES = ("SKILL.md", "interface.json", "requirements.json", "README.md", "pyproject.toml",
+FILES = ("AGENTS.md", "SKILL.md", "interface.json", "requirements.json", "README.md", "pyproject.toml",
          "requirements-tested.txt", ".gitignore", ".env.example", "two_stage_3d_skill_codex_spec_v0.1.md")
 IGNORED = {"__pycache__", ".pytest_cache"}
 
@@ -55,14 +60,49 @@ def history_snapshot(root):
     return records
 
 
+def restore_recorded_newlines(package):
+    """Recover authenticated pre-checkout bytes in a disposable projection only."""
+    package = Path(package).resolve()
+    restored = []
+
+    def recover(relative, expected):
+        path = package / relative
+        if path.is_symlink() or not path.resolve().is_relative_to(package):
+            raise ValueError(f"Recorded path escapes governance projection: {relative}")
+        original = path.read_bytes()
+        if hashlib.sha256(original).hexdigest() == expected:
+            return
+        lf = original.replace(b"\r\n", b"\n")
+        for candidate in (lf, lf.replace(b"\n", b"\r\n")):
+            if hashlib.sha256(candidate).hexdigest() == expected:
+                path.write_bytes(candidate)
+                restored.append(relative)
+                return
+        raise ValueError(f"Historical content differs beyond newline transport: {relative}")
+
+    entries = sorted((package / "changes").glob("change-*.json"), key=lambda p: int(p.stem.split("-")[-1]))
+    for previous, following in zip(entries, entries[1:]):
+        anchor = json.loads(following.read_text(encoding="utf-8"))["previous_record_sha256"]
+        recover(previous.relative_to(package).as_posix(), anchor)
+    if entries:
+        recorded = json.loads(entries[-1].read_text(encoding="utf-8"))["snapshot"]
+        for relative, expected in recorded.items():
+            if relative.startswith("tests/") and relative != "tests/manifest.json":
+                recover(relative, expected)
+    return restored
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--framework", default=os.environ.get("CONTRACT_GOVERN_HOME", "D:/contract-govern skill"))
+    parser.add_argument("--framework", help="Designated framework; otherwise CONTRACT_GOVERN_HOME or sibling contract-govern-skil")
     parser.add_argument("--python", dest="interpreter", help="Python with skillctl, pytest, PyYAML and jsonschema installed")
     parser.add_argument("command", choices=["validate", "graph", "impact", "contract-test", "test", "accept"])
     args, rest = parser.parse_known_args(argv)
-    framework = Path(args.framework).resolve()
-    interpreter = Path(args.interpreter) if args.interpreter else framework / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+    try:
+        framework = find_framework(ROOT, args.framework)
+    except BoundaryError as exc:
+        parser.error(str(exc))
+    interpreter = Path(args.interpreter).expanduser() if args.interpreter else Path(sys.executable)
     if not interpreter.is_file():
         parser.error("Set CONTRACT_GOVERN_HOME or --framework, or use --python with an installed skillctl environment")
     state = ROOT / ".skillctl"
@@ -90,6 +130,7 @@ def main(argv=None):
                         raise ValueError("Change records may not be symlinks")
                     (package / "changes").mkdir(exist_ok=True)
                     shutil.copy2(source, package / "changes" / source.name)
+            restored = restore_recorded_newlines(package)
             env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1", PYTHONPATH=str(framework))
             result = subprocess.run([str(interpreter), "-B", "-m", "skillctl", args.command, str(package), *rest],
                                     capture_output=True, text=True, encoding="utf-8", env=env, cwd=ROOT)
@@ -100,6 +141,7 @@ def main(argv=None):
                 report = json.loads(result.stdout)
             except ValueError:
                 report = {"stdout": result.stdout, "stderr": result.stderr, "returncode": result.returncode}
+            report["source_projection"] = {"restored_newlines": restored}
             report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
             if snapshot(ROOT) != baseline or history_snapshot(ROOT) != baseline_history:
                 raise ValueError("Source changed while governance was running; no record will be copied back")

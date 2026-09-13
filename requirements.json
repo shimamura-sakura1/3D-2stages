@@ -224,6 +224,59 @@
       "status": "active",
       "supersedes": [],
       "conditional": true
+    },
+    {
+      "id": "REQ-PORTABLE-001",
+      "description": "Make local operation portable between macOS and Windows, retain project maintenance context governed by the designated external framework, and verify the complete Stage 1 lifecycle without weakening existing gates.",
+      "claims": [
+        {
+          "id": "REQ-PORTABLE-001-C1",
+          "statement": "Project-relative paths accept either separator while Windows drive, UNC, rooted, POSIX absolute and parent-traversal paths reject on every host through the public workflow CLI.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C2",
+          "statement": "Explicit batch execution resolves Blender from an explicit option, BLENDER_EXECUTABLE, PATH or native install locations in that order; invalid explicit configuration rejects, and MCP remains the default without launching or discovering batch Blender.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C3",
+          "statement": "The worker rejects Blender older than 4.2 before scene mutation; doctor reports the current Python, platform and executable discovery without claiming MCP connectivity or starting external services.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C4",
+          "statement": "The maintenance launcher resolves the designated framework using --framework, CONTRACT_GOVERN_HOME or a same-parent contract-govern-skil checkout; missing frameworks reject explicitly, it defaults to its current Python, and project AGENTS.md is retained in source projections. The environment diagnostic reports the framework discovered from environment or sibling defaults, or an explicit unavailable status.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C5",
+          "statement": "Actual CLI and loopback HTTP scenarios cover Stage 1 A/B/C acquisition, review and bounded rework, preserving prior revisions and provenance through asset delivery; missing providers, rights or capabilities do not silently generate or approve.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C6",
+          "kind": "invariant",
+          "statement": "Governance reconstructs LF/CRLF transport changes only in its temporary projection and only when the candidate bytes match accepted SHA256 anchors for linked history records or historical test support files. Matching bytes remain unchanged; other content changes and escaping paths reject, and real source/history files remain untouched."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "operator-guide",
+        "platform-guide",
+        "scripts.govern"
+      ],
+      "verified_by": [
+        "T-PORTABLE-POSITIVE",
+        "T-PORTABLE-DEFAULT",
+        "T-PORTABLE-REJECTION",
+        "T-STAGE1-E2E",
+        "T-GOVERN-NEWLINES"
+      ],
+      "introduced_in": "S4",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
     }
   ]
 }

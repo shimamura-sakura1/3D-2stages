@@ -14,6 +14,7 @@ from runtime.hy3d_client import Hy3DClient
 from runtime.io import load_data
 from runtime.manifest_manager import ManifestManager
 from runtime.planning import create_project, new_task
+from runtime.platform_support import environment_report
 from runtime.stage1_executor import Stage1Executor
 from runtime.stage2_executor import Stage2Executor
 
@@ -21,6 +22,8 @@ from runtime.stage2_executor import Stage2Executor
 def parser():
     cli = argparse.ArgumentParser(description="Controlled two-stage 3D workflow")
     sub = cli.add_subparsers(dest="command", required=True)
+    doctor = sub.add_parser("doctor", help="Report local platform, Python, Blender discovery and governance configuration; no service calls")
+    doctor.add_argument("--blender", help="Explicit Blender executable to inspect")
     init = sub.add_parser("init", help="Create a reviewable plan; does not call providers")
     init.add_argument("project")
     init.add_argument("--id", required=True)
@@ -44,7 +47,7 @@ def parser():
         run.add_argument("--hy3d-config", help="Gateway config; credentials are environment references")
         run.add_argument("--asset-id", required=name == "stage1",
                          help="Execute only this asset and stop at the Stage 1 checkpoint")
-        run.add_argument("--blender", default="blender")
+        run.add_argument("--blender", help="Batch executable; otherwise use BLENDER_EXECUTABLE, PATH or native install locations")
         run.add_argument("--backend", choices=["mcp", "batch"], default="mcp")
         run.add_argument("--plan", default="stage2/blender_plan.yaml")
     review = sub.add_parser("review")
@@ -56,7 +59,7 @@ def parser():
     stage2 = sub.add_parser("stage2")
     stage2.add_argument("project")
     stage2.add_argument("--plan", default="stage2/blender_plan.yaml")
-    stage2.add_argument("--blender", default="blender")
+    stage2.add_argument("--blender", help="Batch executable; otherwise use BLENDER_EXECUTABLE, PATH or native install locations")
     stage2.add_argument("--backend", choices=["mcp", "batch"], default="mcp")
     stage2.add_argument("--dry-run", action="store_true")
     complete = sub.add_parser("stage2-complete", help="Validate actual MCP outputs and accept the build")
@@ -74,6 +77,11 @@ def parser():
 
 
 def execute(args):
+    if args.command == "doctor":
+        from runtime.env_config import load_dotenv
+        root = Path(__file__).resolve().parents[1]
+        load_dotenv(root / ".env")
+        return environment_report(root, args.blender)
     if args.command in ("ssh-check", "hy3d-health"):
         config = load_data(args.config)
         if args.command == "ssh-check":

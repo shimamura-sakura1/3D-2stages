@@ -7,7 +7,7 @@ description: Build reviewable 3D assets and Blender scenes through library-first
 
 The agent owns intent and artistic decisions. Contracts describe valid data; runtime code enforces formal constraints. This file owns orchestration. interface.json registers actual implementations and dependencies, not another workflow engine.
 
-Current user instructions take precedence. Apply them through validated manifest operations; do not bypass runtime gates by editing official state. Use [the maintenance procedure](docs/governance/EVOLVE.md) when changing this Skill, and the router below when producing assets/scenes.
+Current user instructions take precedence. Apply them through validated manifest operations; do not bypass runtime gates by editing official state. Every modification of this Skill must strictly follow the user's designated contract-govern-skil framework (on this Mac: /Users/tachibanakanade/contract-govern-skil). Read AGENTS.md and [the maintenance procedure](docs/governance/EVOLVE.md) before edits. Use the router below when producing assets/scenes; maintenance governance is not another production router.
 
 ## Execution Router
 
@@ -15,13 +15,14 @@ Current user instructions take precedence. Apply them through validated manifest
 Type: agent
 Read:
 - docs/workflow.md
+- docs/platforms.md
 - prompts/parent.md
 - prompts/asset_planner.md
 Optional Tools:
 - runtime/cli.py
 - scripts/check_contracts.py
 Action:
-- Refine the brief, record assumptions, decompose assets/procedural geometry and choose the requested mode. Create tasks and the manifest through the CLI. Contract audit is an optional structural check of sample documents, not asset approval.
+- Refine the brief, record assumptions, decompose assets/procedural geometry and choose the requested mode. Use the current isolated Python on macOS or Windows; doctor reports local discovery only. Create tasks and the manifest through the CLI. Contract audit is an optional structural check of sample documents, not asset approval.
 Next:
 - Step 2
 
@@ -72,7 +73,7 @@ Read:
 Optional Tools:
 - runtime/cli.py
 Action:
-- Supply the explicit Blender plan and run preflight. Use MCP, execute prepared steps through Codex's Blender tools, inspect asynchronous status, and call stage2-complete only when real files exist. Preserve open scenes. Batch is an explicit choice, not a fallback for disconnected MCP.
+- Supply the explicit Blender plan and run preflight. Require Blender 4.2+ (4.5 LTS deployment baseline), independently of remote HY3D's bpy version. Check the current host's MCP tools and addon; execute prepared steps, inspect asynchronous status, and call stage2-complete only when real files exist. Regenerate machine-specific MCP packets after moving a project between macOS and Windows. Preserve open scenes. Batch is an explicit choice, not a fallback for disconnected MCP.
 Next:
 - Step 6
 - END
@@ -90,8 +91,8 @@ Next:
 
 ## Supporting boundaries
 
-See [README.md](README.md) for formal commands and [the gateway protocol](docs/hy3d_gateway.md) for HY3D over SSH. The supplied deployment report confirms Hunyuan3D-2.1 environment and weights are prepared, but no API service or end-to-end inference was run. Gateway integration, live inference, SSH connectivity and Blender rendering require actual evidence.
+See [README.md](README.md) for formal commands, [platform guidance](docs/platforms.md) for local discovery, and [the gateway protocol](docs/hy3d_gateway.md) for HY3D over SSH. Deployment reports and earlier smoke runs are evidence for their recorded machine and scope only. Verify current connectivity, capabilities, input/output rights and actual files; a direct inference-client smoke run does not establish a complete Stage 1 lifecycle or artistic approval.
 
 Workers submit isolated proposals; only ManifestManager writes official state. Python role checks and governance test copies are not OS sandboxes. This version has no parallel worker scheduler.
 
-Governance version S3 is separate from production schema_version 0.1 and Python package version 0.1.0. See [MIGRATION.md](docs/governance/MIGRATION.md) for evidence scope and unresolved integrations.
+Governance version is recorded in interface.json and accepted changes; it is separate from production schema_version 0.1 and Python package version 0.1.0. See [MIGRATION.md](docs/governance/MIGRATION.md) for historical evidence scope and requirements.json for unresolved claims.

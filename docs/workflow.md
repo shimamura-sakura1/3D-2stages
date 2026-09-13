@@ -4,6 +4,8 @@ SKILL.md owns the Execution Router. This document supplies its operator details,
 
 Preserve artistic intent and record material assumptions. Use prompts/parent.md and prompts/asset_planner.md as planning advice. The agent supplies refined briefs, tasks and Blender plans; Python does not interpret natural-language intent. Prefer procedural geometry for rails, platforms and repeated structures.
 
+Use docs/platforms.md for macOS/Windows discovery and setup. Both hosts run the same `python -m runtime.cli` commands from the isolated project environment. `doctor` reports local discovery without starting services; actual Blender version, MCP connectivity and remote capabilities require their own checks. Blender 4.2+ is required by the worker; 4.5 LTS is the deployment baseline.
+
 Choose the user-requested mode explicitly. The formal CLI default is plan_only. Show the refined brief before expensive generation unless execution was already authorized. Templates are starting points, not inferred requirements. Official state changes go through runtime/cli.py and ManifestManager.
 
 Search all configured libraries before Stage 1 routing. Candidate scores and rights come from evidence. The router applies declared numeric policy; provider failure never means no assets exist. Review actual assets before approval unless auto_approve was explicitly enabled. review.required=false does not grant approval. Rework is per asset, bounded, and preserves prior outputs.
@@ -14,7 +16,7 @@ After Stage 1 approval, asset-only delivery follows Router Step 4 directly to St
 
 Keep Blender MCP as the default. Follow docs/mcp_and_ssh.md and prompts/blender_builder.md. A prepared packet or queued render is not a build. Execute the fixed steps through available Codex MCP tools with the actual user prompt; then check files using stage2-complete. Do not silently switch to batch or clear existing scenes. Partial scenes require the user's choice. Final scene review precedes delivery.
 
-HY3D belongs on a remote GPU server through configs/hy3d_ssh.yaml. The supplied Hunyuan3D-2.1 deployment report confirms environment and weights are prepared, with no API service started or end-to-end inference completed. Verify a compatible gateway and an explicitly allocated GPU before live generation. Keep credentials out of manifests. Offline tests do not prove remote inference, live Blender rendering, or artistic judgment.
+HY3D belongs on a remote GPU server through configs/hy3d_ssh.yaml. Verify a compatible gateway, current capabilities and an explicitly allocated GPU before live generation. Earlier deployment or client-smoke reports establish only their recorded scope; do not confuse a raw inference response with a reviewed Stage 1 result. Check reference and output rights before configuring provenance. Keep credentials out of manifests. Offline tests do not prove remote inference, live Blender rendering, or artistic judgment.
 
 The following executable documentation example establishes only command behavior. PROJECT is replaced with a fresh temporary directory. Argument arrays are passed directly, never executed as shell text.
 

@@ -18,12 +18,12 @@ flowchart LR
 
 ## Blender 连接与执行
 
-Codex 会话已经提供 `get_addon_status`、`get_scene_info`、`execute_blender_code` 等 Blender MCP 工具。最近只读检查返回无法连接 Blender。启动 Blender 中的 MCP 插件服务后，再通过 `get_addon_status` 验证连接；工具存在不代表插件已经在线。
+每台宿主分别安装 Blender 4.2+（4.5 LTS 部署基线）、MCP 插件和独立 MCP Python 环境，并在该宿主配置 Codex MCP。检查当前会话是否提供 `get_addon_status`、`get_scene_info`、`execute_blender_code`，再调用状态工具验证实际连接；不能把旧会话的工具清单或连接状态当成通用事实。平台路径与发现顺序见 [平台说明](platforms.md)。
 
-不需要把 Blender 程序加入系统 PATH，也不需要额外启动后台 Blender。当前 CLI 默认 `--backend mcp`：
+MCP 连接正在运行的 Blender 图形界面，插件必须在该进程中启动。此模式不要求 Blender 加入系统 PATH；CLI 不会另起后台 Blender。当前 CLI 默认 `--backend mcp`：
 
 ```powershell
-.\scripts\two-stage-3d.ps1 stage2 projects/my_station
+python -m runtime.cli stage2 projects/my_station
 ```
 
 运行时先验证审批、路径和输入，再生成独立目录下的 `request.json`、`ticket.json` 和 `mcp_calls.json`。Codex 读取操作包，通过 MCP 依次执行：
@@ -38,7 +38,7 @@ Codex 会话已经提供 `get_addon_status`、`get_scene_info`、`execute_blende
 实际文件产生后，Codex 执行：
 
 ```powershell
-.\scripts\two-stage-3d.ps1 stage2-complete projects/my_station --build-id mcp-实际编号
+python -m runtime.cli stage2-complete projects/my_station --build-id mcp-实际编号
 ```
 
 只有文件存在、格式初检通过、项目版本和输入仍然一致，才登记 `built`。随后仍需最终审核。操作包不是场景产物，MCP 返回一句成功也不能替代文件验证。
@@ -47,7 +47,7 @@ Codex 会话已经提供 `get_addon_status`、`get_scene_info`、`execute_blende
 
 ## HY3D SSH 配置
 
-用户提供的 Hunyuan3D-2.1 部署记录确认环境、扩展及权重已准备；记录明确没有启动 API 服务，也没有执行完整推理。当前需要兼容网关和真实联调。[配置文件](../configs/hy3d_ssh.yaml) 保留 `${HY3D_*}` 环境引用，实际连接值在根目录 `.env` 配置。SSH 端口不是模型服务的监听端口。
+早期 Hunyuan3D-2.1 部署记录仅确认环境、扩展及权重。后续网关与推理状态应以本机当前健康检查和真实产物为准，不沿用“已就绪”或“未启动”的历史判断。[配置文件](../configs/hy3d_ssh.yaml) 保留 `${HY3D_*}` 环境引用，实际连接值在根目录 `.env` 配置。SSH 端口不是模型服务的监听端口。
 
 连接所需信息：主机/IP 或 SSH 别名、SSH 端口、用户名，以及密钥路径或可用的 SSH Agent。真实值写入已被 Git 忽略的 `.env`，不写入 YAML、文档或 `.env.example`。`HY3D_SSH_IDENTITY_FILE` 留空表示交给 OpenSSH 默认身份/Agent；显式密钥路径支持空格。私钥内容和密码不落盘，带口令密钥应先在 SSH Agent 中解锁。
 
@@ -74,9 +74,9 @@ SSH 使用严格主机密钥校验，不自动接受未知服务器。首次连�
 4. 核实模型输出许可，填写 `output_source`，再用一项获准的生成任务验证真实推理和资产回传。
 
 ```powershell
-.\scripts\two-stage-3d.ps1 ssh-check --config configs/hy3d_ssh.yaml
-.\scripts\two-stage-3d.ps1 hy3d-health --config configs/hy3d_ssh.yaml
-.\scripts\two-stage-3d.ps1 stage1 projects/my_station --asset-id bench --catalog examples/library/catalog.yaml --hy3d-config configs/hy3d_ssh.yaml
+python -m runtime.cli ssh-check --config configs/hy3d_ssh.yaml
+python -m runtime.cli hy3d-health --config configs/hy3d_ssh.yaml
+python -m runtime.cli stage1 projects/my_station --asset-id bench --catalog examples/library/catalog.yaml --hy3d-config configs/hy3d_ssh.yaml
 ```
 
 SSH 隧道只负责传输。远程服务还需要实现 [本项目网关协议](hy3d_gateway.md)，不能直接假定任意原生 HY3D API 与其兼容。每次请求结束都会关闭本次创建的隧道；网络失败后不自动重复昂贵推理，先检查远程任务。
@@ -85,4 +85,4 @@ SSH 隧道只负责传输。远程服务还需要实现 [本项目网关协议](
 
 ## 当前验证状态
 
-104 项自动测试覆盖 MCP 操作顺序、撤销审批后阻断执行、输出收集、SSH 字段校验、端口冲突拒绝、`.env` 配置解析、请求失败后的隧道清理，以及未配置时的明确错误。MCP 和 SSH 进程使用测试替身，不代表已经连接真实 Blender 或远程 GPU。真实联调仍需确认 Blender 插件在线、网关适配完成并分配 GPU。已完成环境和权重准备不代表接口或推理验证通过。
+自动测试覆盖 MCP 操作顺序、撤销审批后阻断执行、输出收集、SSH 字段校验、端口冲突拒绝、`.env` 配置解析、请求失败后的隧道清理，以及未配置时的明确错误。MCP 和 SSH 进程使用测试替身，不代表已经连接真实 Blender 或远程 GPU。真实联调仍需确认 Blender 插件在线、网关适配完成并分配 GPU。完成环境和权重准备不代表接口或推理验证通过；直接客户端 shape smoke 成功也不代表正式 Stage 1 的来源许可、路由、版本、审核及交付均通过。

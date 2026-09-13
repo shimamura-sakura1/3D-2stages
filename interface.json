@@ -2,7 +2,7 @@
   "spec_version": "0.1",
   "skill": {
     "id": "two-stage-3d",
-    "version": "S3"
+    "version": "S4"
   },
   "artifacts": [
     {
@@ -674,6 +674,50 @@
       "enforcement": {
         "mode": "advisory"
       }
+    },
+    {
+      "id": "project-memory",
+      "type": "knowledge",
+      "path": "AGENTS.md",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Persistent project context and user-mandated external governance authority; not a second production Router."
+    },
+    {
+      "id": "platform-guide",
+      "type": "knowledge",
+      "path": "docs/platforms.md",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "runtime.platform_support",
+      "type": "script",
+      "path": "runtime/platform_support.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Deterministic host path and installed-tool discovery, called by the workflow CLI and maintenance launcher; does not install or start services."
+    },
+    {
+      "id": "scripts.smoke_hy3d",
+      "type": "script",
+      "path": "scripts/smoke_hy3d.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Pre-existing direct inference-client diagnostic. Does not execute the governed Stage 1 lifecycle or certify output licensing."
+    },
+    {
+      "id": "docs.governance.S4",
+      "type": "knowledge",
+      "path": "docs/governance/S4.md",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "description": "Development chronology, semantic review and evidence limits; acceptance is recorded only by the designated external framework."
     }
   ],
   "relations": [
@@ -1656,6 +1700,156 @@
       "to": {
         "artifact": "runtime.errors"
       }
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.platform_support"
+      },
+      "id": "rel-portable-001"
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.stage2_executor"
+      },
+      "to": {
+        "artifact": "runtime.platform_support"
+      },
+      "id": "rel-portable-002"
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.platform_support"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      },
+      "id": "rel-portable-003"
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.govern"
+      },
+      "to": {
+        "artifact": "runtime.platform_support"
+      },
+      "id": "rel-portable-004"
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "scripts.govern"
+      },
+      "to": {
+        "artifact": "project-memory"
+      },
+      "id": "rel-portable-005"
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "project-memory"
+      },
+      "id": "rel-portable-006"
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "platform-guide"
+      },
+      "id": "rel-portable-007"
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "operator-guide"
+      },
+      "to": {
+        "artifact": "platform-guide"
+      },
+      "id": "rel-portable-008"
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "README"
+      },
+      "to": {
+        "artifact": "platform-guide"
+      },
+      "id": "rel-portable-009"
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "docs.mcp_and_ssh"
+      },
+      "to": {
+        "artifact": "platform-guide"
+      },
+      "id": "rel-portable-010"
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "prompts.blender_builder"
+      },
+      "to": {
+        "artifact": "platform-guide"
+      },
+      "id": "rel-portable-011"
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "docs.governance.EVOLVE"
+      },
+      "to": {
+        "artifact": "platform-guide"
+      },
+      "id": "rel-portable-012"
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.smoke_hy3d"
+      },
+      "to": {
+        "artifact": "runtime.hy3d_client"
+      },
+      "id": "rel-portable-013"
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.smoke_hy3d"
+      },
+      "to": {
+        "artifact": "runtime.env_config"
+      },
+      "id": "rel-portable-014"
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "scripts.smoke_hy3d"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      },
+      "id": "rel-portable-015"
     }
   ],
   "invariants": [

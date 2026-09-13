@@ -39,7 +39,13 @@ def box(name, dimensions, destination, material):
     return obj
 
 
+def check_blender_version():
+    if bpy.app.version < (4, 2, 0):
+        raise RuntimeError("Blender 4.2 or newer is required for Stage 2")
+
+
 def build(request, export=True):
+    check_blender_version()
     plan = request["plan"]
     # An MCP session can contain unsaved user work. Never clear the active scene.
     scene = bpy.data.scenes.new(plan["scene"]["name"])

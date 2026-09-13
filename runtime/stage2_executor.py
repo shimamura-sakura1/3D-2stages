@@ -8,6 +8,7 @@ from pathlib import Path
 from runtime.errors import BoundaryError, WorkflowError
 from runtime.io import atomic_write, inside, load_data, sha256
 from runtime.validators import stage2_preflight, validate_model
+from runtime.platform_support import find_blender
 
 
 def input_digest(root, manifest, plan):
@@ -18,7 +19,7 @@ def input_digest(root, manifest, plan):
 
 
 class Stage2Executor:
-    def __init__(self, manager, blender="blender", runner=None, backend="mcp"):
+    def __init__(self, manager, blender=None, runner=None, backend="mcp"):
         self.manager = manager
         self.blender = blender
         self.runner = runner or subprocess.run
@@ -38,9 +39,7 @@ class Stage2Executor:
         if self.backend == "mcp":
             from runtime.blender_mcp import McpBlenderExecutor
             return McpBlenderExecutor(self.manager).prepare(plan_path)
-        executable = shutil.which(self.blender)
-        if not executable:
-            raise BoundaryError("Blender executable not found; configure --blender with its full path")
+        executable = find_blender(self.blender)
         build_dir = inside(root, f"stage2/scene/build-{uuid.uuid4().hex[:12]}")
         build_dir.mkdir(parents=True)
         request = {"plan": plan, "assets": resolved, "style": load_data(inside(root, manifest["style_bible"])),

@@ -2,7 +2,7 @@ import hashlib
 import json
 import os
 import tempfile
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 import yaml
 
@@ -24,8 +24,9 @@ def load_data(path, env_file=None):
 
 def inside(root, relative):
     root = Path(root).resolve()
-    value = Path(relative)
-    if value.is_absolute() or value.drive or ".." in value.parts:
+    windows = PureWindowsPath(relative)
+    value = Path(str(relative).replace("\\", "/"))
+    if windows.drive or windows.root or value.is_absolute() or ".." in value.parts:
         raise BoundaryError(f"Expected a project-relative path: {relative}")
     target = (root / value).resolve()
     if not target.is_relative_to(root):
