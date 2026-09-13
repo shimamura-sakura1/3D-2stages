@@ -47,9 +47,9 @@ Codex 会话已经提供 `get_addon_status`、`get_scene_info`、`execute_blende
 
 ## HY3D SSH 配置
 
-服务器尚未准备，因此 [配置文件](../configs/hy3d_ssh.yaml) 只保留 `${HY3D_*}` 环境引用，根目录 `.env` 中的 `HY3D_SSH_HOST` 和账户相关值保持空白。这不代表已经连接或部署。
+用户提供的 Hunyuan3D-2.1 部署记录确认环境、扩展及权重已准备；记录明确没有启动 API 服务，也没有执行完整推理。当前需要兼容网关和真实联调。[配置文件](../configs/hy3d_ssh.yaml) 保留 `${HY3D_*}` 环境引用，实际连接值在根目录 `.env` 配置。SSH 端口不是模型服务的监听端口。
 
-服务器准备后需要：主机/IP 或 SSH 别名、SSH 端口、用户名，以及密钥路径或可用的 SSH Agent。真实值写入已被 Git 忽略的 `.env`，不写入 YAML、文档或 `.env.example`。`HY3D_SSH_IDENTITY_FILE` 留空表示交给 OpenSSH 默认身份/Agent；显式密钥路径支持空格。私钥内容和密码不落盘，带口令密钥应先在 SSH Agent 中解锁。
+连接所需信息：主机/IP 或 SSH 别名、SSH 端口、用户名，以及密钥路径或可用的 SSH Agent。真实值写入已被 Git 忽略的 `.env`，不写入 YAML、文档或 `.env.example`。`HY3D_SSH_IDENTITY_FILE` 留空表示交给 OpenSSH 默认身份/Agent；显式密钥路径支持空格。私钥内容和密码不落盘，带口令密钥应先在 SSH Agent 中解锁。
 
 配置字段：
 
@@ -62,14 +62,14 @@ Codex 会话已经提供 `get_addon_status`、`get_scene_info`、`execute_blende
 | `ssh.known_hosts_file` | 可选的已核实主机密钥文件路径 |
 | `ssh.local_port` | 本机隧道端口，默认 18080 |
 | `ssh.remote_port` | 服务器本机网关端口，默认 8080 |
-| `timeout_s` | 单次服务请求的超时，当前模板为 900 秒 |
+| `timeout_s` | 单次服务请求的超时，由 HY3D_TIMEOUT_S 指定，.env.example 为 300 秒 |
 
 SSH 使用严格主机密钥校验，不自动接受未知服务器。首次连接时应核对云平台提供的指纹，并通过正常 SSH 流程登记主机密钥。连接失败时会保留错误信息供排查；不静默关闭密钥校验。端口转发和主机校验行为参照 [OpenSSH 官方手册](https://man.openbsd.org/ssh)。
 
 部署顺序：
 
 1. 参考 `.env.example` 填写根目录 `.env`，执行只读检查 `ssh-check`，确认 SSH、系统、Python 和 GPU/显存。
-2. 根据硬件选择 HY3D 版本，在服务器安装环境、模型和匹配的服务适配层。当前还没有部署脚本，因为服务器系统和硬件尚未确定。
+2. 复用已部署的 Hunyuan3D-2.1 环境和权重，补充匹配本项目协议的网关适配层；核对显式 GPU 分配后再启动推理服务。部署记录不包含 API 启动命令。
 3. 服务绑定服务器自身的 `127.0.0.1:<remote_port>`，通过 SSH 隧道访问，执行 `hy3d-health`。
 4. 核实模型输出许可，填写 `output_source`，再用一项获准的生成任务验证真实推理和资产回传。
 
@@ -81,8 +81,8 @@ SSH 使用严格主机密钥校验，不自动接受未知服务器。首次连�
 
 SSH 隧道只负责传输。远程服务还需要实现 [本项目网关协议](hy3d_gateway.md)，不能直接假定任意原生 HY3D API 与其兼容。每次请求结束都会关闭本次创建的隧道；网络失败后不自动重复昂贵推理，先检查远程任务。
 
-模型选型需结合形状生成和纹理生成的不同资源需求。作为候选参考，Hunyuan3D 2.1 官方仓库分别列出了形状、纹理和联合任务的显存要求，以及测试环境；等服务器准备后据此核对，不在本机预装其推理依赖。参见 [Hunyuan3D 2.1 官方安装说明](https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1#get-started-with-hunyuan3d-21)。
+模型选型需结合形状生成和纹理生成的不同资源需求。作为候选参考，Hunyuan3D 2.1 官方仓库分别列出了形状、纹理和联合任务的显存要求，以及测试环境；实际运行前结合部署记录和 GPU 分配核对，不在本机预装其推理依赖。参见 [Hunyuan3D 2.1 官方安装说明](https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1#get-started-with-hunyuan3d-21)。
 
 ## 当前验证状态
 
-104 项自动测试覆盖 MCP 操作顺序、撤销审批后阻断执行、输出收集、SSH 字段校验、端口冲突拒绝、`.env` 配置解析、请求失败后的隧道清理，以及未配置时的明确错误。MCP 和 SSH 进程使用测试替身，不代表已经连接真实 Blender 或远程 GPU。真实联调等待插件服务在线和服务器准备完成。
+104 项自动测试覆盖 MCP 操作顺序、撤销审批后阻断执行、输出收集、SSH 字段校验、端口冲突拒绝、`.env` 配置解析、请求失败后的隧道清理，以及未配置时的明确错误。MCP 和 SSH 进程使用测试替身，不代表已经连接真实 Blender 或远程 GPU。真实联调仍需确认 Blender 插件在线、网关适配完成并分配 GPU。已完成环境和权重准备不代表接口或推理验证通过。

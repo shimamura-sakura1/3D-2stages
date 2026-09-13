@@ -1,7 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Argument scope of the workflow-cli init binding only; argparse and production validators check command syntax and project data. Other CLI subcommands have separate behavior tests.",
   "type": "array",
   "minItems": 1,
+  "prefixItems": [
+    {"const": "init"}
+  ],
   "items": {
     "type": "string"
   }

@@ -16,10 +16,15 @@ process on completion or failure. Inference remains on that server. The client r
 an occupied local forwarding port rather than connecting to an unrelated local service.
 Loopback HTTP bypasses HTTP proxy environment settings. See [connection workflow](mcp_and_ssh.md).
 
-The tunnel does not install HY3D or translate native model APIs. Server provisioning,
-model selection and the matching gateway adapter remain pending until the server is
-available. `ssh-check` inspects connectivity/GPU details, while `hy3d-health` tests this
+The tunnel does not install HY3D or translate native model APIs. The supplied deployment
+report records Hunyuan3D-2.1 environment and weights prepared, but no API service started.
+A matching gateway adapter and real inference validation are still pending.
+`ssh-check` inspects connectivity/GPU details, while `hy3d-health` tests this
 gateway protocol; neither is proof of successful inference.
+
+When `token_env` is configured, its environment variable must be nonempty, including
+for health checks. The client sends `Authorization: Bearer <token>`. An explicitly
+unauthenticated gateway requires omitting `token_env`; an empty value is not an opt-out.
 
 `GET /health` returns:
 
@@ -46,6 +51,11 @@ by its model. The response is a JSON object with `model_base64` containing a com
 embedded glTF 2.0 GLB. Return non-2xx on failure. Input files are bounded to 64 MiB
 each; HTTP responses to 256 MiB. Synchronous jobs that exceed the timeout fail and
 require inspection of backend status before a new revision is requested.
+
+The client does not poll asynchronous job IDs or fetch returned URLs/server paths.
+A gateway wrapping an asynchronous backend must wait for completion and return the
+embedded GLB within the configured timeout, or the client contract needs a separately
+governed extension. Advertise only operations actually implemented by the adapter.
 
 Route C also requires `output_source` in the configuration, with all the source
 fields defined in the stage1_result schema: provider, asset_id, original_url,

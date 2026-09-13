@@ -8,3 +8,4 @@ projects/
 .env
 .deps/
 .skillctl/
+ssh-deployment-report/

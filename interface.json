@@ -2,7 +2,7 @@
   "spec_version": "0.1",
   "skill": {
     "id": "two-stage-3d",
-    "version": "S1"
+    "version": "S3"
   },
   "artifacts": [
     {
@@ -378,7 +378,7 @@
         },
         "timeout_seconds": 30
       },
-      "description": "Actual CLI entry. This binding checks init I/O; command characterization covers later stateful commands. It does not claim every subcommand returns a project manifest."
+      "description": "Actual CLI entry. Its binding input schema restricts the first argument to init and validates the resulting project manifest. Other subcommands remain public CLI operations covered by command behavior tests, outside this init I/O binding."
     },
     {
       "id": "runtime.delivery_executor",

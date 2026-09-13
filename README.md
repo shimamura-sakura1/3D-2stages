@@ -1,157 +1,194 @@
-# Two-Stage 3D v0.1
+# Two-Stage 3D
 
-根据 `two_stage_3d_skill_codex_spec_v0.1.md` 实现的 **Phase 1 MVP**。
-核心是可审核、可返工的两阶段运行时与 Codex Skill。
+把一段场景需求变成**可审核、可返工、保留来源的 3D 资产和 Blender 场景**。本项目由 Codex Skill 和 Python 运行时组成：Codex 理解需求、制定计划和做美术判断，Python 负责检索、模型调用、文件校验和状态管理。
 
-当前部署约定：**Codex 通过 MCP 控制 Blender；HY3D 在远程 GPU 服务器推理，通过 SSH 隧道接入。**
-服务器尚未准备，连接配置位于 [configs/hy3d_ssh.yaml](configs/hy3d_ssh.yaml)，实际主机、用户名、密钥路径、端口、网关地址和令牌只放在已忽略的根目录 `.env`。
-详见 [Blender MCP 与远程 SSH 接入说明](docs/mcp_and_ssh.md)。
+工作分成两阶段：**Stage 1 先获得并审核单个资产；Stage 2 再把获批资产放入 Blender 构建场景。** 可以只做规划、只交付资产，或使用已有资产直接构建场景。
 
-## 修改与迭代 Skill
+当前约定是 Codex 通过 MCP 控制 Blender，HY3D 在远程 GPU 服务器推理，通过 SSH 隧道接入。根据用户提供的部署记录，Hunyuan3D-2.1 的环境、扩展和权重已就绪，但记录明确没有启动 API 服务，也没有完成端到端推理。本仓库尚未完成网关适配和真实联调。
 
-本项目已按 Contract-Governed Skill 的 MIGRATE 流程增加治理元数据，保留原有业务目录。
-从 [迭代步骤](docs/governance/EVOLVE.md) 开始：先新增需求/断言及测试，再做影响分析、修改和回归，最后接受版本。
+## 一次建模任务怎样运行
 
-- `SKILL.md`：真实 Execution Router。
-- `interface.json`：公共工具、契约和实际文件依赖。
-- `requirements.json`：逐条 claims、实现、测试、未解决能力。
-- `tests/manifest.json`：covers / exercises / depends_on_artifacts。
-- `changes/`：验收工具生成的版本记录；与具体资产的人工批准无关。
-
-```powershell
-.\scripts\govern.ps1 validate
-.\scripts\govern.ps1 graph --mermaid
-.\scripts\govern.ps1 impact --from runtime.asset_router
-.\scripts\govern.ps1 contract-test
-.\scripts\govern.ps1 test --requirement REQ-GOV-001
+```mermaid
+flowchart TD
+    U[用户需求] --> P[Codex 拆分资产、样式与场景计划]
+    P --> M[创建 Manifest 与任务文件；确认计划]
+    M --> S[Stage 1：搜索已配置资产库]
+    S --> A[A：直接使用库资产]
+    S --> B[B：库资产交给 HY3D 重贴图]
+    S --> C[C：HY3D 生成新资产]
+    A --> R[保存模型、来源和配方；审核资产]
+    B --> R
+    C --> R
+    R -->|返工| S
+    R -->|仅交付资产| D[打包文件、来源与校验和]
+    R -->|资产获批| L[Stage 2：读取 Blender 计划并预检]
+    L --> MCP[Codex 执行 Blender MCP 操作包]
+    MCP --> F[校验实际 BLEND、GLB 和预览文件]
+    F --> V[最终场景审核]
+    V --> D
 ```
 
-当前本机默认使用 `D:/contract-govern skill` 的工具环境，可通过 `CONTRACT_GOVERN_HOME` 配置。
-只对源码副本做治理检查，实际项目资产与依赖缓存不进入 Skill 版本。详见 [迁移与证据范围](docs/governance/MIGRATION.md)。
+1. **规划**：Codex 从 `SKILL.md` 的 Execution Router 进入，结合 `prompts/` 理解需求，通过 CLI 创建项目、资产任务与样式文件。`init --brief` 只保存需求，Python 不会自行调用语言模型分解任务。
+2. **检索与路由**：`asset_search.py` 调用 `providers/`，`asset_router.py` 按 `policies/` 选择 A/B/C。先检索再决策；检索服务失败不能当成“没有资产”直接生成。当前实际资产库适配器是本地目录。
+3. **获取与审核**：`stage1_executor.py` 复制库资产或通过 `hy3d_client.py` 请求模型，保存结果及来源，进入 `review_required`。B 当前仅支持 B1 重贴图。未经批准的资产不能进入场景计划执行。
+4. **场景构建**：`stage2_executor.py` 预检，`blender_mcp.py` 准备操作包，Codex 通过 MCP 让 Blender 执行 `blender_worker.py` 的加载、组装、导出和渲染。创建新场景，保留已有场景。
+5. **验证与交付**：`stage2-complete` 检查真实输出和输入版本，然后才能审核场景。`delivery_executor.py` 打包获批资产或场景，保留来源声明、Manifest 快照和校验和。操作包或排队渲染不代表构建完成。
 
-## 已实现
+`manifest_manager.py` 是正式状态的写入入口；`state_machine.py` 和 `validators.py` 检查阶段、格式、路径及审批约束。返工生成资产的新版本，不覆盖既有结果。
 
-- 项目 Manifest、七类 JSON Schema、显式状态机、原子写入、独占写锁与版本检查。
-- `plan_only`、`stage1_only`、`stage2_only`、`full_pipeline`、资产级 `repair`。
-- 本地资产库适配器、检索记录、许可证门禁、A/B/C 路由。
-- Stage 1 原始资产/输出版本隔离、文件校验、来源与生成配方记录、人工审核、有限返工。
-- 本地/远程 HTTPS/SSH HY3D 网关客户端，SSH 环境检查、能力与健康检查；B1 重贴图与 C 生成入口。
-- 默认 Blender MCP：预检、可审阅操作步骤、实际输出回收；另保留显式选择的 batch 后端。
-- Blender 工作者：GLB/OBJ 导入、集合组织、底部居中、摆放、箱体/轨道几何、材质、摄影机、太阳光、预览与 BLEND/GLB 导出；在新场景构建，保留原有场景。
-- 资产打包、场景最终审核及交付，保留来源、归属声明、Manifest 快照和校验和。
+## 文件在哪里，各自负责什么
 
-`init --brief` 保存需求，不会自动调用语言模型。Codex 依据 `prompts/` 完成需求优化、分解和美术决策，再交给运行时执行。示例样式是可编辑的起点，不代表对用户意图的自动推断。
+| 文件 / 目录 | 作用与所在阶段 |
+| --- | --- |
+| `SKILL.md` | Codex 的编排入口，决定何时规划、调用工具、审核和结束 |
+| `docs/workflow.md`、`prompts/` | 规划、资产审核和 Blender 操作的详细指导 |
+| `runtime/cli.py`、`scripts/two-stage-3d.ps1` | 统一命令入口；PowerShell 脚本帮助本机选择 Python |
+| `runtime/planning.py` | 将规划输入落为项目文件 |
+| `runtime/asset_search.py`、`runtime/asset_router.py`、`providers/` | 搜索候选资产及 A/B/C 路由 |
+| `runtime/stage1_executor.py` | 执行单资产获取，记录版本、来源和配方 |
+| `runtime/hy3d_client.py`、`runtime/ssh_transport.py` | HY3D HTTP 协议、SSH 转发与环境检查 |
+| `runtime/env_config.py`、`configs/hy3d_ssh.yaml`、`.env.example` | 部署参数读取与配置样例；真实连接值保存在被忽略的 `.env` |
+| `runtime/stage2_executor.py`、`runtime/blender_mcp.py`、`runtime/blender_worker.py` | 场景预检、MCP 操作包与 Blender 内执行代码 |
+| `runtime/manifest_manager.py`、`runtime/state_machine.py`、`runtime/validators.py` | 正式状态、审核门禁、版本及文件校验 |
+| `runtime/delivery_executor.py` | 交付打包 |
+| `contracts/` | Manifest、任务、候选、Stage 1 结果、Blender 计划、审核、交付等 JSON Schema |
+| `templates/`、`policies/` | 可编辑的输入起点，以及路由、许可、状态规则 |
+| `examples/library/` | 自带原创 CC0 长椅、资产目录和许可说明，用于离线验证 |
+| `projects/` | 实际建模任务的输入与产物，不属于 Skill 源码验收快照 |
+| `interface.json`、`requirements.json`、`tests/manifest.json` | Skill 文件依赖、需求断言及测试证据关系 |
+| `tests/`、`changes/`、`scripts/govern.ps1` | 回归测试、正式版本记录和迭代验收入口 |
+| `two_stage_3d_skill_codex_spec_v0.1.md` | 初始设计规格；当前实现以运行时和验收记录为准 |
 
-## 安装与测试
+一个项目的文件按下面的顺序产生或被读取：
 
-本地运行时要求 Python 3.11+；正式场景构建需运行中的 Blender MCP 插件服务，工作者面向 Blender 4.2+。HY3D 的远程环境独立配置，不需要在本机安装 GPU 推理依赖。在项目根目录：
+```text
+projects/<项目名>/
+  user_brief.md                    原始需求
+  manifest.yaml                    项目模式、资产状态、审批和输出索引
+  style_bible.yaml                 两阶段共用的样式约定
+  planning/                       规划资料目录
+  stage1/
+    tasks/<asset_id>.yaml          单资产任务
+    candidates/                   检索候选与评分记录
+    sources/                      原始库资产
+    outputs/                      各资产各版本的模型
+    results/<asset_id>_rev00.json   模型路径、来源、校验和与生成配方
+    reviews/                      资产审核与返工意见
+  stage2/
+    blender_plan.yaml             Codex 提供的布局、几何、摄影机和灯光计划
+    scene/mcp-<编号>/              请求、执行票据、MCP 操作包及实际场景输出
+    reviews/                      场景审核记录
+  delivery/outputs/package-*/      交付文件、来源声明、快照与校验和
+```
+
+`init` 创建目录、Manifest、需求、样式和任务；Blender 计划由 Codex 后续提供，其他结果随执行产生。模板不会自动成为经过用户确认的设计。
+
+## 先跑一个离线资产示例
+
+本地运行时需要 Python 3.11+。在仓库根目录安装：
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -e '.[dev]'
-python -m pytest -q
-python -m runtime.cli --help
 ```
 
-本次开发环境没有系统 `python` 命令，依赖已放在项目 `.deps/`。
-可直接使用本机启动脚本，脚本优先寻找项目虚拟环境或系统 Python，随后寻找 Codex 附带的 Python：
+当前开发机也可使用 `scripts/two-stage-3d.ps1`，它优先寻找项目虚拟环境或系统 Python，再寻找 Codex 自带 Python，并加载现有 `.deps/`。以下命令中的 `python -m runtime.cli` 可替换为 `.\scripts\two-stage-3d.ps1`。依赖声明见 `pyproject.toml`，已测试版本见 `requirements-tested.txt`。
 
+以下示例使用新项目目录，只复制仓库内的长椅，不连接远程服务器或 Blender。执行计划批准命令前应确认示例任务符合意图。
+
+<!-- executable: offline-asset -->
 ```powershell
-.\scripts\two-stage-3d.ps1 --help
-.\scripts\test.ps1
+python -m runtime.cli init projects/readme_demo --id readme_demo --brief '安静的乡间车站' --mode full_pipeline --task templates/asset_task.yaml
+python -m runtime.cli approve-plan projects/readme_demo
+python -m runtime.cli stage1 projects/readme_demo --asset-id bench --catalog examples/library/catalog.yaml
+python -m runtime.cli status projects/readme_demo
 ```
 
-依赖范围由 `pyproject.toml` 管理，本次测试所用版本记录在 `requirements-tested.txt`。
-
-首次使用先复制 `.env.example` 为 `.env`，再在 `.env` 内填写实际部署值。CLI 读取 YAML 时会加载根目录 `.env` 并解析 `${NAME}`；调用进程已经设置的环境变量优先于文件值。缺少被引用的变量会在连接或推理开始前报错。`.env` 已加入 `.gitignore`，不要把真实值复制回 YAML、文档或 `.env.example`。
-
-## 本地完整资产流程
-
-仓库自带原创 CC0 简模长椅。以下命令实际复制资产，不调用网络或 HY3D。
+预期：`stage1/results/bench_rev00.json` 记录 `library_direct` 路由，实际模型位于 `stage1/outputs/`，长椅状态为 `review_required`。先检查模型与来源，再执行批准及后续命令：
 
 ```powershell
-.\scripts\two-stage-3d.ps1 init projects/my_station --id my_station --brief '安静的乡间车站，长椅与轨道' --mode full_pipeline --task templates/asset_task.yaml
-.\scripts\two-stage-3d.ps1 status projects/my_station
-.\scripts\two-stage-3d.ps1 approve-plan projects/my_station
-.\scripts\two-stage-3d.ps1 stage1 projects/my_station --asset-id bench --catalog examples/library/catalog.yaml
+.\scripts\two-stage-3d.ps1 review projects/readme_demo bench --decision approved
+Copy-Item templates/blender_plan.yaml projects/readme_demo/stage2/blender_plan.yaml
+.\scripts\two-stage-3d.ps1 stage2 projects/readme_demo --dry-run
+.\scripts\two-stage-3d.ps1 stage2 projects/readme_demo
 ```
 
-此时资产为 `review_required`，结果记录位于 `stage1/results/bench_rev00.json`。
-检查实际模型与来源后执行以下审核操作：
+`--dry-run` 只预检。下一条命令准备 MCP 操作包，**需要 Codex 通过 Blender MCP 实际执行**；CLI 不直接调用 Codex 会话工具。执行及输出回收步骤见 [MCP 接入说明](docs/mcp_and_ssh.md)。用返回的真实 build_id 完成回收，检查预览和场景后再批准交付：
 
 ```powershell
-.\scripts\two-stage-3d.ps1 review projects/my_station bench --decision approved
-Copy-Item templates/blender_plan.yaml projects/my_station/stage2/blender_plan.yaml
-.\scripts\two-stage-3d.ps1 stage2 projects/my_station --dry-run
+.\scripts\two-stage-3d.ps1 stage2-complete projects/readme_demo --build-id mcp-实际编号
+.\scripts\two-stage-3d.ps1 approve-final projects/readme_demo
+.\scripts\two-stage-3d.ps1 deliver projects/readme_demo
 ```
 
-`--dry-run` 仅校验输入，不调用 Blender、不创建模型，也不改变构建状态。
-默认通过 Codex MCP 执行，不需要填写 Blender 可执行文件路径：
+只需要已批准的资产时，可设置 `configure <project> --target asset` 后 `deliver <project>`，不需要构建 Blender 场景。
 
-```powershell
-.\scripts\two-stage-3d.ps1 stage2 projects/my_station
+| 模式 | 行为 |
+| --- | --- |
+| `plan_only` | 默认，只保存和展示计划 |
+| `stage1_only` | 获取资产，在审核处停下 |
+| `stage2_only` | 使用 `supply` 导入的已有资产和来源，不执行检索 |
+| `full_pipeline` | 两阶段执行，仍保留审核节点 |
+| `repair` | 针对指定资产返工，保留旧版本并受版本次数限制 |
+
+`run` 按保存模式继续，处理待执行资产与已请求的返工；失败资产保持待处理，确认远程任务结果后可显式选择重试。`run --asset-id ID` 只处理指定资产并停在资产检查点，即使开启自动审核也不会继续构建场景；`stage1 --asset-id ID` 仍可显式执行单项。自动审核需要明确启用 `configure --auto-approve`，部分场景需要明确启用 `--allow-partial`；这些选项不会让计划里列出的未批准资产通过。更多命令见 `--help` 和 [操作指导](docs/workflow.md)。
+
+## 远程模型的调用方式与接口
+
+**已有明确协议，客户端已实现；远程服务需要实现本项目网关协议 v0.1，或增加适配层。** 仅部署模型权重、推理脚本或原生 Web UI，不能据此认定接口已经兼容。本仓库不包含远程推理服务器或模型权重。
+
+用户提供的本地部署报告位于 `ssh-deployment-report/DEPLOYMENT.md`（外部部署证据，不纳入 Skill 源码验收快照）。它记录了 Hunyuan3D-2.1、Python 3.10.21、torch 2.5.1+cu124、A100 40 GB，Shape/Paint 权重及导入检查已完成。远程 Python 环境独立于本地运行时，不需要升级到本地要求的 Python 3.11。远程依赖中的 bpy 4.0 也不等同于 Stage 2 的 Blender MCP 宿主。
+
+报告中没有 HTTP 监听端口或 API 启动命令；SSH 端口和模型服务端口是不同配置。报告还要求显式分配单张 GPU，默认隐藏 GPU；提供连接信息不等于已授权运行推理。下一步是确认 GPU 分配、实现并启动兼容网关，再做真实任务验证。实际 SSH 别名、端口及远程路径只写入本地部署配置，不复制到共享配置样例。
+
+```text
+本地 Stage1Executor → Hy3DClient → 本机 127.0.0.1:local_port
+  → SSH 隧道 → 服务器 127.0.0.1:remote_port → 网关/适配层 → 模型推理
+  ← JSON 中的 model_base64 ← 完整 GLB 文件
 ```
 
-该命令生成 `stage2/scene/mcp-*/mcp_calls.json`，由 Codex 顺序调用 Blender MCP 执行加载、组装、导出和渲染步骤。CLI 不会伪装成可直接调用 Codex 的会话工具。渲染步骤异步排队；超时后检查状态，不要重复提交。
+| 请求 | 用途 / 约定 |
+| --- | --- |
+| `GET /health` | 返回 `status: "ok"` 和 `capabilities` 数组，只声明实际支持的能力 |
+| `POST /v1/generate_shape` | 生成几何模型 |
+| `POST /v1/generate_textured_asset` | 生成带材质的资产 |
+| `POST /v1/retexture_mesh` | 对传入网格重贴图 |
 
-实际文件生成后，使用返回的 build_id 登记构建结果：
+生成前会先调用健康检查并核对所需能力。POST 使用 JSON，字段为 `prompt`、`reference_images`、`style_bible`、`seed`；重贴图额外传 `mesh`。图片和网格以 `{name, data_base64}` 传输。成功响应必须同步返回 `{"model_base64":"完整 GLB 的 Base64"}`；不支持直接返回服务器路径、下载 URL 或异步 job_id。失败返回非 2xx。完整示例与限制见 [网关协议](docs/hy3d_gateway.md)，实现见 [hy3d_client.py](runtime/hy3d_client.py)。
 
-```powershell
-.\scripts\two-stage-3d.ps1 stage2-complete projects/my_station --build-id mcp-返回的12位编号
-```
+接入已部署的模型时：
 
-检查 `stage2/scene/mcp-*/preview.png` 和场景文件后，进行最终审核与交付：
-
-```powershell
-.\scripts\two-stage-3d.ps1 approve-final projects/my_station
-.\scripts\two-stage-3d.ps1 deliver projects/my_station
-```
-
-仅在明确需要独立后台 Blender 时选择 `--backend batch --blender <实际可执行文件路径>`。
-
-资产、样式、场景计划或输出内容在构建后发生变化，会阻止最终审核或场景交付。
-只需要资产库时，将交付目标设为 `asset`，可在 Stage 1 审核后直接打包：
+1. 核对模型名称/版本、启动方式、接口文档或请求样例、服务端口，以及是否异步返回任务。接口不同时，先适配参数、状态和 GLB 输出。
+2. 参考 `.env.example` 填写根目录 `.env` 的 SSH 主机/别名、端口、账户、可选密钥路径、转发端口和超时。不要覆盖已有 `.env`。真实值不写入版本库；进程环境变量优先于 `.env`。
+3. 配置模板指定 `token_env: HY3D_API_TOKEN`，因此必须提供非空令牌；客户端使用 `Authorization: Bearer ...`。若网关明确不需要鉴权，应在所用配置中移除 `token_env`，空令牌不会自动禁用鉴权。
+4. 执行下面的 SSH 检查与协议健康检查。SSH 使用严格主机密钥验证；服务通过服务器回环端口转发。每次 HTTP 请求单独打开并清理隧道。
+5. 根据实际模型输出使用条款配置 `output_source`；C 路由在缺少已核实来源许可时阻止生成。随后用一项获准任务验证真实推理、GLB 回传和资产审核。
 
 ```powershell
-.\scripts\two-stage-3d.ps1 configure projects/my_station --target asset
-.\scripts\two-stage-3d.ps1 deliver projects/my_station
-```
-
-## 其他模式
-
-`run <project> --catalog <catalog>` 按保存的模式继续：`plan_only` 只展示计划；Stage 1 执行后在必要审核处停下；`full_pipeline` 在输入已获批后准备 MCP 步骤。它不自动批准最终场景，也不会自动重跑失败任务。`stage1 --asset-id` 用于显式执行或重试单项任务。
-
-返工示例（只产生 bench 的新版本，保留原始源文件和其他资产）：
-
-```powershell
-.\scripts\two-stage-3d.ps1 configure projects/my_station --mode repair
-.\scripts\two-stage-3d.ps1 review projects/my_station bench --decision revision_requested --instruction '简化木纹，保留现有轮廓'
+.\scripts\two-stage-3d.ps1 ssh-check --config configs/hy3d_ssh.yaml
+.\scripts\two-stage-3d.ps1 hy3d-health --config configs/hy3d_ssh.yaml
 .\scripts\two-stage-3d.ps1 stage1 projects/my_station --asset-id bench --catalog examples/library/catalog.yaml --hy3d-config configs/hy3d_ssh.yaml
 ```
 
-路由重新按任务约束与候选评分评估。若要强制重贴图，应在初始任务中选择 `library_hy3d_refine`；MVP 尚无交互式任务编辑命令。不要把直接复制资产当成已经满足了返工要求，必须再次审核。每项任务默认最多 3 次新版本，不自动增加限额。
+最后一条命令要求已有相应项目、获批计划和任务，是否调用 HY3D 由路由决定；库资产直接命中时不触发推理。健康检查通过也不等于完成推理。超时后先检查服务端任务，不自动重复昂贵生成。当前 `.env.example` 的请求超时是 300 秒，可按实测耗时配置 `HY3D_TIMEOUT_S`。
 
-`stage2_only` 不执行检索。先用 `init --mode stage2_only` 创建项目，再用 `supply <project> <asset_id> <model> --source <source.yaml>` 导入文件及已核实的来源信息，提供包含该 ID 的 Blender 计划并批准计划。来源字段见候选目录里的 `source`。
+## 当前能力边界
 
-自动批准资产需明确设置 `configure --auto-approve`；恢复人工审核用 `--no-auto-approve`。
-允许缺少部分必需资产需明确设置 `--allow-partial`，并从 Blender 计划中省略它们。计划里列出的资产仍必须存在且获批。占位几何可显式写为 procedural box。
+已实现本地资产库检索、A/B/C 路由、审批和返工、远程模型客户端、默认 Blender MCP 操作包及输出回收、资产/场景交付。支持嵌入资源的 GLB 和不引用 MTL 的纯几何 OBJ；输出许可当前仅接受已核实的 `cc0` 或 `cc_by`，后者需要归属声明。
 
-## 接口和边界
+远程资产库、B2/B3 细化、自动视觉评分、并行 Worker 调度和 Web 交付尚未实现。Blender 工作者面向 4.2+，不会自动修复复杂拓扑或推断全部尺寸；技术文件检查不等于美术验收。默认按 Blender 能访问本机项目路径设计，若 Blender 也放到远程，仍需文件同步与路径映射。批处理后端必须显式选择，MCP 断开时不自动切换。
 
-- [Skill 入口](SKILL.md)、[父编排提示](prompts/parent.md)、[规划提示](prompts/asset_planner.md)。
-- [HY3D 网关协议](docs/hy3d_gateway.md)：这是本项目协议，需要匹配的服务适配层；没有假定原生 HY3D 服务接口。
-- [资产模板](templates/asset_task.yaml)、[Blender 计划模板](templates/blender_plan.yaml)、[来源样例](examples/library/catalog.yaml)。
-- 目前支持嵌入资源的 GLB 和不引用 MTL 的纯几何 OBJ。FBX、GLTF 多文件包、BLEND 导入暂不支持。
-- 本地目录中的评分和许可证由维护者提供，运行时不自动推断质量或解读许可证。当前接受已核实的 `cc0`、`cc_by`；未知许可会被阻止。
-- 路径规则、状态机与角色权限是应用层约束。Python 对象和提示词不能替代操作系统权限；真正的受限多进程 Worker 需要宿主提供独立目录和工具权限。当前执行器是顺序执行。
-- `.manifest.lock` 使用独占创建；进程崩溃后需确认无写入进程，再手动移除遗留锁。不会擅自抢锁。
-- 不在 Manifest 中存储密钥。HY3D 密钥通过环境变量提供。不要将配置、提示或生成配方中的任意文本当作可执行代码。
+自动测试包含实际文件流和本地 HTTP 网关交互；SSH/MCP 进程边界使用测试替身。本次文档更新不宣称已连接用户服务器或完成真实 Blender 渲染。真实集成与美术质量仍保留为未完成验证项。
 
-## 尚未完成及验证范围
+## 怎样迭代这个 Skill
 
-Phase 2/3 后续项：Sketchfab/Poly Haven 等远程资产库、受限并行 Worker、自动视觉评分、B2/B3 细化策略、丰富的程序化几何、缓存/检索数据库、Dashboard 与 Web 导出/部署。选择 `web` 会明确报未支持，不会自动发布。
+所有迭代必须遵循 `D:/contract-govern skill/` 定义的范式和 [项目迭代步骤](docs/governance/EVOLVE.md)：需求与 claims → 测试先行 → 影响分析 → 修改 → 契约与历史回归 → 正式验收。
 
-首版 Blender 工作者不实现自动拓扑修复、法线修复、复杂材质统一或自动尺寸推断；保留导入材质，利用计划中的缩放设置尺寸。技术校验是容器与依赖路径检查，不等同于完整 glTF 校验或美术验收。
+```powershell
+.\scripts\govern.ps1 validate
+.\scripts\govern.ps1 contract-test
+.\scripts\govern.ps1 test
+```
 
-自动测试覆盖真实文件流、本地测试 HTTP 网关、MCP 操作顺序/撤销审核拦截/输出回收和 SSH 参数/隧道清理。MCP 与 SSH 进程边界使用测试替身。已发现 Codex 的 Blender MCP 工具，但最近连接检查提示插件服务不可达；远程服务器尚未准备。真实 SSH 连接、推理、渲染及 Blender 版本兼容性尚未实测。示例项目不宣称是已完成的 3D 场景。
+版本接受使用该文档中的 `accept` 流程，由工具生成 `changes/` 记录，不能手写成功证据或弱化历史测试。治理版本记录在 `interface.json`，独立于 Python 包版本 `0.1.0` 和生产数据 Schema 版本 `0.1`。治理副本不包含实际 `projects/`、`.deps/`、`.env`；报告位于 `.skillctl/reports/`。

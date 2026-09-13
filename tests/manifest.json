@@ -351,6 +351,151 @@
         ],
         "timeout_seconds": 60
       }
+    },
+    {
+      "id": "T-README-001",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-README-001-C1"
+      ],
+      "exercises": [
+        "README",
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "README",
+        "workflow-cli",
+        "templates.asset_task",
+        "examples.library.catalog",
+        "examples.library.bench"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "tests/characterization/readme_flow.py"
+        ],
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-FLOW-POSITIVE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-FLOW-001-C1",
+        "REQ-FLOW-001-C2",
+        "REQ-FLOW-001-C4",
+        "REQ-FLOW-001-C5"
+      ],
+      "exercises": [
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "SKILL",
+        "operator-guide",
+        "contracts.cli_arguments.schema",
+        "runtime.stage1_executor",
+        "runtime.manifest_manager",
+        "runtime.delivery_executor",
+        "runtime.stage2_executor"
+      ],
+      "tags": [
+        "conditional-positive"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_flow_s3.py",
+          "-k",
+          "positive"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-FLOW-DEFAULT",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-FLOW-001-C2",
+        "REQ-FLOW-001-C4"
+      ],
+      "exercises": [
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "SKILL",
+        "operator-guide",
+        "contracts.cli_arguments.schema",
+        "runtime.stage1_executor",
+        "runtime.manifest_manager",
+        "runtime.delivery_executor",
+        "runtime.stage2_executor"
+      ],
+      "tags": [
+        "conditional-default"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_flow_s3.py",
+          "-k",
+          "default"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-FLOW-REJECTION",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-FLOW-001-C3",
+        "REQ-FLOW-001-C4",
+        "REQ-FLOW-001-C5"
+      ],
+      "exercises": [
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "SKILL",
+        "operator-guide",
+        "contracts.cli_arguments.schema",
+        "runtime.stage1_executor",
+        "runtime.manifest_manager",
+        "runtime.delivery_executor",
+        "runtime.stage2_executor"
+      ],
+      "tags": [
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_flow_s3.py",
+          "-k",
+          "rejection"
+        ],
+        "timeout_seconds": 120
+      }
     }
   ]
 }

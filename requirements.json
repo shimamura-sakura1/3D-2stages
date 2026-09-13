@@ -160,6 +160,70 @@
       "introduced_in": "S0",
       "status": "unresolved",
       "supersedes": []
+    },
+    {
+      "id": "REQ-README-001",
+      "description": "Provide a project overview with file flow and deployed-model integration boundaries, including a runnable offline README example. Prose accuracy is reviewed by the maintainer; executable evidence covers the command example only.",
+      "claims": [
+        {
+          "id": "REQ-README-001-C1",
+          "statement": "Executing the README offline example with the public CLI creates a project, copies the bundled bench with its recorded provenance, and stops with the asset requiring review.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-README-001"
+      ],
+      "introduced_in": "S2",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-FLOW-001",
+      "description": "Close the S2 continuation, asset-only Router, and init binding scope gaps without weakening existing review, mode, and history boundaries.",
+      "claims": [
+        {
+          "id": "REQ-FLOW-001-C1",
+          "statement": "An explicit run --asset-id resumes only that asset, including requested rework or an explicitly selected failed task, preserves earlier outputs and unrelated assets, and stops at the Stage 1 checkpoint.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-FLOW-001-C2",
+          "statement": "Unscoped run resumes revision_requested assets and retains acquisition of planned tasks; plan_only stays unchanged and unscoped failed tasks are not automatically retried.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-FLOW-001-C3",
+          "statement": "Unknown asset selectors and Stage 1 selectors in stage2_only reject before execution; the existing revision limit remains enforced.",
+          "kind": "rejection"
+        },
+        {
+          "id": "REQ-FLOW-001-C4",
+          "statement": "The Router provides a direct Step 4 to Step 6 asset-delivery edge; approved assets can be delivered without Blender, while unapproved delivery rejects and scene preflight remains available.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-FLOW-001-C5",
+          "statement": "The workflow-cli binding input Schema is limited to init argument arrays, excludes other subcommands and empty input, and valid init execution produces a validated project manifest.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "contracts.cli_arguments.schema"
+      ],
+      "verified_by": [
+        "T-FLOW-POSITIVE",
+        "T-FLOW-DEFAULT",
+        "T-FLOW-REJECTION"
+      ],
+      "introduced_in": "S3",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
     }
   ]
 }

@@ -56,10 +56,11 @@ Read:
 Optional Tools:
 - runtime/cli.py
 Action:
-- Inspect actual quality and provenance. Record the user's decision or explicitly authorized automatic review. Continue independent assets, request bounded rework, or finish Stage 1-only work. Never advance a listed unapproved asset.
+- Inspect actual quality and provenance. Record the user's decision or explicitly authorized automatic review. Continue independent assets or request bounded rework through Step 3. After approval, go directly to Step 6 for asset delivery, or to Step 5 for authorized scene construction. End here when only Stage 1 review was requested. Never advance a listed unapproved asset.
 Next:
 - Step 3
 - Step 5
+- Step 6
 - END
 
 ### Step 5 — Assemble and verify in Blender
@@ -89,8 +90,8 @@ Next:
 
 ## Supporting boundaries
 
-See [README.md](README.md) for formal commands and [the gateway protocol](docs/hy3d_gateway.md) for HY3D over SSH. No remote server is provisioned. Live inference, SSH connectivity and Blender rendering require actual evidence.
+See [README.md](README.md) for formal commands and [the gateway protocol](docs/hy3d_gateway.md) for HY3D over SSH. The supplied deployment report confirms Hunyuan3D-2.1 environment and weights are prepared, but no API service or end-to-end inference was run. Gateway integration, live inference, SSH connectivity and Blender rendering require actual evidence.
 
 Workers submit isolated proposals; only ManifestManager writes official state. Python role checks and governance test copies are not OS sandboxes. This version has no parallel worker scheduler.
 
-Governance version S1 is separate from production schema_version 0.1 and Python package version 0.1.0. See [MIGRATION.md](docs/governance/MIGRATION.md) for evidence scope and unresolved integrations.
+Governance version S3 is separate from production schema_version 0.1 and Python package version 0.1.0. See [MIGRATION.md](docs/governance/MIGRATION.md) for evidence scope and unresolved integrations.

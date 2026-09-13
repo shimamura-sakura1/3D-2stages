@@ -42,7 +42,8 @@ def parser():
         run.add_argument("project")
         run.add_argument("--catalog", help="Local library catalog YAML")
         run.add_argument("--hy3d-config", help="Gateway config; credentials are environment references")
-        run.add_argument("--asset-id", required=name == "stage1")
+        run.add_argument("--asset-id", required=name == "stage1",
+                         help="Execute only this asset and stop at the Stage 1 checkpoint")
         run.add_argument("--blender", default="blender")
         run.add_argument("--backend", choices=["mcp", "batch"], default="mcp")
         run.add_argument("--plan", default="stage2/blender_plan.yaml")
@@ -110,18 +111,27 @@ def execute(args):
     manifest = manager.read()
     if args.command == "run" and manifest["mode"] == "plan_only":
         return {"status": "plan_only", "user_brief": manifest["user_brief"], "assets": list(manifest["assets"])}
+    if args.asset_id is not None:
+        if manifest["mode"] == "stage2_only":
+            raise BoundaryError("Stage 1 prohibited in stage2_only mode")
+        if args.asset_id not in manifest["assets"]:
+            raise BoundaryError(f"Unknown asset ID: {args.asset_id}")
     if manifest["mode"] != "stage2_only":
         providers = {"local_library": LocalLibraryProvider(args.catalog)} if args.catalog else {}
         hy3d = Hy3DClient(load_data(args.hy3d_config)) if args.hy3d_config else None
         executor = Stage1Executor(manager, providers, hy3d)
         if args.command == "stage1":
             return executor.run(args.asset_id)
-        for asset_id, task in manifest["assets"].items():
-            if task["status"] in ("planned", "reworking"):
-                executor.run(asset_id)
+        if args.asset_id is not None:
+            executor.run(args.asset_id)
+        else:
+            for asset_id, task in manifest["assets"].items():
+                if task["status"] in ("planned", "reworking", "revision_requested"):
+                    executor.run(asset_id)
         manifest = manager.read()
         pending = [k for k, t in manifest["assets"].items() if t["required"] and t["status"] != "approved"]
-        if (pending and not manifest["allow_partial"]) or manifest["mode"] == "stage1_only":
+        if (args.asset_id is not None or (pending and not manifest["allow_partial"])
+                or manifest["mode"] == "stage1_only"):
             return {"status": "stage1_checkpoint", "pending_assets": pending}
     elif args.command == "stage1":
         raise BoundaryError("Stage 1 prohibited in stage2_only mode")
