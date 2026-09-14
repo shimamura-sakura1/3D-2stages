@@ -1,0 +1,773 @@
+{
+  "version": "0.1",
+  "requirements": [
+    {
+      "id": "REQ-BASE-001",
+      "description": "Preserve the verified offline two-stage behavior while migrating the existing Skill into governance.",
+      "claims": [
+        {
+          "id": "REQ-BASE-001-C1",
+          "statement": "plan_only leaves execution state unchanged; prohibited stage modes reject execution.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C2",
+          "statement": "Completed library search precedes A/B/C routing; missing providers do not trigger generation.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C3",
+          "statement": "Unverified/disallowed licenses and missing CC BY attribution cannot enter the selected asset path.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C4",
+          "statement": "Stage 1 results require review; unapproved assets cannot cross Stage 2; automatic approval requires explicit configuration.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C5",
+          "statement": "Rework preserves original versions and unrelated assets and obeys the revision limit.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C6",
+          "statement": "MCP is the default; preparation/queued work are not completed builds; stale or incomplete outputs reject finalization.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C7",
+          "statement": "SSH configuration is validated; occupied forwarding ports are rejected and owned tunnel processes are cleaned up.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-BASE-001-C8",
+          "statement": "Asset delivery retains provenance; stale scene inputs block reviewed scene delivery.",
+          "kind": "invariant"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-LEGACY-001",
+        "T-CLI-001"
+      ],
+      "introduced_in": "S0",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
+    },
+    {
+      "id": "REQ-GOV-001",
+      "description": "Provide executable structural I/O audit and a tested operator example for this governed baseline.",
+      "claims": [
+        {
+          "id": "REQ-GOV-001-C1",
+          "statement": "All seven production document shapes are validated by the production validators and emitted unchanged by structural audit.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-GOV-001-C2",
+          "statement": "An incomplete structural bundle returns exit 2 and a JSON error before producing output files.",
+          "kind": "rejection"
+        },
+        {
+          "id": "REQ-GOV-001-C3",
+          "statement": "The documented operator command example creates and runs a plan-only project and reports the missing-plan rejection.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "contract-audit",
+        "workflow-cli",
+        "operator-guide"
+      ],
+      "verified_by": [
+        "T-AUDIT-001",
+        "T-AUDIT-CONTRACT",
+        "T-DOC-001",
+        "T-INIT-VALID",
+        "T-INIT-INVALID"
+      ],
+      "introduced_in": "S0",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-ENV-001",
+      "description": "Keep deployment-specific HY3D endpoint, SSH identity, and credentials in an ignored root .env file and resolve configuration through the existing CLI.",
+      "claims": [
+        {
+          "id": "REQ-ENV-001-C1",
+          "statement": "The CLI loads the repository-root .env file, resolves exact environment placeholders in YAML configuration with scalar types preserved, and gives an already-set process environment variable precedence.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-ENV-001-C2",
+          "statement": "Configuration without environment placeholders retains its existing behavior and values.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-ENV-001-C3",
+          "statement": "An environment placeholder whose variable is absent is rejected before any provider or SSH operation starts.",
+          "kind": "rejection"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-ENV-001"
+      ],
+      "introduced_in": "S1",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
+    },
+    {
+      "id": "REQ-LIVE-001",
+      "description": "Validate actual remote GPU inference and Blender MCP rendering after hosts become available.",
+      "claims": [
+        {
+          "id": "REQ-LIVE-001-C1",
+          "statement": "One real remote HY3D inference and one real Blender MCP render complete successfully.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [],
+      "introduced_in": "S0",
+      "status": "unresolved",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-ART-001",
+      "description": "Assess artistic intent interpretation and generated asset quality with real agent/user review, beyond command examples.",
+      "claims": [
+        {
+          "id": "REQ-ART-001-C1",
+          "statement": "The agent preserves artistic intent and assets meet the user-reviewed scene brief.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "operator-guide"
+      ],
+      "verified_by": [],
+      "introduced_in": "S0",
+      "status": "unresolved",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-README-001",
+      "description": "Provide a project overview with file flow and deployed-model integration boundaries, including a runnable offline README example. Prose accuracy is reviewed by the maintainer; executable evidence covers the command example only.",
+      "claims": [
+        {
+          "id": "REQ-README-001-C1",
+          "statement": "Executing the README offline example with the public CLI creates a project, copies the bundled bench with its recorded provenance, and stops with the asset requiring review.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-README-001"
+      ],
+      "introduced_in": "S2",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-FLOW-001",
+      "description": "Close the S2 continuation, asset-only Router, and init binding scope gaps without weakening existing review, mode, and history boundaries.",
+      "claims": [
+        {
+          "id": "REQ-FLOW-001-C1",
+          "statement": "An explicit run --asset-id resumes only that asset, including requested rework or an explicitly selected failed task, preserves earlier outputs and unrelated assets, and stops at the Stage 1 checkpoint.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-FLOW-001-C2",
+          "statement": "Unscoped run resumes revision_requested assets and retains acquisition of planned tasks; plan_only stays unchanged and unscoped failed tasks are not automatically retried.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-FLOW-001-C3",
+          "statement": "Unknown asset selectors and Stage 1 selectors in stage2_only reject before execution; the existing revision limit remains enforced.",
+          "kind": "rejection"
+        },
+        {
+          "id": "REQ-FLOW-001-C4",
+          "statement": "The Router provides a direct Step 4 to Step 6 asset-delivery edge; approved assets can be delivered without Blender, while unapproved delivery rejects and scene preflight remains available.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-FLOW-001-C5",
+          "statement": "The workflow-cli binding input Schema is limited to init argument arrays, excludes other subcommands and empty input, and valid init execution produces a validated project manifest.",
+          "kind": "behavior"
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "contracts.cli_arguments.schema"
+      ],
+      "verified_by": [
+        "T-FLOW-POSITIVE",
+        "T-FLOW-DEFAULT",
+        "T-FLOW-REJECTION"
+      ],
+      "introduced_in": "S3",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
+    },
+    {
+      "id": "REQ-PORTABLE-001",
+      "description": "Make local operation portable between macOS and Windows, retain project maintenance context governed by the designated external framework, and verify the complete Stage 1 lifecycle without weakening existing gates.",
+      "claims": [
+        {
+          "id": "REQ-PORTABLE-001-C1",
+          "statement": "Project-relative paths accept either separator while Windows drive, UNC, rooted, POSIX absolute and parent-traversal paths reject on every host through the public workflow CLI.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C2",
+          "statement": "Explicit batch execution resolves Blender from an explicit option, BLENDER_EXECUTABLE, PATH or native install locations in that order; invalid explicit configuration rejects, and MCP remains the default without launching or discovering batch Blender.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C3",
+          "statement": "The worker rejects Blender older than 4.2 before scene mutation; doctor reports the current Python, platform and executable discovery without claiming MCP connectivity or starting external services.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C4",
+          "statement": "The maintenance launcher resolves the designated framework using --framework, CONTRACT_GOVERN_HOME or a same-parent contract-govern-skil checkout; missing frameworks reject explicitly, it defaults to its current Python, and project AGENTS.md is retained in source projections. The environment diagnostic reports the framework discovered from environment or sibling defaults, or an explicit unavailable status.",
+          "kind": "behavior"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C5",
+          "statement": "Actual CLI and loopback HTTP scenarios cover Stage 1 A/B/C acquisition, review and bounded rework, preserving prior revisions and provenance through asset delivery; missing providers, rights or capabilities do not silently generate or approve.",
+          "kind": "invariant"
+        },
+        {
+          "id": "REQ-PORTABLE-001-C6",
+          "kind": "invariant",
+          "statement": "Governance reconstructs LF/CRLF transport changes only in its temporary projection and only when the candidate bytes match accepted SHA256 anchors for linked history records or historical test support files. Matching bytes remain unchanged; other content changes and escaping paths reject, and real source/history files remain untouched."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "operator-guide",
+        "platform-guide",
+        "scripts.govern"
+      ],
+      "verified_by": [
+        "T-PORTABLE-POSITIVE",
+        "T-PORTABLE-DEFAULT",
+        "T-PORTABLE-REJECTION",
+        "T-STAGE1-E2E",
+        "T-GOVERN-NEWLINES"
+      ],
+      "introduced_in": "S4",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
+    },
+    {
+      "id": "REQ-V02-BASELINE-001",
+      "description": "Freeze Phase 0 v0.1 behavior in an executable baseline before v0.2 refactoring. Capability classifications, historical external evidence and readiness are maintainer-reviewed prose, not automatically proven by example execution.",
+      "claims": [
+        {
+          "id": "REQ-V02-BASELINE-001-C1",
+          "kind": "invariant",
+          "statement": "The baseline default CLI example creates schema 0.1 in plan_only with automatic approval disabled; run and prohibited execution/delivery attempts leave the official manifest and output directories unchanged."
+        },
+        {
+          "id": "REQ-V02-BASELINE-001-C2",
+          "kind": "behavior",
+          "statement": "The baseline isolated library example rejects unapproved delivery, performs explicit fixture reviews and rework, preserves both original result/model revisions, and delivers the current approved bench with matching bytes, provenance, checksums and manifest snapshot without Blender."
+        },
+        {
+          "id": "REQ-V02-BASELINE-001-C3",
+          "kind": "behavior",
+          "statement": "The six documented baseline contract entries resolve to production validators that accept their existing complete structural samples and reject empty documents."
+        }
+      ],
+      "implemented_by": [
+        "v02-baseline",
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-BASELINE"
+      ],
+      "introduced_in": "S5",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-CONTRACTS-001",
+      "description": "Phase 1 establishes versioned visual workflow data and read-only transition/migration checks while keeping v0.1 execution intact; later production stages remain unavailable.",
+      "claims": [
+        {
+          "id": "REQ-V02-CONTRACTS-001-C1",
+          "kind": "behavior",
+          "statement": "The v0.2 audit validates and emits unchanged all eleven visual document contracts and a separate 0.2 project manifest, rejects malformed or wrong-version input before writing outputs, and never approves or renders."
+        },
+        {
+          "id": "REQ-V02-CONTRACTS-001-C2",
+          "kind": "rejection",
+          "statement": "Visual data rejects implicit everything reference roles, unsafe paths, unknown semantic actions, invalid numeric bounds, mismatched project/scene identities, dangling scene/reference/document links and inconsistent render/review/revision associations."
+        },
+        {
+          "id": "REQ-V02-CONTRACTS-001-C3",
+          "kind": "behavior",
+          "statement": "A separate scene transition checker expresses Stage 0–3 including bounded workflow revision routes, rejects unknown, skipped and self transitions, and does not mutate official state or grant approval; existing asset transitions retain their behavior."
+        },
+        {
+          "id": "REQ-V02-CONTRACTS-001-C4",
+          "kind": "invariant",
+          "statement": "Explicit init-v02 creates only an initialized plan_only project with no approval through ManifestManager; status validates 0.1 and 0.2 separately and unknown versions reject. Legacy mutating commands and executors reject 0.2 before writes or external work; default init and existing 0.1 workflows retain their contracts."
+        },
+        {
+          "id": "REQ-V02-CONTRACTS-001-C5",
+          "kind": "behavior",
+          "statement": "Read-only v01_to_v02 migration planning preserves legacy assets, supplied assets, provenance, approvals, history and metadata in a deep-copied draft, reports migration_required_input for missing visual direction without inventing it, and leaves all source files unchanged. It does not install a migration or approve the new scene."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "v02-contract-audit"
+      ],
+      "verified_by": [
+        "T-V02-CONTRACTS",
+        "T-V02-CONTRACT-IO"
+      ],
+      "introduced_in": "S6",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-STYLE-001",
+      "description": "Phase 2 provides a deterministic six-material industrial style and a Blender calibration resource; visual quality is inspected on a real MCP render.",
+      "claims": [
+        {
+          "id": "REQ-V02-STYLE-001-C1",
+          "kind": "behavior",
+          "statement": "Explicit style-resolve maps all six material classes and three conditions to versioned resource names and distinct bounded shader parameters, lighting, camera and render settings without project mutation."
+        },
+        {
+          "id": "REQ-V02-STYLE-001-C2",
+          "kind": "rejection",
+          "statement": "Unknown styles, material classes, conditions, missing resources and malformed style definitions reject explicitly without substituting another material."
+        },
+        {
+          "id": "REQ-V02-STYLE-001-C3",
+          "kind": "invariant",
+          "statement": "Default legacy initialization remains plan_only and styles are included in portable governance source projections."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-STYLE"
+      ],
+      "introduced_in": "S7",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-PLANNING-001",
+      "description": "Phase 3 persists agent-authored Stage 0 direction and scoped references for explicit review. The runtime validates decisions; it does not infer artistic intent.",
+      "claims": [
+        {
+          "id": "REQ-V02-PLANNING-001-C1",
+          "kind": "behavior",
+          "statement": "Stage0 submission through ManifestManager validates all four documents, actual reference bytes, explicit reference roles and executable style identity, stores immutable revisions and stops at visual_review_required without invoking providers or Blender."
+        },
+        {
+          "id": "REQ-V02-PLANNING-001-C2",
+          "kind": "rejection",
+          "statement": "Malformed or inconsistent proposals, stale versions, changed reference bytes and worker-role writes reject; visual review requires the current four document hashes and never arises from schema success."
+        },
+        {
+          "id": "REQ-V02-PLANNING-001-C3",
+          "kind": "invariant",
+          "statement": "Reference imports preserve source metadata and bytes under content-addressed project-relative paths; re-planning after review rejection retains earlier documents and approval history; default projects remain plan_only."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-PLANNING"
+      ],
+      "introduced_in": "S8",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-GEOMETRY-001",
+      "description": "Phase 4 acquires reviewable geometry from library, explicit modifications, generation or six bounded procedural primitives, independently of final materials. A generated test double is allowed only as labeled acceptance evidence under architecture section 57.",
+      "claims": [
+        {
+          "id": "REQ-V02-GEOMETRY-001-C1",
+          "kind": "behavior",
+          "statement": "Geometry acquisition searches all configured required libraries before A/B/C/D selection, prioritizes the six explicit structural primitives, preserves source rights and immutable revisions, and records geometry, scale, surface semantics/sources, provenance and recipe separately."
+        },
+        {
+          "id": "REQ-V02-GEOMETRY-001-C2",
+          "kind": "rejection",
+          "statement": "Missing visual approval, plan_only, incomplete library search, invalid primitive or modification, unverified generation reference/output rights and stale geometry reviews reject without implicit generation or approval."
+        },
+        {
+          "id": "REQ-V02-GEOMETRY-001-C3",
+          "kind": "behavior",
+          "statement": "Library and generated geometry resolve the same semantic materials as procedural geometry; explicit geometry review binds all scene objects and current result hashes, while a rejected result can be replaced without overwriting prior versions."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-GEOMETRY"
+      ],
+      "introduced_in": "S9",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-PRODUCTION-001",
+      "description": "Phase 5 separates blockout, lookdev and render documents and prepares guarded semantic Blender operations; actual material/light/camera changes are checked against an unchanged geometry fingerprint.",
+      "claims": [
+        {
+          "id": "REQ-V02-PRODUCTION-001-C1",
+          "kind": "behavior",
+          "statement": "Scene planning validates separate blockout, semantic material, lookdev and render documents against approved geometry and current style; versioned preparation emits explicit semantic operations for the default MCP backend without claiming build completion."
+        },
+        {
+          "id": "REQ-V02-PRODUCTION-001-C2",
+          "kind": "rejection",
+          "statement": "Unapproved or stale geometry, changed input bytes, unknown operations, inconsistent placement/hierarchy/material links and unsupported surface slots reject before Blender mutation; incomplete setup receipts cannot advance official state."
+        },
+        {
+          "id": "REQ-V02-PRODUCTION-001-C3",
+          "kind": "invariant",
+          "statement": "While blockout is pending, visual-only plan revisions preserve the blockout and build identity; setup completion requires matching input/geometry receipts and real blend bytes, and render/visual approval are not inferred from preparation."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-PRODUCTION"
+      ],
+      "introduced_in": "S10",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-PREVIEW-001",
+      "description": "Phase 6 records reproducible preview passes as formal versioned workflow artifacts, separately from artistic approval.",
+      "claims": [
+        {
+          "id": "REQ-V02-PREVIEW-001-C1",
+          "kind": "behavior",
+          "statement": "Explicit preview preparation reserves a new pass and versioned render plan through ManifestManager, emits guarded MCP execution instructions without rendering, and retains prior pass images and metadata across repeated requests."
+        },
+        {
+          "id": "REQ-V02-PREVIEW-001-C2",
+          "kind": "behavior",
+          "statement": "A completed preview records validated render metadata linking actual PNG bytes to project, scene version, build ID, pass ID, renderer, style and render-plan hash; successful completion enters render_review_required with no artistic approval."
+        },
+        {
+          "id": "REQ-V02-PREVIEW-001-C3",
+          "kind": "rejection",
+          "statement": "Missing, corrupt, wrong-size or changed images, mismatched/stale job receipts and changed input packets cannot be finalized; explicit renderer failure records render_success false with no image and leaves rendering pending without backend fallback."
+        },
+        {
+          "id": "REQ-V02-PREVIEW-001-C4",
+          "kind": "invariant",
+          "statement": "Geometry fingerprints normalize signed zero while retaining actual coordinate differences; restored Blender objects are evaluated before fingerprinting. The changed fingerprint format uses a new build cache identity and preserves earlier build/pass evidence."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-PREVIEW"
+      ],
+      "introduced_in": "S11",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-CRITIC-001",
+      "description": "Record a Codex visual diagnosis of the current real preview against the nine-category style rubric, independently of Blender execution and user approval. Vision judgement is demonstrated separately with a fixed render; deterministic runtime validates identity, integrity and persistence.",
+      "claims": [
+        {
+          "id": "REQ-V02-CRITIC-001-C1",
+          "kind": "behavior",
+          "statement": "The read-only critic context supplies current successful render metadata, validated image and nine-category rubric without changing formal state or invoking Blender."
+        },
+        {
+          "id": "REQ-V02-CRITIC-001-C2",
+          "kind": "behavior",
+          "statement": "Submitting a valid current nine-category visual review persists an immutable review through ManifestManager and selects visual_revision or final_review_required without approving, changing geometry or invoking Blender."
+        },
+        {
+          "id": "REQ-V02-CRITIC-001-C3",
+          "kind": "rejection",
+          "statement": "Stale project, scene, render, image or revision identities, tampered current artifacts, invalid category/action scopes and missing or failed previews reject before formal writes; schema 0.1 and plan_only remain isolated."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-CRITIC"
+      ],
+      "introduced_in": "S12",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-REVISION-001",
+      "description": "Phase 8 applies bounded review-linked visual revisions and rerenders with immutable history and a three-pass ceiling.",
+      "claims": [
+        {
+          "id": "REQ-V02-REVISION-001-C1",
+          "kind": "behavior",
+          "statement": "An explicit current revision plan applies only the six permitted visual adjustments recommended by the current review, atomically preserving geometry, blockout, approvals and prior documents through ManifestManager."
+        },
+        {
+          "id": "REQ-V02-REVISION-001-C2",
+          "kind": "rejection",
+          "statement": "Stale, tampered, replayed, unsupported or out-of-scope revision plans and exhausted preview budgets reject before formal writes or Blender execution; the controlled revision loop counts failed attempts toward at most three total preview passes."
+        },
+        {
+          "id": "REQ-V02-REVISION-001-C3",
+          "kind": "invariant",
+          "statement": "Revised semantic operations deterministically change material, light, fog, camera or exposure parameters without geometry regeneration; explicit preview execution and completion remain separate from preparation and artistic approval, with legacy defaults unchanged."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-REVISION"
+      ],
+      "introduced_in": "S13",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-HY3D-001",
+      "description": "Phase 9 separates HY3D geometry generation from optional raw surface evidence while preserving legacy gateway compatibility and final style material control.",
+      "conditional": true,
+      "claims": [
+        {
+          "id": "REQ-V02-HY3D-001-C1",
+          "kind": "behavior",
+          "statement": "Semantic generate_geometry and generate_surface_source methods map to the existing shape and retexture endpoints without transport changes or automatic retries; existing client methods and geometry-only requests retain their behavior."
+        },
+        {
+          "id": "REQ-V02-HY3D-001-C2",
+          "kind": "behavior",
+          "statement": "An explicit optional surface-evidence request on generated geometry preserves the original geometry and a separate immutable textured GLB reference with source role, hashes and recipe linkage; ManifestManager records the reviewable result and final Blender materials remain style-resolved."
+        },
+        {
+          "id": "REQ-V02-HY3D-001-C3",
+          "kind": "rejection",
+          "statement": "Missing or unsupported surface capabilities, invalid requests and unverified reference/output rights reject before generation; invalid or untextured surface responses and changed raw-source bytes cannot enter approved production. No technical success creates artistic approval."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-HY3D"
+      ],
+      "introduced_in": "S14",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-HY3D-PROVENANCE-001",
+      "description": "Retain the verified official Hunyuan3D-2.1 model license identity for explicitly generated outputs, with scoped provenance validation and unchanged generic license defaults.",
+      "conditional": true,
+      "claims": [
+        {
+          "id": "REQ-HY3D-PROVENANCE-001-C1",
+          "kind": "activation",
+          "statement": "Explicit generated-output processing accepts hunyuan3d_21_community only for verified hy3d provenance with the exact official model ID and URL, required attribution and modification permission where processing requires it."
+        },
+        {
+          "id": "REQ-HY3D-PROVENANCE-001-C2",
+          "kind": "invariant",
+          "statement": "Existing CC0 and CC BY behavior and default library routing remain unchanged; the model-specific license does not become a generic library or generation-reference license."
+        },
+        {
+          "id": "REQ-HY3D-PROVENANCE-001-C3",
+          "kind": "rejection",
+          "statement": "Missing, unverified, unsupported or mismatched provider/model/URL provenance and library metadata claiming the model-specific license reject before inference or formal result acceptance."
+        },
+        {
+          "id": "REQ-HY3D-PROVENANCE-001-C4",
+          "kind": "behavior",
+          "statement": "Generated result validation, formal geometry persistence and supported asset delivery retain the actual model license metadata without relabeling CC0; the reachable terms guide records use restrictions and verification scope."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-HY3D-PROVENANCE"
+      ],
+      "introduced_in": "S14",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-HY3D-IMAGE-CONDITIONING-001",
+      "description": "Explicitly opt into the deployed image-only HY3D protocol without silently discarding model conditions, and expose safe HTTP failure diagnostics.",
+      "conditional": true,
+      "claims": [
+        {
+          "id": "REQ-HY3D-IMAGE-CONDITIONING-001-C1",
+          "kind": "activation",
+          "statement": "An explicit boolean image_only request on Route C sends one licensed PNG/JPEG/WebP reference with empty prompt and style object to geometry and optional surface operations; result recipes retain image_only and one reference SHA-256."
+        },
+        {
+          "id": "REQ-HY3D-IMAGE-CONDITIONING-001-C2",
+          "kind": "invariant",
+          "statement": "Omitted or false image_only retains legacy prompt fallback and recipe shape; target description remains semantic planning/search metadata in explicit image-only mode and no inference success grants artistic approval."
+        },
+        {
+          "id": "REQ-HY3D-IMAGE-CONDITIONING-001-C3",
+          "kind": "rejection",
+          "statement": "Invalid image_only types, other routes, missing or multiple reference IDs, unsupported image extensions and nonempty explicit HY3D prompt reject before inference or result writes; malformed image-only recipe route/reference linkage rejects formal validation."
+        },
+        {
+          "id": "REQ-HY3D-IMAGE-CONDITIONING-001-C4",
+          "kind": "behavior",
+          "statement": "HTTP failures retain status and only allowlisted static gateway error codes from bounded JSON; bodies, messages, credentials, paths and headers never enter diagnostics and redirects remain disabled."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-HY3D-IMAGE-CONDITIONING"
+      ],
+      "introduced_in": "S14",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-REFINEMENT-001",
+      "description": "Phase 10 adds explicitly selected industrial style 1.1.0 with bounded executable signature and honest reference scope, preserving the 1.0.0 default and approved geometry.",
+      "conditional": true,
+      "claims": [
+        {
+          "id": "REQ-V02-REFINEMENT-001-C1",
+          "kind": "activation",
+          "statement": "Explicit profile_version 1.1.0 loads isolated refined resources and consumes the eleven-dimension signature in bounded shader, lighting, atmosphere, camera and scene-plan validation; vegetation is available only in this version."
+        },
+        {
+          "id": "REQ-V02-REFINEMENT-001-C2",
+          "kind": "rejection",
+          "statement": "Unknown or escaping versions, malformed signature or nonfinite parameters reject without fallback; changes to signature invalidate prepared operation packets."
+        },
+        {
+          "id": "REQ-V02-REFINEMENT-001-C3",
+          "kind": "invariant",
+          "statement": "Omitting the version preserves six-class 1.0.0 behavior; refinement leaves approved geometry and blockout keys unchanged and does not grant artistic approval."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "v02-refinement-guide"
+      ],
+      "verified_by": [
+        "T-V02-REFINEMENT"
+      ],
+      "introduced_in": "S15",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-MIGRATION-DOCS-001",
+      "description": "Phase 11 makes v0.2 the documented entry for new visual scenes with a real offline Stage 0 reference/template and executable read-only legacy migration example.",
+      "claims": [
+        {
+          "id": "REQ-V02-MIGRATION-DOCS-001-C1",
+          "kind": "behavior",
+          "statement": "Published v0.2 Stage 0 commands execute with the real original reference and four-document template in fresh directories, explicitly select style 1.1.0, preserve source bytes and content hashes, and end plan_only at visual_review_required without approvals or production execution."
+        },
+        {
+          "id": "REQ-V02-MIGRATION-DOCS-001-C2",
+          "kind": "rejection",
+          "statement": "Documented project setup rejects changed reference bytes, mismatched project identity and stale manifest versions atomically; legacy compatibility commands cannot mutate the visual project."
+        },
+        {
+          "id": "REQ-V02-MIGRATION-DOCS-001-C3",
+          "kind": "invariant",
+          "statement": "The documented migration command returns a read-only deep-copied candidate from an actual legacy asset/delivery project, preserving assets, source provenance, history and original files while requiring four new Stage 0 inputs and granting no new approval or installation."
+        }
+      ],
+      "implemented_by": [
+        "v02-quickstart-guide",
+        "v02-stage0-template",
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-EXAMPLES"
+      ],
+      "introduced_in": "S16",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-V02-DELIVERY-001",
+      "description": "Phase 12 provides immutable current completion evidence, explicit final user review and reproducible local visual scene delivery.",
+      "claims": [
+        {
+          "id": "REQ-V02-DELIVERY-001-C1",
+          "kind": "activation",
+          "statement": "Current successful preview captures immutable completion evidence only when current setup, blockout and worker receipt match; explicit authorized final user review binds ten current documents, geometry and raw evidence without critic approval."
+        },
+        {
+          "id": "REQ-V02-DELIVERY-001-C2",
+          "kind": "rejection",
+          "statement": "Missing, failed, legacy, plan-only, stale or tampered preview, critic, geometry, source, surface, reference or resource evidence rejects final review/delivery atomically before and after approval, including recomputed setup receipts for changed BLEND files."
+        },
+        {
+          "id": "REQ-V02-DELIVERY-001-C3",
+          "kind": "behavior",
+          "statement": "Exact approved snapshot produces a content-addressed local package with deterministic raw-hash inventory, enumerated formal file history, used resources, provenance and approved Manifest; staging and publication recheck under the Manifest lock and registered repeat delivery verifies all content. Each newly completed preview freezes exact repository dependencies into immutable project content addresses; a subsequent preview may use upgraded dependencies while historical copies remain verified and current live dependencies remain guarded."
+        },
+        {
+          "id": "REQ-V02-DELIVERY-001-C4",
+          "kind": "invariant",
+          "statement": "Final rejection preserves evidence and user decision while permitting one new concrete revision-required critic for existing bounded correction; old decisions and budgets remain intact, with no automatic approval, new render/export or web publication."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "v02-delivery-guide"
+      ],
+      "verified_by": [
+        "T-V02-DELIVERY"
+      ],
+      "introduced_in": "S17",
+      "status": "active",
+      "supersedes": []
+    }
+  ]
+}

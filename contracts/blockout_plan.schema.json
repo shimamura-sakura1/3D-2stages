@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unit": {
+      "const": "meter"
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "object_id": {
+            "$ref": "visual_common.schema.json#/$defs/id"
+          },
+          "asset_id": {
+            "anyOf": [
+              {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "geometry_source": {
+            "enum": [
+              "library",
+              "generated",
+              "procedural",
+              "supplied"
+            ]
+          },
+          "transform": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "$ref": "visual_common.schema.json#/$defs/vector3"
+              },
+              "rotation": {
+                "$ref": "visual_common.schema.json#/$defs/vector3"
+              },
+              "scale": {
+                "$ref": "visual_common.schema.json#/$defs/scale3"
+              }
+            },
+            "required": [
+              "location",
+              "rotation",
+              "scale"
+            ],
+            "additionalProperties": false
+          },
+          "parent": {
+            "anyOf": [
+              {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "repetition": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "spacing": {
+            "$ref": "visual_common.schema.json#/$defs/vector3"
+          }
+        },
+        "required": [
+          "object_id",
+          "asset_id",
+          "geometry_source",
+          "transform",
+          "parent",
+          "repetition",
+          "spacing"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "unit",
+    "objects"
+  ],
+  "additionalProperties": false
+}

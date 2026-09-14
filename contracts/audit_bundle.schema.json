@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "documents"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "documents": {
+      "type": "object",
+      "required": [
+        "project_manifest",
+        "asset_task",
+        "asset_candidate",
+        "stage1_result",
+        "blender_plan",
+        "review_report",
+        "delivery"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "project_manifest": {
+          "$ref": "project_manifest.schema.json"
+        },
+        "asset_task": {
+          "$ref": "asset_task.schema.json"
+        },
+        "asset_candidate": {
+          "$ref": "asset_candidate.schema.json"
+        },
+        "stage1_result": {
+          "$ref": "stage1_result.schema.json"
+        },
+        "blender_plan": {
+          "$ref": "blender_plan.schema.json"
+        },
+        "review_report": {
+          "$ref": "review_report.schema.json"
+        },
+        "delivery": {
+          "$ref": "delivery.schema.json"
+        }
+      }
+    }
+  }
+}

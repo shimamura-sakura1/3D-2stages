@@ -1,0 +1,17 @@
+visual_style:
+  target: restrained_stylized
+  realism: low_to_medium
+  silhouette_priority: high
+geometry:
+  detail_level: medium
+  avoid_micro_geometry: true
+materials:
+  pbr_complexity: restrained
+  base_color: [0.48, 0.38, 0.25, 1.0]
+texture:
+  photorealism: false
+  color_blocking: strong
+lighting:
+  artistic_priority: high
+composition:
+  cinematic: true

@@ -1,0 +1,707 @@
+{
+  "evidence_kind": "Non-contractual Phase 0 maintenance evidence; not production state or an acceptance record",
+  "date": "2026-09-14",
+  "baseline": {
+    "git_commit": "c8a9c12a3b5edc6dd7838911e44edc17c43ba0ba",
+    "accepted_change": "changes/change-005.json",
+    "governance_version": "S4",
+    "production_schema_version": "0.1",
+    "package_version": "0.1.0"
+  },
+  "environment": {
+    "os": "Darwin",
+    "architecture": "arm64",
+    "python_version": "3.11.16",
+    "conda_environment": "two-stage-3d",
+    "new_dependencies_installed": false
+  },
+  "inputs": [
+    {
+      "name": "Two-Stage 3D Skill v0.2 — Visual Scene Production Architecture Spec.md",
+      "sha256": "b140b5b127bad3e176699619d1df046774ab7d5c7edeea530ee8b648cfce5d1f",
+      "role": "target architecture"
+    },
+    {
+      "name": "Two-Stage 3D v0.2 — Codex 分阶段重构执行计划.md",
+      "sha256": "8274af26cc7dec80da304af5c209666dde043c6c6cfddcd05c979d1c88a9c1c9",
+      "role": "controlling phase sequence"
+    }
+  ],
+  "baseline_runs": [
+    {
+      "report": ".skillctl/reports/validate-6500cb959b3f.json",
+      "sha256": "c286ccd6ae3823f984950903c7d77fbc7797c76d24541c8b576882e8f29d20c8",
+      "status": "pass",
+      "errors": [],
+      "warnings": [],
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      }
+    },
+    {
+      "report": ".skillctl/reports/contract-test-fe726e582be2.json",
+      "sha256": "f9bf313e8c13f7ae715be4b3894dca9f137b7e335a43b3702b824aa0e5b71a82",
+      "declared_contract": "pass",
+      "runtime_contract": "pass",
+      "errors": [],
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      }
+    },
+    {
+      "report": ".skillctl/reports/test-a9b1ef3fa1bb.json",
+      "sha256": "d5b9e31f45da2313b5dacfcd44b86ebfb19e1a713fd87708cc67209601daa572",
+      "status": "fail",
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      },
+      "tests": [
+        {
+          "id": "T-LEGACY-001",
+          "status": "fail",
+          "returncode": 1,
+          "output_summary": [
+            "1 failed, 94 passed in 6.00s"
+          ]
+        },
+        {
+          "id": "T-CLI-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "{\"approved_preflight\": true, \"asset_delivery_with_provenance\": true, \"asset_review_required\": true, \"incomplete_outputs_blocked\": true, \"mcp_preparation_is_not_build\": true, \"plan_only_unchanged\": true, \"route\": \"library_direct\", \"unapproved_stage2_blocked\": true}"
+          ]
+        },
+        {
+          "id": "T-DOC-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "{\"documented_examples_executed\": 3, \"scope\": \"command behavior only\"}"
+          ]
+        },
+        {
+          "id": "T-AUDIT-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "2 passed in 0.32s"
+          ]
+        },
+        {
+          "id": "T-INIT-VALID",
+          "status": "pass",
+          "returncode": null,
+          "output_summary": []
+        },
+        {
+          "id": "T-INIT-INVALID",
+          "status": "pass",
+          "returncode": null,
+          "output_summary": []
+        },
+        {
+          "id": "T-AUDIT-CONTRACT",
+          "status": "pass",
+          "returncode": null,
+          "output_summary": []
+        },
+        {
+          "id": "T-MAINT-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "4 passed in 0.03s"
+          ]
+        },
+        {
+          "id": "T-ENV-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "3 passed in 0.17s"
+          ]
+        },
+        {
+          "id": "T-README-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "{\"readme_offline_asset\": \"pass\", \"review_required\": true}"
+          ]
+        },
+        {
+          "id": "T-FLOW-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "6 passed, 15 deselected in 1.45s"
+          ]
+        },
+        {
+          "id": "T-FLOW-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "4 passed, 17 deselected in 0.73s"
+          ]
+        },
+        {
+          "id": "T-FLOW-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "11 passed, 10 deselected in 1.04s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "9 passed, 14 deselected in 0.42s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "2 passed, 21 deselected in 0.41s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "12 passed, 11 deselected in 1.23s"
+          ]
+        },
+        {
+          "id": "T-STAGE1-E2E",
+          "status": "fail",
+          "returncode": 1,
+          "output_summary": [
+            "7 failed in 0.28s"
+          ]
+        },
+        {
+          "id": "T-GOVERN-NEWLINES",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "5 passed in 0.04s"
+          ]
+        }
+      ]
+    },
+    {
+      "report": ".skillctl/reports/test-152cc543301b.json",
+      "sha256": "add77b7842d46103c69a3b53c3933c27e8776f6711f319568f406f20658df492",
+      "status": "pass",
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      },
+      "tests": [
+        {
+          "id": "T-LEGACY-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "95 passed in 6.73s"
+          ]
+        },
+        {
+          "id": "T-CLI-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "{\"approved_preflight\": true, \"asset_delivery_with_provenance\": true, \"asset_review_required\": true, \"incomplete_outputs_blocked\": true, \"mcp_preparation_is_not_build\": true, \"plan_only_unchanged\": true, \"route\": \"library_direct\", \"unapproved_stage2_blocked\": true}"
+          ]
+        },
+        {
+          "id": "T-DOC-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "{\"documented_examples_executed\": 3, \"scope\": \"command behavior only\"}"
+          ]
+        },
+        {
+          "id": "T-AUDIT-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "2 passed in 0.32s"
+          ]
+        },
+        {
+          "id": "T-INIT-VALID",
+          "status": "pass",
+          "returncode": null,
+          "output_summary": []
+        },
+        {
+          "id": "T-INIT-INVALID",
+          "status": "pass",
+          "returncode": null,
+          "output_summary": []
+        },
+        {
+          "id": "T-AUDIT-CONTRACT",
+          "status": "pass",
+          "returncode": null,
+          "output_summary": []
+        },
+        {
+          "id": "T-MAINT-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "4 passed in 0.03s"
+          ]
+        },
+        {
+          "id": "T-ENV-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "3 passed in 0.17s"
+          ]
+        },
+        {
+          "id": "T-README-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "{\"readme_offline_asset\": \"pass\", \"review_required\": true}"
+          ]
+        },
+        {
+          "id": "T-FLOW-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "6 passed, 15 deselected in 1.30s"
+          ]
+        },
+        {
+          "id": "T-FLOW-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "4 passed, 17 deselected in 0.61s"
+          ]
+        },
+        {
+          "id": "T-FLOW-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "11 passed, 10 deselected in 0.91s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "9 passed, 14 deselected in 0.40s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "2 passed, 21 deselected in 0.38s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "12 passed, 11 deselected in 1.17s"
+          ]
+        },
+        {
+          "id": "T-STAGE1-E2E",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "7 passed in 4.47s"
+          ]
+        },
+        {
+          "id": "T-GOVERN-NEWLINES",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "5 passed in 0.04s"
+          ]
+        }
+      ]
+    }
+  ],
+  "baseline_failure_interpretation": "Sandbox denied local loopback socket bind: 1 HY3D client case and 7 Stage 1 E2E cases failed. Same unchanged source passed outside sandbox; no remote GPU was exercised.",
+  "new_tests_first_run": {
+    "command": "python -m pytest -q tests/test_v02_baseline.py",
+    "exit_code": 1,
+    "failed": 8,
+    "reason": "docs/v02/baseline.md did not yet exist; FileNotFoundError",
+    "report": ".deps/v02-phase0/test-first.txt",
+    "sha256": "3da38fc72de5a2177cc35e680fe12244f5eff5ab76d7e99b5f82e6256ff65e5a"
+  },
+  "new_tests_first_pass": {
+    "command": "python -m pytest -q tests/test_v02_baseline.py",
+    "exit_code": 0,
+    "passed": 8
+  },
+  "representative_operation": {
+    "scope": "Actual local CLI and files; synthetic fixture reviews; no external service or artistic approval",
+    "project_parent": ".deps/v02-phase0/representative-j58i4g2y",
+    "default_state": "planned",
+    "library_state": "complete",
+    "asset_status": "approved",
+    "asset_revision": 1,
+    "auto_approve": false,
+    "stage2_status": "not_started",
+    "files": {
+      "default/manifest.yaml": "cd35d7d9d1f14fde267d44b4b91cb19ace383b355c2197ae0357e990d6964c30",
+      "default/stage1/tasks/bench.yaml": "a528cf4a94098094b32533859c28ea2c9c5e4fc1d756c1b1f215d0c6ff7d994c",
+      "default/style_bible.yaml": "389b0bea089bdc6c3f65907843a7e4a848137e54a3aa0bf53a00e397502bc4d0",
+      "default/user_brief.md": "6deb942eda0aa7418499d5e60a2f7fc12b9160a86a654a8345b956a9e49e2de2",
+      "library/delivery/outputs/package-08de0c44ac77/attribution.yaml": "4d4d28cb46ebb583cfea7167c18cfab57fd853aa153699de040cd7ecadf3e9a1",
+      "library/delivery/outputs/package-08de0c44ac77/bench.obj": "2aba83f1501bc278fb3aebaedae6044e6fdd8ced4f19d1d993c4e61d8c281686",
+      "library/delivery/outputs/package-08de0c44ac77/checksums.json": "d3d6a104cc4079b20fadef9862dfce651f1cfe0f9842bf3c525101f022226884",
+      "library/delivery/outputs/package-08de0c44ac77/delivery.yaml": "2dc717453cec8faa1d449f267a2eb320df88c484307e25ac9798d76b714b078d",
+      "library/delivery/outputs/package-08de0c44ac77/manifest.snapshot.yaml": "bec8ade901382dfb0d6943d0e3105969bd2bb7559ff1348d06b865265dca5264",
+      "library/delivery/outputs/package-08de0c44ac77/style_bible.yaml": "389b0bea089bdc6c3f65907843a7e4a848137e54a3aa0bf53a00e397502bc4d0",
+      "library/manifest.yaml": "74ec64891546542e8b6ed1e9b8c9451b489aed68c26cdd4e127c9ff6e8c3873d",
+      "library/stage1/candidates/bench_rev00.json": "c3dda49c1b069129c6db9cd789ce65ba928f09f9868cf6788a14f170a337ea46",
+      "library/stage1/candidates/bench_rev01.json": "c3dda49c1b069129c6db9cd789ce65ba928f09f9868cf6788a14f170a337ea46",
+      "library/stage1/outputs/bench/rev00/asset.obj": "2aba83f1501bc278fb3aebaedae6044e6fdd8ced4f19d1d993c4e61d8c281686",
+      "library/stage1/outputs/bench/rev01/asset.obj": "2aba83f1501bc278fb3aebaedae6044e6fdd8ced4f19d1d993c4e61d8c281686",
+      "library/stage1/results/bench_rev00.json": "361bf20a9cf1fcb66f940d67437798fef5f58ef8fb97a16c0f0804db7717239a",
+      "library/stage1/results/bench_rev01.json": "5245860d646bea3634eaf1641e01189b8dd4a4d9f6d5891e499f927fd8f0d546",
+      "library/stage1/reviews/bench_v14.yaml": "95524e041222078df7a22f8db4fdab6f37d33fac9585f1a4628e1e8e6f1e9302",
+      "library/stage1/reviews/bench_v8.yaml": "07f304026b72cd736027f660bbf7700a7f8c53b109a274735f6ae4e23b46678d",
+      "library/stage1/sources/bench/rev00/original.obj": "2aba83f1501bc278fb3aebaedae6044e6fdd8ced4f19d1d993c4e61d8c281686",
+      "library/stage1/sources/bench/rev01/original.obj": "2aba83f1501bc278fb3aebaedae6044e6fdd8ced4f19d1d993c4e61d8c281686",
+      "library/stage1/tasks/bench.yaml": "a528cf4a94098094b32533859c28ea2c9c5e4fc1d756c1b1f215d0c6ff7d994c",
+      "library/style_bible.yaml": "389b0bea089bdc6c3f65907843a7e4a848137e54a3aa0bf53a00e397502bc4d0",
+      "library/user_brief.md": "e58a5543a3dbb67a41653615fa592c4cb7950329503e688d16c66245fc90464d"
+    }
+  },
+  "production_file_sha256": {
+    "runtime/__init__.py": "4b683a4f491eb12c04c9a522a151e99961678a4fc5c3cde76d9d8deae69e19c1",
+    "runtime/asset_router.py": "5a53a62fff8a96c2d70d76acf3ce177115cb18881bc539e7f5f5d76ace76ac49",
+    "runtime/asset_search.py": "35b88d32259d902bd9d4c6e2c8ee9abce3b6822de97fad646ef288ceda18077e",
+    "runtime/blender_mcp.py": "f7b64ed16989e0cfa6c1ff03bbfe37802187d9265b084bc8f1458783e71358dc",
+    "runtime/blender_worker.py": "631c03874e1be304ba9bb5a45f38b00e991d10272534db7b26f7808071024ec4",
+    "runtime/cli.py": "892d7a8c783a02d97f563243c69f747ce821968d5a3d21c7f40febdfd37eb9e8",
+    "runtime/delivery_executor.py": "e6f4f525a271501c41d6a7d26faa1839391d39799288afdb25e823771ff62025",
+    "runtime/env_config.py": "ef0674d317cb30d47a1e1ae68ca4128ebfc2319b5b378faf46cfe220b59ff0a7",
+    "runtime/errors.py": "c98ee0b271b494bb098fade1f7fe5602829473bc9e59fdfadb9b480c94e1f31a",
+    "runtime/hy3d_client.py": "71efeb7612f7d186fb3793797972945966a2593f13ca835118a32f98bff71690",
+    "runtime/io.py": "d619144e1647c18a41ca3f4e9ab9b9650a9f4549055e7998fce0f1453a31cd4a",
+    "runtime/manifest_manager.py": "c876bf22c163b82e91f1d45dcc1eb3a95f69f6fe5d734f8cfea6f356aabbb06f",
+    "runtime/planning.py": "35c13b8c1a29cf6e6b0ac8346ab600d4539725c5ee2df0f2993b2ae4d1b4ca4e",
+    "runtime/platform_support.py": "8f3e667bda85513660cf46a936156396c556afaecfbc90caa325a7c24e60d209",
+    "runtime/ssh_transport.py": "0b0fd57a0d67b16c864e1bdf7bf5a64fed95f730e7bb48c8da7d1fdbd9987883",
+    "runtime/stage1_executor.py": "81d637d46401ef9dfbd4a50966a88c540763f8fa657cfcb8efa1e87f9d00de42",
+    "runtime/stage2_executor.py": "cbfe5cd6d76138f9d4c997ce787b72a182d623e7e7b642196dab46e154af530a",
+    "runtime/state_machine.py": "c4ecb68317e87337167da8f7ee9894a8e86adb88ea406bba88fa01df1450a6c3",
+    "runtime/validators.py": "7d448f916033b7027b205ade56d2413263bbbc47c0285ac8ef2b37c609b73c96",
+    "providers/__init__.py": "312694ccdbddeb34788114787d64469151c6e8d56703902db848ddc2f688c02c",
+    "providers/base.py": "33eb70d700fe76b988f9b7b1d3f3b55e65d212b541b7b10d774151c0b3d23527",
+    "providers/local_library.py": "b8db99dbe17d57fdd9379aef96a07f5dc7fdece94e07dc7c49dd6f369c2cf353",
+    "contracts/__init__.py": "0d23d3e92036787e9c22534fd1c42a75609799c7e97ef54eab719cd0ec59007d",
+    "contracts/asset_candidate.schema.json": "16946f76b4cf85768fe23323e6aa09877994842469f8be5c2227fc21a653f6ba",
+    "contracts/asset_task.schema.json": "ee73183b7190deec98ae8ee54585bc52c33fc75e969bb32cd9db3056433da89d",
+    "contracts/audit_bundle.schema.json": "274e7a89551312e512fbb90f96e10cf70d412d085f06cbbf95160e2d9646cbc0",
+    "contracts/blender_plan.schema.json": "f8a947fbdce85b2021c9ad461b92a714d851730a272e7f99f65dba0bf8918a9b",
+    "contracts/cli_arguments.schema.json": "096aff087ac0b3b0e0eaa881639467d3e0eb754b122e097b16b0c09714a61f42",
+    "contracts/delivery.schema.json": "aadc5d881212a52bfa354d85d97548c8bb676b36be1bbdc06ee665b5e34209e9",
+    "contracts/error.schema.json": "f4cf139b527f40f26c0c0a4ff2694ae114d27155cd6ce6252dca935472cca135",
+    "contracts/project_manifest.schema.json": "2e7230886d38328deebe593640b3a92affb6c51ec1db4e63772cddf1733bf5bd",
+    "contracts/review_report.schema.json": "03e876d011123fe8277d437b0ec849a48442ec094fc25517cf2e5e680825184c",
+    "contracts/stage1_result.schema.json": "8d5a6dba3c93e96ffcb4d33ceed6e0f971329e8eee247179c5dc299f4881ab62",
+    "policies/__init__.py": "71421bc1e62e401fdd2a314da3045ac1521ccb6160d9c43d9f61767cd09d488f",
+    "policies/licensing_policy.yaml": "9f0930749919ead200fc2f014951a1d71fd0cd13d36116e7ef1c068bf50c059a",
+    "policies/routing_policy.yaml": "80a5310e6a06cd8b9056cceb73aed5c6aeb6afc1a17e9402bc5a8c05acf4957b",
+    "policies/stage_transitions.yaml": "3b874b80017267b1cc71d0e595851d852d6248b0345ce014bfd2753b20dfd98b",
+    "templates/__init__.py": "5bb0baafed3d76e6cabebeeb9a086c8b47c1846460ac4c6a8a798f10bb4f5161",
+    "templates/asset_task.yaml": "f925f62481aa9d4aa27b57289fadd930a6d91d6d7d86b3e601a9d81b66455cd8",
+    "templates/blender_plan.yaml": "a8c8d813d1dfcc73e23f6d71485416f42f4bc6592471d0d0e4482fbc80e1238b",
+    "templates/hy3d_config.yaml": "26dd6066e21097b5a29b32e2589b0dfbdba1e64fcfb795b3afd42939d037ef2d",
+    "templates/project_manifest.yaml": "742e95fa41c740734c2946cbc021f159cfdffa139948adc91135b4d7b0ca1106",
+    "templates/review_report.yaml": "81ca6d39198214466d250feadfd72e3ad4cf21409e1a106128d7b6e361b7cfe5",
+    "templates/style_bible.yaml": "5d7c37d75d72647008b4aac6a111a60e45706707bd199cfa5ff89f5177088728"
+  },
+  "external_validation_this_phase": {
+    "ssh": "not_run",
+    "gpu_inference": "not_run",
+    "blender_mcp": "not_run",
+    "blender_batch": "not_run",
+    "windows_host": "not_run"
+  },
+  "acceptance_authority": "Only a successful scripts/govern.py accept may create changes/change-006.json; this evidence file is not that record.",
+  "impact_before_implementation": {
+    "report": ".skillctl/reports/impact-6230be645d86.json",
+    "sha256": "c7b71a4a9bed88211ef92f54997f87cd36ce0a477b48524b901778b1fa760cca",
+    "source_projection": {
+      "restored_newlines": [
+        "changes/change-001.json",
+        "changes/change-002.json",
+        "changes/change-003.json",
+        "tests/fixtures/governance/contract_bundle.json",
+        "tests/fixtures/governance/init_args.json",
+        "tests/fixtures/governance/invalid_args.json",
+        "tests/fixtures/governance/invalid_bundle.json"
+      ]
+    }
+  },
+  "final_verification": [
+    {
+      "report": ".skillctl/reports/validate-eeb753e26a11.json",
+      "sha256": "c286ccd6ae3823f984950903c7d77fbc7797c76d24541c8b576882e8f29d20c8",
+      "status": "pass",
+      "warnings": [],
+      "errors": [],
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      }
+    },
+    {
+      "report": ".skillctl/reports/contract-test-d1fdbdd1a56f.json",
+      "sha256": "a769721d9c18231340d67749a19dc9719648756767dbd9a27d1aed674aa56d77",
+      "declared_contract": "pass",
+      "runtime_contract": "pass",
+      "errors": [],
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      }
+    },
+    {
+      "report": ".skillctl/reports/test-e91f1c96ee46.json",
+      "sha256": "5556e61726212fee7ca581b8e4353a956c2a0ccd84aa5e26d07c4ec1d635c615",
+      "status": "pass",
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      },
+      "tests": [
+        {
+          "id": "T-LEGACY-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "95 passed in 6.84s"
+          ]
+        },
+        {
+          "id": "T-CLI-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "{\"approved_preflight\": true, \"asset_delivery_with_provenance\": true, \"asset_review_required\": true, \"incomplete_outputs_blocked\": true, \"mcp_preparation_is_not_build\": true, \"plan_only_unchanged\": true, \"route\": \"library_direct\", \"unapproved_stage2_blocked\": true}"
+          ]
+        },
+        {
+          "id": "T-DOC-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "{\"documented_examples_executed\": 3, \"scope\": \"command behavior only\"}"
+          ]
+        },
+        {
+          "id": "T-AUDIT-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "2 passed in 0.31s"
+          ]
+        },
+        {
+          "id": "T-INIT-VALID",
+          "status": "pass",
+          "returncode": null,
+          "output_summary": []
+        },
+        {
+          "id": "T-INIT-INVALID",
+          "status": "pass",
+          "returncode": null,
+          "output_summary": []
+        },
+        {
+          "id": "T-AUDIT-CONTRACT",
+          "status": "pass",
+          "returncode": null,
+          "output_summary": []
+        },
+        {
+          "id": "T-MAINT-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "4 passed in 0.03s"
+          ]
+        },
+        {
+          "id": "T-ENV-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "3 passed in 0.17s"
+          ]
+        },
+        {
+          "id": "T-README-001",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "{\"readme_offline_asset\": \"pass\", \"review_required\": true}"
+          ]
+        },
+        {
+          "id": "T-FLOW-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "6 passed, 15 deselected in 1.33s"
+          ]
+        },
+        {
+          "id": "T-FLOW-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "4 passed, 17 deselected in 0.65s"
+          ]
+        },
+        {
+          "id": "T-FLOW-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "11 passed, 10 deselected in 0.91s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "9 passed, 14 deselected in 0.44s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "2 passed, 21 deselected in 0.54s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "12 passed, 11 deselected in 1.70s"
+          ]
+        },
+        {
+          "id": "T-STAGE1-E2E",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "7 passed in 4.49s"
+          ]
+        },
+        {
+          "id": "T-GOVERN-NEWLINES",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "5 passed in 0.04s"
+          ]
+        },
+        {
+          "id": "T-V02-BASELINE",
+          "status": "pass",
+          "returncode": 0,
+          "output_summary": [
+            "8 passed in 3.56s"
+          ]
+        }
+      ]
+    }
+  ],
+  "scope_integrity": {
+    "production_files_unchanged": 44,
+    "historical_requirement_entries_unchanged": 8,
+    "historical_test_entries_unchanged": 18,
+    "review": "Compared exact existing requirement/test entries with change-005; production hashes match the baseline."
+  }
+}

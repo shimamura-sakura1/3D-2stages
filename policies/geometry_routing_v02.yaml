@@ -1,0 +1,8 @@
+procedural_priority: [floor, wall, platform, column, rail, pipe]
+# Codex classifies intent; runtime only handles these explicit primitive identifiers.
+# Simple roofs/repeated structures may be composed from the six primitives.
+# Unique machines, hero furniture, sculpture and irregular/reference-specific props
+# may use C after complete library search and verified reference/output rights.
+supported_formats: [obj, glb]
+geometry_min: 0.5
+semantic_min: 0.6

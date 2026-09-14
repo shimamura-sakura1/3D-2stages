@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "vector3": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "scale3": {
+      "type": "array",
+      "items": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "scene_state": {
+      "enum": [
+        "initialized",
+        "visual_planning",
+        "visual_review_required",
+        "visual_approved",
+        "geometry_pending",
+        "geometry_review_required",
+        "geometry_approved",
+        "blockout_pending",
+        "lookdev_pending",
+        "render_pending",
+        "render_review_required",
+        "visual_revision",
+        "final_review_required",
+        "approved",
+        "delivered"
+      ]
+    },
+    "reference_roles": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "geometry",
+          "architecture",
+          "composition",
+          "camera",
+          "material_language",
+          "surface_condition",
+          "lighting",
+          "atmosphere",
+          "palette",
+          "vegetation",
+          "prop_language"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "material_class": {
+      "enum": [
+        "painted_metal",
+        "bare_metal",
+        "concrete",
+        "rubber",
+        "glass",
+        "emissive",
+        "asphalt",
+        "vegetation"
+      ]
+    },
+    "action": {
+      "enum": [
+        "roughness_variation",
+        "lighting_intensity",
+        "lighting_direction",
+        "fog_amount",
+        "camera_framing",
+        "exposure"
+      ]
+    }
+  }
+}

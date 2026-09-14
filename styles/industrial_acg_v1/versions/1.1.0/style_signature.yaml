@@ -1,0 +1,67 @@
+id: industrial_acg_v1
+version: 1.1.0
+reviewed_by: Codex
+review_status: design_reviewed
+evidence_scope:
+  original_calibration: Six original procedural material samples; material and lighting
+    evidence only.
+  original_pump: Original procedural pump render; manufactured geometry and material
+    readability only.
+  user_station: Composition and geometry reference only; no blanket style or verified
+    license authority.
+dimensions:
+  geometry:
+    preserve_approved: true
+  surface:
+    bump_scale: 0.65
+  palette:
+    painted_metal:
+    - 0.09
+    - 0.2
+    - 0.19
+    bare_metal:
+    - 0.47
+    - 0.53
+    - 0.59
+    concrete:
+    - 0.33
+    - 0.35
+    - 0.36
+    rubber:
+    - 0.012
+    - 0.018
+    - 0.022
+    glass:
+    - 0.78
+    - 0.91
+    - 0.93
+    emissive:
+    - 1
+    - 0.64
+    - 0.25
+    vegetation:
+    - 0.12
+    - 0.2
+    - 0.065
+  roughness:
+    offset: 0.02
+  weathering:
+    variation_scale: 0.75
+  lighting:
+    key_scale: 1.25
+    fill_scale: 0.4
+  fog:
+    density_scale: 0.35
+  depth:
+    required_layers:
+    - foreground
+    - midground
+    - background
+  composition:
+    focal_length_mm_range:
+    - 28
+    - 65
+  emissive:
+    strength_scale: 0.8
+  detail_density:
+    noise_scale: 0.8

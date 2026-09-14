@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "scene": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "units": {
+          "const": "meters"
+        }
+      },
+      "required": [
+        "name",
+        "units"
+      ],
+      "additionalProperties": false
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+          },
+          "collection": {
+            "type": "string",
+            "minLength": 1
+          },
+          "transform": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "rotation": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "scale": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "location",
+              "rotation",
+              "scale"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "asset_id",
+          "collection",
+          "transform"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "procedural": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+          },
+          "kind": {
+            "enum": [
+              "box",
+              "railway"
+            ]
+          },
+          "collection": {
+            "type": "string",
+            "minLength": 1
+          },
+          "transform": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "rotation": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "scale": {
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "location",
+              "rotation",
+              "scale"
+            ],
+            "additionalProperties": false
+          },
+          "dimensions": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "required": [
+          "name",
+          "kind",
+          "collection",
+          "transform",
+          "dimensions",
+          "count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "camera": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "target": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "focal_length_mm": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 300
+        }
+      },
+      "required": [
+        "location",
+        "target",
+        "focal_length_mm"
+      ],
+      "additionalProperties": false
+    },
+    "lighting": {
+      "type": "object",
+      "properties": {
+        "energy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "rotation": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "energy",
+        "rotation"
+      ],
+      "additionalProperties": false
+    },
+    "style": {
+      "type": "object",
+      "properties": {
+        "style_bible": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+        }
+      },
+      "required": [
+        "style_bible"
+      ],
+      "additionalProperties": false
+    },
+    "render": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 4096
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 4096
+        },
+        "samples": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "samples"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "scene",
+    "assets",
+    "procedural",
+    "camera",
+    "lighting",
+    "style",
+    "render"
+  ],
+  "additionalProperties": false
+}

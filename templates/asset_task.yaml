@@ -1,0 +1,31 @@
+asset_id: bench
+group_id: props
+name: bench
+required: true
+asset_role: supporting_prop
+target:
+  description: Wooden station bench
+  scale_hint: {width_m: 1.8, height_m: 0.82}
+style:
+  source: style_bible
+  overrides: {}
+search:
+  enabled: true
+  preferred_providers: [local_library]
+  keywords: [bench, station bench]
+routing:
+  preferred_route: auto
+  allow_route_a: true
+  allow_route_b: true
+  allow_route_c: true
+hy3d:
+  enabled: true
+  mode: auto
+  reference_images: []
+  prompt: null
+review:
+  required: true
+  max_revisions: 3
+status: planned
+revision: 0
+result: null

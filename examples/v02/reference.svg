@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="320" viewBox="0 0 720 320">
+  <title>Industrial material language study</title>
+  <desc>Original TwoStage3D vector diagram. Matte teal painted metal, warm concrete and dark rubber; a material reference, not a scene or render target.</desc>
+  <rect width="720" height="320" fill="#e9e5da"/>
+  <g stroke="#313b3d" stroke-width="2">
+    <rect x="30" y="55" width="200" height="180" rx="8" fill="#587b79"/>
+    <path d="M42 69h176M42 219h176" stroke="#93aaa2"/>
+    <path d="M56 190l28 -3m92 -98l21 -2m-76 126l28 -2" stroke="#b8b6a3"/>
+    <rect x="260" y="55" width="200" height="180" rx="2" fill="#b4ab98"/>
+    <path d="M281 87l7 -3m91 46l8 1m-64 62l12 -1m94 -110l8 -2m-11 120l5 2" stroke="#948c7e"/>
+    <rect x="490" y="55" width="200" height="180" rx="16" fill="#394044"/>
+    <path d="M509 73v141m15 -141v141m15 -141v141" stroke="#50595a"/>
+  </g>
+  <g fill="#29383b" font-family="sans-serif" font-size="17" text-anchor="middle">
+    <text x="130" y="271">Painted metal</text>
+    <text x="360" y="271">Concrete</text>
+    <text x="590" y="271">Rubber</text>
+  </g>
+</svg>
