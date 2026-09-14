@@ -768,6 +768,32 @@
       "introduced_in": "S17",
       "status": "active",
       "supersedes": []
+    },
+    {
+      "id": "REQ-V02-OVERVIEW-001",
+      "description": "The README explains the current four-stage visual production framework and exposes an executable, explicitly unapproved visual-planning entry while preserving legacy behavior.",
+      "claims": [
+        {
+          "id": "REQ-V02-OVERVIEW-001-C1",
+          "kind": "behavior",
+          "statement": "The README visual entry executes the real CLI to retain the original reference and four validated Stage0 documents in a schema0.2 plan_only project at visual_review_required, with no geometry/render execution or user approval."
+        },
+        {
+          "id": "REQ-V02-OVERVIEW-001-C2",
+          "kind": "rejection",
+          "statement": "A stale version applied to the documented visual submission rejects with a structured error and preserves project bytes, initial version, plan_only mode and empty approvals."
+        }
+      ],
+      "implemented_by": [
+        "README",
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-OVERVIEW"
+      ],
+      "introduced_in": "S18",
+      "status": "active",
+      "supersedes": []
     }
   ]
 }

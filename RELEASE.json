@@ -1,9 +1,9 @@
 {
   "distribution": "runtime-only",
-  "working_version": "S17",
+  "working_version": "S18",
   "last_formally_accepted_version": "S13",
   "source_parent_commit": "c8a9c12a3b5edc6dd7838911e44edc17c43ba0ba",
-  "source_state": "Includes current uncommitted S17 implementation; not just parent commit contents.",
+  "source_state": "Current S18 documentation update; production runtime remains byte-identical to the S17 distribution.",
   "version_layers": {
     "production_schema": [
       "0.1",
@@ -12,7 +12,7 @@
     "python_package": "0.1.0"
   },
   "source_verification": {
-    "active_test_groups": 34,
+    "active_test_groups": 35,
     "all_passed": true,
     "declared_contract": "pass",
     "runtime_contract": "pass",
@@ -34,6 +34,10 @@
     {
       "path": "AGENTS.md",
       "sha256": "204a2bb71415e7b36a8890a0231870533765393bb61961673216230269834cc6"
+    },
+    {
+      "path": "README.md",
+      "sha256": "330e30d79672e5c51e39f1659b020f5eb3ca7bf94d4285350313ab7cd5a922c3"
     },
     {
       "path": "SKILL.md",
@@ -285,7 +289,7 @@
     },
     {
       "path": "interface.json",
-      "sha256": "f0118d10df5d5b2f91384bd9c84a0097a1952d8d8bb8c1fd7253a532c9f88ced"
+      "sha256": "3fc6f735e14f16b70e1052d5be389aaf1a6305ca1022b7b2acb9e370388b04ab"
     },
     {
       "path": "policies/__init__.py",
@@ -361,7 +365,7 @@
     },
     {
       "path": "requirements.json",
-      "sha256": "715b7e6cc5f072c6021218e435ef2c692006efea3f1ab013682c762dd3973761"
+      "sha256": "cc89927b0549c82b6281eafd4ef6112cb74802d1e53d4439887bb244886832ef"
     },
     {
       "path": "runtime/__init__.py",
@@ -673,9 +677,10 @@
     }
   ],
   "generated_distribution_files": [
-    "README.md",
     "RELEASE.json",
     "FILES.sha256"
   ],
-  "maintenance": "Full tests and immutable changes are retained in the original maintenance checkout; they are not distributed here."
+  "maintenance": "Full tests and immutable changes are retained in the original maintenance checkout; they are not distributed here.",
+  "runtime_implementation_version": "S17",
+  "documentation_update": "README defines the Stage0–3 visual production framework, responsibilities, capabilities, outputs and limitations; its isolated CLI example was executed."
 }
