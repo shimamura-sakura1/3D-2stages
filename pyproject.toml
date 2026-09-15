@@ -16,12 +16,13 @@ dev = ["pytest>=8,<10"]
 two-stage-3d = "runtime.cli:main"
 
 [tool.setuptools]
-packages = ["runtime", "providers", "contracts", "policies", "templates"]
+packages = ["runtime", "runtime.migrations", "providers", "contracts", "policies", "templates", "styles"]
 
 [tool.setuptools.package-data]
 contracts = ["*.json"]
 policies = ["*.yaml"]
 templates = ["*.yaml"]
+styles = ["industrial_acg_v1/**/*.yaml", "industrial_acg_v1/**/*.blend", "industrial_acg_v1/*.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

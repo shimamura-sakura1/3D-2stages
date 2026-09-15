@@ -2,9 +2,17 @@
   "spec_version": "0.1",
   "skill": {
     "id": "two-stage-3d",
-    "version": "S4"
+    "version": "S21"
   },
   "artifacts": [
+    {
+      "id": "release-export-attributes",
+      "type": "knowledge",
+      "path": ".gitattributes",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
     {
       "id": "gitignore",
       "type": "knowledge",
@@ -718,6 +726,925 @@
         "mode": "advisory"
       },
       "description": "Development chronology, semantic review and evidence limits; acceptance is recorded only by the designated external framework."
+    },
+    {
+      "id": "v02-baseline",
+      "type": "knowledge",
+      "path": "docs/v02/baseline.md",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "v02-phase0-record",
+      "type": "knowledge",
+      "path": "docs/v02/phase-0.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-baseline-evidence",
+      "type": "knowledge",
+      "path": "docs/v02/evidence.json",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "tests.test_v02_baseline",
+      "type": "script",
+      "path": "tests/test_v02_baseline.py",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "contracts.blockout_plan.schema",
+      "type": "schema",
+      "path": "contracts/blockout_plan.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.lookdev_plan.schema",
+      "type": "schema",
+      "path": "contracts/lookdev_plan.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.project_manifest_v02.schema",
+      "type": "schema",
+      "path": "contracts/project_manifest_v02.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.reference_board.schema",
+      "type": "schema",
+      "path": "contracts/reference_board.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.render_metadata.schema",
+      "type": "schema",
+      "path": "contracts/render_metadata.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.render_plan.schema",
+      "type": "schema",
+      "path": "contracts/render_plan.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.revision_plan.schema",
+      "type": "schema",
+      "path": "contracts/revision_plan.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.scene_spec.schema",
+      "type": "schema",
+      "path": "contracts/scene_spec.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.semantic_material_map.schema",
+      "type": "schema",
+      "path": "contracts/semantic_material_map.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.style_assignment.schema",
+      "type": "schema",
+      "path": "contracts/style_assignment.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.visual_audit_bundle.schema",
+      "type": "schema",
+      "path": "contracts/visual_audit_bundle.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.visual_brief.schema",
+      "type": "schema",
+      "path": "contracts/visual_brief.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "contracts.visual_common.schema",
+      "type": "schema",
+      "path": "contracts/visual_common.schema.json",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "contracts.visual_review.schema",
+      "type": "schema",
+      "path": "contracts/visual_review.schema.json",
+      "enforcement": {
+        "mode": "runtime"
+      }
+    },
+    {
+      "id": "v02-contract-guide",
+      "type": "knowledge",
+      "path": "docs/v02/contracts.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-phase1-record",
+      "type": "knowledge",
+      "path": "docs/v02/phase-1.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-phase1-evidence",
+      "type": "knowledge",
+      "path": "docs/v02/phase-1-evidence.json",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.visual_contracts",
+      "type": "script",
+      "path": "runtime/visual_contracts.py",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.migrations.__init__",
+      "type": "script",
+      "path": "runtime/migrations/__init__.py",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.migrations.v01_to_v02",
+      "type": "script",
+      "path": "runtime/migrations/v01_to_v02.py",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "policies.scene_transitions_v02",
+      "type": "knowledge",
+      "path": "policies/scene_transitions_v02.yaml",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "tests.test_v02_contracts",
+      "type": "script",
+      "path": "tests/test_v02_contracts.py",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "tests.fixtures.v02.industrial_station",
+      "type": "example",
+      "path": "tests/fixtures/v02/industrial_station.json",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "tests.fixtures.v02.invalid_bundle",
+      "type": "example",
+      "path": "tests/fixtures/v02/invalid_bundle.json",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-contract-audit",
+      "type": "script",
+      "path": "scripts/check_visual_contracts.py",
+      "enforcement": {
+        "mode": "runtime"
+      },
+      "runtime_binding": {
+        "runner": [
+          "python",
+          "scripts/check_visual_contracts.py"
+        ],
+        "input": {
+          "mode": "stdin-json",
+          "schema": "contracts/visual_audit_bundle.schema.json"
+        },
+        "outputs": [
+          {
+            "kind": "file",
+            "path": "visual-audit-output/visual_brief.json",
+            "schema": "contracts/visual_brief.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/reference_board.json",
+            "schema": "contracts/reference_board.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/scene_spec.json",
+            "schema": "contracts/scene_spec.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/style_assignment.json",
+            "schema": "contracts/style_assignment.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/blockout_plan.json",
+            "schema": "contracts/blockout_plan.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/lookdev_plan.json",
+            "schema": "contracts/lookdev_plan.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/render_plan.json",
+            "schema": "contracts/render_plan.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/semantic_material_map.json",
+            "schema": "contracts/semantic_material_map.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/visual_review.json",
+            "schema": "contracts/visual_review.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/revision_plan.json",
+            "schema": "contracts/revision_plan.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/render_metadata.json",
+            "schema": "contracts/render_metadata.schema.json"
+          },
+          {
+            "kind": "file",
+            "path": "visual-audit-output/project_manifest_v02.json",
+            "schema": "contracts/project_manifest_v02.schema.json"
+          }
+        ],
+        "error_contract": {
+          "nonzero_on_invalid_input": true,
+          "schema": "contracts/error.schema.json",
+          "channel": "stderr"
+        },
+        "timeout_seconds": 30
+      },
+      "description": "Actual structural visual audit, with cross-document checks and unchanged JSON outputs; no render or approval."
+    },
+    {
+      "id": "runtime.style_registry",
+      "path": "runtime/style_registry.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.style_resolver",
+      "path": "runtime/style_resolver.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.blender_style_worker",
+      "path": "runtime/blender_style_worker.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-style-guide",
+      "path": "docs/v02/style.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.__init__.py",
+      "path": "styles/__init__.py",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.profile",
+      "path": "styles/industrial_acg_v1/profile.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.materials.library.blend",
+      "path": "styles/industrial_acg_v1/materials/library.blend",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.materials.definitions",
+      "path": "styles/industrial_acg_v1/materials/definitions.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.calibration.calibration.blend",
+      "path": "styles/industrial_acg_v1/calibration/calibration.blend",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.camera.environment",
+      "path": "styles/industrial_acg_v1/camera/environment.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.color.default",
+      "path": "styles/industrial_acg_v1/color/default.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.render.preview",
+      "path": "styles/industrial_acg_v1/render/preview.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.atmosphere.default",
+      "path": "styles/industrial_acg_v1/atmosphere/default.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.semantic.geometry",
+      "path": "styles/industrial_acg_v1/semantic/geometry.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.semantic.materials",
+      "path": "styles/industrial_acg_v1/semantic/materials.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.semantic.palette",
+      "path": "styles/industrial_acg_v1/semantic/palette.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.semantic.composition",
+      "path": "styles/industrial_acg_v1/semantic/composition.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.critic.rubric",
+      "path": "styles/industrial_acg_v1/critic/rubric.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "styles.industrial_acg_v1.lighting.overcast",
+      "path": "styles/industrial_acg_v1/lighting/overcast.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.visual_planning",
+      "path": "runtime/visual_planning.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.reference_manager",
+      "path": "runtime/reference_manager.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-planning-guide",
+      "path": "docs/v02/planning.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "prompts.visual_director",
+      "path": "prompts/visual_director.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "prompts.reference_interpreter",
+      "path": "prompts/reference_interpreter.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "prompts.scene_planner",
+      "path": "prompts/scene_planner.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.geometry_router",
+      "path": "runtime/geometry_router.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.geometry_acquisition",
+      "path": "runtime/geometry_acquisition.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.blender_geometry_worker",
+      "path": "runtime/blender_geometry_worker.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "policies.geometry_routing_v02",
+      "path": "policies/geometry_routing_v02.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "contracts.geometry_result.schema",
+      "path": "contracts/geometry_result.schema.json",
+      "type": "schema",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-geometry-guide",
+      "path": "docs/v02/geometry.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.scene_production",
+      "path": "runtime/scene_production.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.blender_operations",
+      "path": "runtime/blender_operations.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-production-guide",
+      "path": "docs/v02/production.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.preview_renderer",
+      "path": "runtime/preview_renderer.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-preview-guide",
+      "path": "docs/v02/preview.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.visual_review",
+      "path": "runtime/visual_review.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-critic-guide",
+      "path": "docs/v02/visual-review.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "prompts.render_critic",
+      "path": "prompts/render_critic.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-phase7-10-plan",
+      "path": "docs/v02/phase-7-10-plan.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-phase7-evidence",
+      "path": "docs/v02/phase-7-evidence.json",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.revision_controller",
+      "type": "script",
+      "path": "runtime/revision_controller.py",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-revision-guide",
+      "type": "knowledge",
+      "path": "docs/v02/controlled-revision.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-phase8-evidence",
+      "type": "knowledge",
+      "path": "docs/v02/phase-8-evidence.json",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.hy3d_surface",
+      "type": "script",
+      "path": "runtime/hy3d_surface.py",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-hy3d-guide",
+      "type": "knowledge",
+      "path": "docs/v02/hy3d-surface.md",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-phase9-evidence",
+      "type": "knowledge",
+      "path": "docs/v02/phase-9-evidence.json",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "hy3d-provenance-guide",
+      "type": "knowledge",
+      "path": "docs/hy3d-provenance.md",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "hy3d-image-conditioning-guide",
+      "type": "knowledge",
+      "path": "docs/v02/hy3d-image-conditioning.md",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "v02-refinement-guide",
+      "path": "docs/v02/style-refinement.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "refinement.atmosphere.default.yaml",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/atmosphere/default.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.calibration.calibration.blend",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/calibration/calibration.blend",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.camera.environment.yaml",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/camera/environment.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.color.default.yaml",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/color/default.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.critic.rubric.yaml",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/critic/rubric.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.lighting.overcast.yaml",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/lighting/overcast.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.materials.definitions.yaml",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/materials/definitions.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.materials.library.blend",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/materials/library.blend",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.profile.yaml",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/profile.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.render.preview.yaml",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/render/preview.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "refinement.style_signature.yaml",
+      "path": "styles/industrial_acg_v1/versions/1.1.0/style_signature.yaml",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "tests.test_v02_refinement",
+      "path": "tests/test_v02_refinement.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-quickstart-guide",
+      "type": "knowledge",
+      "path": "docs/v02/quickstart.md",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "v02-stage0-template",
+      "type": "example",
+      "path": "templates/v02_stage0.yaml",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "v02-reference-example",
+      "type": "example",
+      "path": "examples/v02/reference.svg",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "v02-reference-source",
+      "type": "example",
+      "path": "examples/v02/reference_source.yaml",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "v02-reference-license",
+      "type": "knowledge",
+      "path": "examples/v02/LICENSE.md",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "tests.v02_examples",
+      "type": "script",
+      "path": "tests/test_v02_examples.py",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "runtime.visual_delivery",
+      "path": "runtime/visual_delivery.py",
+      "type": "script",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "v02-delivery-guide",
+      "path": "docs/v02/delivery.md",
+      "type": "knowledge",
+      "enforcement": {
+        "mode": "agent"
+      }
+    },
+    {
+      "id": "contracts.completion_evidence.schema",
+      "path": "contracts/completion_evidence.schema.json",
+      "type": "schema",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "contracts.final_snapshot.schema",
+      "path": "contracts/final_snapshot.schema.json",
+      "type": "schema",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "contracts.delivery_inventory.schema",
+      "path": "contracts/delivery_inventory.schema.json",
+      "type": "schema",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "tests.v02_delivery",
+      "path": "tests/test_v02_delivery.py",
+      "type": "example",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "tests.v02_delivery_resources",
+      "path": "tests/test_v02_delivery_resources.py",
+      "type": "example",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "tests.v02_skill_router",
+      "type": "script",
+      "path": "tests/test_v02_skill_router.py",
+      "enforcement": {
+        "mode": "advisory"
+      }
     }
   ],
   "relations": [
@@ -1850,6 +2777,986 @@
         "artifact": "runtime.io"
       },
       "id": "rel-portable-015"
+    },
+    {
+      "id": "rel-v02-baseline-001",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-baseline"
+      }
+    },
+    {
+      "id": "rel-v02-baseline-002",
+      "type": "uses",
+      "from": {
+        "artifact": "v02-baseline"
+      },
+      "to": {
+        "artifact": "workflow-cli"
+      }
+    },
+    {
+      "id": "rel-v02-baseline-003",
+      "type": "reads",
+      "from": {
+        "artifact": "v02-baseline"
+      },
+      "to": {
+        "artifact": "v02-baseline-evidence"
+      }
+    },
+    {
+      "id": "rel-v02-baseline-004",
+      "type": "reads",
+      "from": {
+        "artifact": "v02-baseline"
+      },
+      "to": {
+        "artifact": "v02-phase0-record"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-001",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-contract-guide"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-002",
+      "type": "uses",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-contract-audit"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-003",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.migrations.v01_to_v02"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-004",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.state_machine"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-005",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.migrations.v01_to_v02"
+      },
+      "to": {
+        "artifact": "runtime.planning"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-006",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.migrations.v01_to_v02"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-007",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-008",
+      "type": "reads",
+      "from": {
+        "artifact": "runtime.state_machine"
+      },
+      "to": {
+        "artifact": "policies.scene_transitions_v02"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-009",
+      "type": "uses",
+      "from": {
+        "artifact": "v02-contract-audit"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-010",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_contracts"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-011",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_contracts"
+      },
+      "to": {
+        "artifact": "runtime.state_machine"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-012",
+      "type": "reads",
+      "from": {
+        "artifact": "v02-contract-guide"
+      },
+      "to": {
+        "artifact": "v02-phase1-record"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-013",
+      "type": "reads",
+      "from": {
+        "artifact": "v02-phase1-record"
+      },
+      "to": {
+        "artifact": "v02-phase1-evidence"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-014",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.visual_brief.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-015",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.reference_board.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-016",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.scene_spec.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-017",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.style_assignment.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-018",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.blockout_plan.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-019",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.lookdev_plan.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-020",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.render_plan.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-021",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.semantic_material_map.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-022",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.visual_review.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-023",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.revision_plan.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-024",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.render_metadata.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-025",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.project_manifest_v02.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-026",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.visual_common.schema"
+      }
+    },
+    {
+      "id": "rel-v02-contracts-027",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.validators"
+      },
+      "to": {
+        "artifact": "contracts.visual_audit_bundle.schema"
+      }
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.style_registry"
+      },
+      "id": "style-use-144"
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.style_resolver"
+      },
+      "id": "style-use-145"
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.blender_style_worker"
+      },
+      "id": "style-use-146"
+    },
+    {
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "v02-style-guide"
+      },
+      "id": "style-use-147"
+    },
+    {
+      "id": "planning-use-runtime.visual_planning",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "planning-use-runtime.reference_manager",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.reference_manager"
+      }
+    },
+    {
+      "id": "planning-use-v02-planning-guide",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "v02-planning-guide"
+      }
+    },
+    {
+      "id": "planning-use-prompts.visual_director",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "prompts.visual_director"
+      }
+    },
+    {
+      "id": "planning-use-prompts.reference_interpreter",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "prompts.reference_interpreter"
+      }
+    },
+    {
+      "id": "planning-use-prompts.scene_planner",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "prompts.scene_planner"
+      }
+    },
+    {
+      "id": "geometry-use-runtime.geometry_router",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.geometry_router"
+      }
+    },
+    {
+      "id": "geometry-use-runtime.geometry_acquisition",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.geometry_acquisition"
+      }
+    },
+    {
+      "id": "geometry-use-runtime.blender_geometry_worker",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.blender_geometry_worker"
+      }
+    },
+    {
+      "id": "geometry-use-policies.geometry_routing_v02",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "policies.geometry_routing_v02"
+      }
+    },
+    {
+      "id": "geometry-use-contracts.geometry_result.schema",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "contracts.geometry_result.schema"
+      }
+    },
+    {
+      "id": "geometry-use-v02-geometry-guide",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "v02-geometry-guide"
+      }
+    },
+    {
+      "id": "production-use-runtime.scene_production",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.scene_production"
+      }
+    },
+    {
+      "id": "production-use-runtime.blender_operations",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.blender_operations"
+      }
+    },
+    {
+      "id": "production-use-v02-production-guide",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "v02-production-guide"
+      }
+    },
+    {
+      "id": "preview-use-runtime.preview_renderer",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.preview_renderer"
+      }
+    },
+    {
+      "id": "preview-use-v02-preview-guide",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "v02-preview-guide"
+      }
+    },
+    {
+      "id": "rel-v02-critic-000",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-critic-guide"
+      }
+    },
+    {
+      "id": "rel-v02-critic-001",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "prompts.render_critic"
+      }
+    },
+    {
+      "id": "rel-v02-critic-002",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.visual_review"
+      }
+    },
+    {
+      "id": "rel-v02-critic-003",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.visual_review"
+      }
+    },
+    {
+      "id": "rel-v02-critic-004",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "runtime.preview_renderer"
+      }
+    },
+    {
+      "id": "rel-v02-critic-005",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "runtime.scene_production"
+      }
+    },
+    {
+      "id": "rel-v02-critic-006",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "contracts.visual_review.schema"
+      }
+    },
+    {
+      "id": "rel-v02-revision-000",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-revision-guide"
+      }
+    },
+    {
+      "id": "rel-v02-revision-001",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.revision_controller"
+      }
+    },
+    {
+      "id": "rel-v02-revision-002",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.revision_controller"
+      }
+    },
+    {
+      "id": "rel-v02-revision-003",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "runtime.visual_review"
+      }
+    },
+    {
+      "id": "rel-v02-revision-004",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "runtime.scene_production"
+      }
+    },
+    {
+      "id": "rel-v02-revision-005",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "contracts.revision_plan.schema"
+      }
+    },
+    {
+      "id": "rel-v02-hy3d-000",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-hy3d-guide"
+      }
+    },
+    {
+      "id": "rel-v02-hy3d-001",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.hy3d_client"
+      },
+      "to": {
+        "artifact": "runtime.hy3d_surface"
+      }
+    },
+    {
+      "id": "rel-v02-hy3d-002",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_acquisition"
+      },
+      "to": {
+        "artifact": "runtime.hy3d_client"
+      }
+    },
+    {
+      "id": "rel-v02-hy3d-003",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_acquisition"
+      },
+      "to": {
+        "artifact": "runtime.hy3d_surface"
+      }
+    },
+    {
+      "id": "rel-hy3d-provenance-guide",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "hy3d-provenance-guide"
+      }
+    },
+    {
+      "id": "rel-hy3d-image-conditioning-guide",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "hy3d-image-conditioning-guide"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.atmosphere.default.yaml",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.atmosphere.default.yaml"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.calibration.calibration.blend",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.calibration.calibration.blend"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.camera.environment.yaml",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.camera.environment.yaml"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.color.default.yaml",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.color.default.yaml"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.critic.rubric.yaml",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.critic.rubric.yaml"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.lighting.overcast.yaml",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.lighting.overcast.yaml"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.materials.definitions.yaml",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.materials.definitions.yaml"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.materials.library.blend",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.materials.library.blend"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.profile.yaml",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.profile.yaml"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.render.preview.yaml",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.render.preview.yaml"
+      }
+    },
+    {
+      "id": "refinement-use-refinement.style_signature.yaml",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "refinement.style_signature.yaml"
+      }
+    },
+    {
+      "id": "refinement-guide-use",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-refinement-guide"
+      }
+    },
+    {
+      "id": "rel-phase11-v02-quickstart-guide",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-quickstart-guide"
+      }
+    },
+    {
+      "id": "rel-phase11-v02-stage0-template",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-stage0-template"
+      }
+    },
+    {
+      "id": "rel-phase11-v02-reference-example",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-reference-example"
+      }
+    },
+    {
+      "id": "rel-phase11-v02-reference-source",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-reference-source"
+      }
+    },
+    {
+      "id": "rel-phase11-v02-reference-license",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-reference-license"
+      }
+    },
+    {
+      "id": "phase12-use-runtime.visual_delivery",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.visual_delivery"
+      }
+    },
+    {
+      "id": "phase12-use-runtime.manifest_manager",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.manifest_manager"
+      }
+    },
+    {
+      "id": "phase12-use-runtime.preview_renderer",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.preview_renderer"
+      }
+    },
+    {
+      "id": "phase12-use-runtime.visual_review",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.visual_review"
+      }
+    },
+    {
+      "id": "phase12-use-contracts.completion_evidence.schema",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "contracts.completion_evidence.schema"
+      }
+    },
+    {
+      "id": "phase12-use-contracts.final_snapshot.schema",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "contracts.final_snapshot.schema"
+      }
+    },
+    {
+      "id": "phase12-use-contracts.delivery_inventory.schema",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "contracts.delivery_inventory.schema"
+      }
+    },
+    {
+      "id": "phase12-guide",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "v02-delivery-guide"
+      }
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "tests.v02_skill_router"
+      },
+      "to": {
+        "artifact": "SKILL"
+      },
+      "id": "router-test-reads-skill"
+    },
+    {
+      "id": "release-read-export-attributes",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "release-export-attributes"
+      }
     }
   ],
   "invariants": [
@@ -1861,7 +3768,7 @@
   "capabilities": [
     {
       "id": "mode-selection",
-      "router_step": "2",
+      "router_step": "L",
       "requirement": "REQ-BASE-001"
     }
   ]

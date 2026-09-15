@@ -1,0 +1,70 @@
+{
+  "phase": 8,
+  "version_target": "S13",
+  "status": "verified_ready_for_acceptance",
+  "requirement": "REQ-V02-REVISION-001",
+  "router": "Step 7V -> Step 8V -> Step 6V -> Step 7V",
+  "first_failures": [
+    ".deps/v02-phase8/test-first.txt",
+    ".deps/v02-phase8/worker-first.txt",
+    ".deps/v02-phase8/actual-pass-first.txt",
+    ".deps/v02-phase8/occupied-slot-first.txt"
+  ],
+  "impact": ".deps/v02-phase8/impact.json",
+  "focused_tests": {
+    "new": 42,
+    "including_historical": 112,
+    "status": "pass",
+    "log": ".deps/v02-phase8/focused-occupied-slot.txt"
+  },
+  "real_operation": {
+    "backend": "Blender MCP",
+    "blender_version": "4.5.13 LTS",
+    "project": ".deps/v02-phase7/station-m1wq9fue",
+    "passes": [
+      "pass_00",
+      "pass_01"
+    ],
+    "images": [
+      {
+        "pass": "pass_00",
+        "path": ".deps/v02-phase7/station-m1wq9fue/stage2/previews/pass_00/preview.png",
+        "sha256": "2c66c7590a81f78316304ae56e5a35adfcf29741ce1f21f7852a83fc7d7566cc"
+      },
+      {
+        "pass": "pass_01",
+        "path": ".deps/v02-phase7/station-m1wq9fue/stage2/previews/pass_01/preview.png",
+        "sha256": "5aa1c1d82afaaec1cea053f93889c5f032cc28e137e98e8b846be6152c79d2a3"
+      }
+    ],
+    "geometry_sha256": "fef70cb2d613ab8e5a53c9562786571cae144a67574a22a63550b9fd1a529f04",
+    "geometry_unchanged": true,
+    "blockout_unchanged": true,
+    "approval_records_unchanged": true,
+    "revision": ".deps/v02-phase8/revision-01.json",
+    "new_review": ".deps/v02-phase8/review-01.json",
+    "state": "visual_revision",
+    "manifest_version": 22,
+    "artistic_approval": false,
+    "observation": "Small azimuth/exposure changes produced a subtle visual difference. Broad soft lighting and missing distant scene layers remain; this demonstrates controlled revision, not completed style refinement."
+  },
+  "limitations": [
+    "Geometry generation and initial approvals retain the clearly labelled Phase7 maintenance simulation scope.",
+    "Real Blender execution covers lighting direction and exposure; remaining controls have deterministic tests.",
+    "No real HY3D surface operation or Phase10 style refinement is claimed.",
+    "Existing ManifestManager multi-file writes do not roll back on operating-system I/O failure; malformed-input rejection is tested before writes."
+  ],
+  "independent_reviews": {
+    "spec": "pass",
+    "code_quality": "pass after occupied-slot mismatch repair"
+  },
+  "governance": {
+    "validate": "pass, no warnings",
+    "contract_test": ".skillctl/reports/contract-test-dd090fad2592.json",
+    "full_regression": {
+      "status": "pass",
+      "groups": 28,
+      "report": ".skillctl/reports/test-e58f22db943c.json"
+    }
+  }
+}

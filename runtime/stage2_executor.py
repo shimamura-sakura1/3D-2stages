@@ -7,7 +7,7 @@ from pathlib import Path
 
 from runtime.errors import BoundaryError, WorkflowError
 from runtime.io import atomic_write, inside, load_data, sha256
-from runtime.validators import stage2_preflight, validate_model
+from runtime.validators import stage2_preflight, validate_model, require_legacy_manifest
 from runtime.platform_support import find_blender
 
 
@@ -29,6 +29,7 @@ class Stage2Executor:
 
     def run(self, plan_path="stage2/blender_plan.yaml", dry_run=False):
         manifest = self.manager.read()
+        require_legacy_manifest(manifest)
         root = self.manager.root
         plan = load_data(inside(root, plan_path))
         resolved = stage2_preflight(root, manifest, plan)

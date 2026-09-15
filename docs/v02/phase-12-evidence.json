@@ -1,0 +1,74 @@
+{
+  "phase": 12,
+  "version_target": "S17",
+  "last_accepted_version": "S13",
+  "status": "engineering_implemented_and_real_local_integration_verified_final_acceptance_pending",
+  "requirement": "REQ-V02-DELIVERY-001",
+  "test_first": ".deps/v02-phase12/RED.txt",
+  "router_repair": {
+    "red": ".deps/v02-phase12/router-RED-behavior.txt",
+    "impact": ".deps/v02-phase12/router-impact.json",
+    "green": ".deps/v02-phase12/router-GREEN.txt"
+  },
+  "focused_tests": {
+    "new": 75,
+    "historical": 159,
+    "status": "pass",
+    "logs": [
+      ".deps/v02-phase12/resources-GREEN.txt",
+      ".deps/v02-phase12/resources-historical-focused.txt"
+    ]
+  },
+  "real_representative": {
+    "report": ".deps/v02-phase12/real-mcp-archived/result.json",
+    "verification": ".deps/v02-phase12/real-mcp-archived/verification.json",
+    "backend": "MCP",
+    "blender": "4.5.13 LTS",
+    "actual_operations": [
+      "procedural and local-library geometry",
+      "semantic setup",
+      "preview 00",
+      "bounded camera revision",
+      "preview 01",
+      "immutable completion capture",
+      "local delivery and idempotent repeat"
+    ],
+    "delivery_files": 55,
+    "geometry_fingerprint_unchanged": true,
+    "reviews": "Scripted fixture decisions in an isolated .deps project; not actual user artistic approval",
+    "HY3D_executed": false,
+    "packaged_blend_reopen": ".deps/v02-phase12/real-mcp-archived/packaged-blend-reopen.json",
+    "sealed_resources_per_pass": [
+      14,
+      14
+    ]
+  },
+  "production_project": {
+    "path": "projects/industrial_station_v02",
+    "state": "visual_review_required",
+    "mode": "plan_only",
+    "manifest_version": 1,
+    "approvals": [],
+    "preview_scope": "proposals/style-study-v1 contains real two-view style studies; not formal approved output"
+  },
+  "independent_review": {
+    "spec": "pass after explicit Router repair",
+    "quality": "pass after immutable dependency archive repair"
+  },
+  "full_active_regression": {
+    "status": "pass",
+    "groups": 34,
+    "report": ".skillctl/reports/test-b414e4fd3f4f.json",
+    "summary": ".deps/v02-phase12/full-active-s17-final.json",
+    "scope": "All active historical groups; HTTP loopback and HY3D doubles are not real GPU inference."
+  },
+  "validate_and_contract": {
+    "final_validate": ".deps/v02-phase12/validate-final.json",
+    "final_contract": ".deps/v02-phase12/contract-final.json"
+  },
+  "formal_acceptance": "Not performed. Original Phase12 standard scene requires genuine Procedural + Library + Generated Geometry and actual artistic reviews; user suspended HY3D due insufficient VRAM. Isolated real Blender engineering test does not replace those gates.",
+  "resource_archive_repair": {
+    "evidence": ".deps/v02-phase12/resources-repair-evidence.json",
+    "status": "independently reviewed; live current dependencies and immutable historical copies verified"
+  }
+}

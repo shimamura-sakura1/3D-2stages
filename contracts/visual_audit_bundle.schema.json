@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "documents": {
+      "type": "object",
+      "properties": {
+        "visual_brief": {
+          "$ref": "visual_brief.schema.json"
+        },
+        "reference_board": {
+          "$ref": "reference_board.schema.json"
+        },
+        "scene_spec": {
+          "$ref": "scene_spec.schema.json"
+        },
+        "style_assignment": {
+          "$ref": "style_assignment.schema.json"
+        },
+        "blockout_plan": {
+          "$ref": "blockout_plan.schema.json"
+        },
+        "lookdev_plan": {
+          "$ref": "lookdev_plan.schema.json"
+        },
+        "render_plan": {
+          "$ref": "render_plan.schema.json"
+        },
+        "semantic_material_map": {
+          "$ref": "semantic_material_map.schema.json"
+        },
+        "visual_review": {
+          "$ref": "visual_review.schema.json"
+        },
+        "revision_plan": {
+          "$ref": "revision_plan.schema.json"
+        },
+        "render_metadata": {
+          "$ref": "render_metadata.schema.json"
+        },
+        "project_manifest_v02": {
+          "$ref": "project_manifest_v02.schema.json"
+        }
+      },
+      "required": [
+        "visual_brief",
+        "reference_board",
+        "scene_spec",
+        "style_assignment",
+        "blockout_plan",
+        "lookdev_plan",
+        "render_plan",
+        "semantic_material_map",
+        "visual_review",
+        "revision_plan",
+        "render_metadata",
+        "project_manifest_v02"
+      ],
+      "additionalProperties": false
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "current": {
+            "$ref": "visual_common.schema.json#/$defs/scene_state"
+          },
+          "target": {
+            "$ref": "visual_common.schema.json#/$defs/scene_state"
+          }
+        },
+        "required": [
+          "current",
+          "target"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "documents",
+    "transitions"
+  ],
+  "additionalProperties": false
+}

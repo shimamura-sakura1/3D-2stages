@@ -1,0 +1,334 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "render_metadata_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "image_sha256": {
+      "$ref": "visual_common.schema.json#/$defs/sha256"
+    },
+    "reviewer": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "codex",
+            "user"
+          ]
+        },
+        "id": {
+          "$ref": "visual_common.schema.json#/$defs/id"
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "decision": {
+      "enum": [
+        "revision_required",
+        "final_review_required"
+      ]
+    },
+    "categories": {
+      "type": "object",
+      "properties": {
+        "plasticity": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "score",
+            "issues"
+          ],
+          "additionalProperties": false
+        },
+        "material_separation": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "score",
+            "issues"
+          ],
+          "additionalProperties": false
+        },
+        "surface_uniformity": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "score",
+            "issues"
+          ],
+          "additionalProperties": false
+        },
+        "composition": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "score",
+            "issues"
+          ],
+          "additionalProperties": false
+        },
+        "depth_separation": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "score",
+            "issues"
+          ],
+          "additionalProperties": false
+        },
+        "lighting_flatness": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "score",
+            "issues"
+          ],
+          "additionalProperties": false
+        },
+        "contact_shadow": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "score",
+            "issues"
+          ],
+          "additionalProperties": false
+        },
+        "atmospheric_depth": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "score",
+            "issues"
+          ],
+          "additionalProperties": false
+        },
+        "style_compatibility": {
+          "type": "object",
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "score",
+            "issues"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "plasticity",
+        "material_separation",
+        "surface_uniformity",
+        "composition",
+        "depth_separation",
+        "lighting_flatness",
+        "contact_shadow",
+        "atmospheric_depth",
+        "style_compatibility"
+      ],
+      "additionalProperties": false
+    },
+    "recommended_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "enum": [
+              "roughness_variation",
+              "lighting_intensity",
+              "lighting_direction",
+              "fog_amount",
+              "camera_framing",
+              "exposure",
+              "replace_geometry",
+              "regenerate_geometry"
+            ]
+          },
+          "scope": {
+            "$ref": "visual_common.schema.json#/$defs/id"
+          },
+          "magnitude": {
+            "enum": [
+              "small",
+              "medium",
+              "large"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "action",
+          "scope",
+          "magnitude",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "render_metadata_id",
+    "image_sha256",
+    "reviewer",
+    "decision",
+    "categories",
+    "recommended_actions"
+  ],
+  "additionalProperties": false
+}

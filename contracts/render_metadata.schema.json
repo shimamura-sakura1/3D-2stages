@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "build_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "pass_id": {
+      "type": "string",
+      "pattern": "^pass_[0-9]{2,}$"
+    },
+    "style_profile": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "render_plan_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "render_plan_hash": {
+      "$ref": "visual_common.schema.json#/$defs/sha256"
+    },
+    "image": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "path": {
+              "$ref": "visual_common.schema.json#/$defs/path"
+            },
+            "sha256": {
+              "$ref": "visual_common.schema.json#/$defs/sha256"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "render_success": {
+      "type": "boolean"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "renderer": {
+      "enum": [
+        "cycles",
+        "eevee"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "build_id",
+    "pass_id",
+    "style_profile",
+    "render_plan_id",
+    "render_plan_hash",
+    "image",
+    "render_success",
+    "error",
+    "renderer",
+    "timestamp"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "render_success": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "image": {
+            "type": "object"
+          },
+          "error": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "image": {
+            "type": "null"
+          },
+          "error": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}

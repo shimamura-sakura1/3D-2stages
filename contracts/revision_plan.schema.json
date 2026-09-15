@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "based_on_review_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "render_metadata_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "pass_index": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2
+    },
+    "max_preview_passes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "$ref": "visual_common.schema.json#/$defs/action"
+          },
+          "scope": {
+            "$ref": "visual_common.schema.json#/$defs/id"
+          },
+          "direction": {
+            "enum": [
+              "increase",
+              "decrease"
+            ]
+          },
+          "amount": {
+            "enum": [
+              "small",
+              "medium"
+            ]
+          }
+        },
+        "required": [
+          "action",
+          "scope",
+          "direction",
+          "amount"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "based_on_review_id",
+    "render_metadata_id",
+    "pass_index",
+    "max_preview_passes",
+    "actions"
+  ],
+  "additionalProperties": false
+}

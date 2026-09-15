@@ -1,0 +1,532 @@
+{
+  "documents": {
+    "visual_brief": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "visual_brief_01",
+      "revision": 0,
+      "mood": {
+        "primary": [
+          "quiet"
+        ],
+        "secondary": [
+          "isolated"
+        ]
+      },
+      "visual_language": {
+        "environment": "stylized_pbr",
+        "realism": "semi_realistic",
+        "character_compatibility": "anime"
+      },
+      "priorities": [
+        "atmosphere",
+        "composition",
+        "material_coherence"
+      ],
+      "constraints": {
+        "avoid": [
+          "uniform_gloss"
+        ],
+        "required": [
+          "readable_platform"
+        ]
+      }
+    },
+    "reference_board": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "reference_board_01",
+      "revision": 0,
+      "references": [
+        {
+          "reference_id": "ref_material",
+          "path": "references/user/material.png",
+          "roles": [
+            "material_language"
+          ],
+          "weight": 1.0,
+          "source": {
+            "kind": "user",
+            "creator": "fixture author",
+            "license": "unknown",
+            "license_verified": false,
+            "attribution": "Unverified structural fixture"
+          }
+        }
+      ]
+    },
+    "scene_spec": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "scene_spec_01",
+      "revision": 0,
+      "scene_type": "industrial_station",
+      "world_scale": {
+        "unit": "meter",
+        "human_reference_height": 1.7
+      },
+      "objects": [
+        {
+          "object_id": "platform",
+          "role": "structure",
+          "description": "platform",
+          "depth_layer": "foreground",
+          "repetition": 1,
+          "size_m": [
+            6,
+            2,
+            0.3
+          ],
+          "relationships": []
+        },
+        {
+          "object_id": "machine",
+          "role": "hero",
+          "description": "machine",
+          "depth_layer": "midground",
+          "repetition": 1,
+          "size_m": [
+            1,
+            1,
+            2
+          ],
+          "relationships": []
+        },
+        {
+          "object_id": "wall",
+          "role": "structure",
+          "description": "wall",
+          "depth_layer": "background",
+          "repetition": 1,
+          "size_m": [
+            6,
+            0.2,
+            3
+          ],
+          "relationships": []
+        }
+      ],
+      "composition": {
+        "focal_subject": "machine",
+        "primary_axis": "railway longitudinal",
+        "depth_layers": [
+          "foreground",
+          "midground",
+          "background"
+        ]
+      },
+      "camera_intent": {
+        "shot_type": "wide_environment",
+        "perspective": "moderate",
+        "eye_level": "slightly_low"
+      }
+    },
+    "style_assignment": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "style_assignment_01",
+      "revision": 0,
+      "style_profile": "industrial_acg_v1",
+      "profile_version": "planned",
+      "lighting_profile": "overcast",
+      "atmosphere_profile": "default",
+      "camera_profile": "environment",
+      "color_profile": "default",
+      "references": [
+        {
+          "reference_id": "ref_material",
+          "roles": [
+            "material_language"
+          ]
+        }
+      ]
+    },
+    "blockout_plan": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "blockout_plan_01",
+      "revision": 0,
+      "unit": "meter",
+      "objects": [
+        {
+          "object_id": "platform",
+          "asset_id": null,
+          "geometry_source": "procedural",
+          "transform": {
+            "location": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "parent": null,
+          "repetition": 1,
+          "spacing": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "object_id": "machine",
+          "asset_id": "machine",
+          "geometry_source": "generated",
+          "transform": {
+            "location": [
+              0,
+              3,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "parent": null,
+          "repetition": 1,
+          "spacing": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "object_id": "wall",
+          "asset_id": null,
+          "geometry_source": "procedural",
+          "transform": {
+            "location": [
+              0,
+              6,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "parent": null,
+          "repetition": 1,
+          "spacing": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "semantic_material_map": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "semantic_material_map_01",
+      "revision": 0,
+      "mappings": [
+        {
+          "object_id": "platform",
+          "slot": "body",
+          "material_class": "concrete",
+          "condition": "lightly_weathered",
+          "surface_source": null
+        },
+        {
+          "object_id": "machine",
+          "slot": "body",
+          "material_class": "painted_metal",
+          "condition": "lightly_weathered",
+          "surface_source": null
+        },
+        {
+          "object_id": "wall",
+          "slot": "body",
+          "material_class": "concrete",
+          "condition": "lightly_weathered",
+          "surface_source": null
+        }
+      ]
+    },
+    "lookdev_plan": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "lookdev_plan_01",
+      "revision": 0,
+      "style_assignment_id": "style_assignment_01",
+      "material_map_id": "semantic_material_map_01",
+      "lighting": {
+        "profile": "overcast",
+        "intensity": "medium"
+      },
+      "atmosphere": {
+        "profile": "default",
+        "amount": "subtle"
+      }
+    },
+    "render_plan": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "render_plan_01",
+      "revision": 0,
+      "purpose": "preview",
+      "renderer": "cycles",
+      "camera": {
+        "profile": "environment",
+        "location": [
+          9,
+          -12,
+          5
+        ],
+        "target": [
+          0,
+          3,
+          1
+        ],
+        "focal_length_mm": 42
+      },
+      "preview": {
+        "width": 640,
+        "height": 360,
+        "samples": 16
+      },
+      "color": {
+        "profile": "default",
+        "exposure": 0
+      },
+      "output": {
+        "image_path": "stage2/previews/pass_00/preview.png"
+      }
+    },
+    "render_metadata": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "render_metadata_01",
+      "revision": 0,
+      "build_id": "fixture_build",
+      "pass_id": "pass_00",
+      "style_profile": "industrial_acg_v1",
+      "render_plan_id": "render_plan_01",
+      "render_plan_hash": "114340c9e1055ee232a4e004d0d88f0558dd64ba4a921d7a722ffdaea7953de3",
+      "image": {
+        "path": "stage2/previews/pass_00/preview.png",
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "render_success": true,
+      "error": null,
+      "renderer": "cycles",
+      "timestamp": "2026-09-14T00:00:00Z"
+    },
+    "visual_review": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "visual_review_01",
+      "revision": 0,
+      "render_metadata_id": "render_metadata_01",
+      "image_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "reviewer": {
+        "kind": "codex",
+        "id": "fixture"
+      },
+      "decision": "revision_required",
+      "categories": {
+        "plasticity": {
+          "score": 0.5,
+          "issues": [
+            "Structural fixture only"
+          ]
+        },
+        "material_separation": {
+          "score": 0.5,
+          "issues": [
+            "Structural fixture only"
+          ]
+        },
+        "surface_uniformity": {
+          "score": 0.5,
+          "issues": [
+            "Structural fixture only"
+          ]
+        },
+        "composition": {
+          "score": 0.5,
+          "issues": [
+            "Structural fixture only"
+          ]
+        },
+        "depth_separation": {
+          "score": 0.5,
+          "issues": [
+            "Structural fixture only"
+          ]
+        },
+        "lighting_flatness": {
+          "score": 0.5,
+          "issues": [
+            "Structural fixture only"
+          ]
+        },
+        "contact_shadow": {
+          "score": 0.5,
+          "issues": [
+            "Structural fixture only"
+          ]
+        },
+        "atmospheric_depth": {
+          "score": 0.5,
+          "issues": [
+            "Structural fixture only"
+          ]
+        },
+        "style_compatibility": {
+          "score": 0.5,
+          "issues": [
+            "Structural fixture only"
+          ]
+        }
+      },
+      "recommended_actions": [
+        {
+          "action": "roughness_variation",
+          "scope": "machine",
+          "magnitude": "small",
+          "reason": "Fixture diagnosis"
+        }
+      ]
+    },
+    "revision_plan": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "revision_plan_01",
+      "revision": 0,
+      "based_on_review_id": "visual_review_01",
+      "render_metadata_id": "render_metadata_01",
+      "pass_index": 1,
+      "max_preview_passes": 3,
+      "actions": [
+        {
+          "action": "roughness_variation",
+          "scope": "machine",
+          "direction": "increase",
+          "amount": "small"
+        }
+      ]
+    },
+    "project_manifest_v02": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "version": 0,
+      "mode": "plan_only",
+      "user_brief": {
+        "raw": "Industrial station",
+        "refined": "Industrial station"
+      },
+      "assets": {},
+      "supplied_assets": {},
+      "auto_approve": false,
+      "allow_partial": false,
+      "history": [],
+      "state": "initialized",
+      "scene_version": 1,
+      "artifacts": {},
+      "approvals": [],
+      "legacy_manifest": null,
+      "migration_required_input": []
+    }
+  },
+  "transitions": [
+    {
+      "current": "initialized",
+      "target": "visual_planning"
+    },
+    {
+      "current": "visual_planning",
+      "target": "visual_review_required"
+    },
+    {
+      "current": "visual_review_required",
+      "target": "visual_approved"
+    },
+    {
+      "current": "visual_approved",
+      "target": "geometry_pending"
+    },
+    {
+      "current": "geometry_pending",
+      "target": "geometry_review_required"
+    },
+    {
+      "current": "geometry_review_required",
+      "target": "geometry_approved"
+    },
+    {
+      "current": "geometry_approved",
+      "target": "blockout_pending"
+    },
+    {
+      "current": "blockout_pending",
+      "target": "lookdev_pending"
+    },
+    {
+      "current": "lookdev_pending",
+      "target": "render_pending"
+    },
+    {
+      "current": "render_pending",
+      "target": "render_review_required"
+    },
+    {
+      "current": "render_review_required",
+      "target": "visual_revision"
+    },
+    {
+      "current": "visual_revision",
+      "target": "render_pending"
+    },
+    {
+      "current": "render_pending",
+      "target": "render_review_required"
+    },
+    {
+      "current": "render_review_required",
+      "target": "final_review_required"
+    },
+    {
+      "current": "final_review_required",
+      "target": "approved"
+    },
+    {
+      "current": "approved",
+      "target": "delivered"
+    }
+  ]
+}

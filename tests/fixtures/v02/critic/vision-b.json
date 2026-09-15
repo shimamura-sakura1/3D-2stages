@@ -1,0 +1,61 @@
+{
+  "basis": "Direct visual inspection of the fixed image; no pixel metrics.",
+  "categories": {
+    "plasticity": {
+      "score": 0.91,
+      "issues": ["All five samples share pale, smooth shading; the glossy rubber ring especially resembles molded plastic."]
+    },
+    "material_separation": {
+      "score": 0.96,
+      "issues": ["Labels provide stronger material identification than appearance.", "Bare metal lacks a distinct metallic reflection response; concrete looks smooth; glass/light appears opaque and unlit."]
+    },
+    "surface_uniformity": {
+      "score": 0.88,
+      "issues": ["Surfaces have nearly identical color and finish, with little visible texture or roughness variation."]
+    },
+    "composition": {
+      "score": 0.12,
+      "issues": ["Samples and labels are readable, but the platform extends beyond both side edges."]
+    },
+    "depth_separation": {
+      "score": 0.28,
+      "issues": ["Perspective and silhouettes establish depth, but similar object and platform values weaken separation."]
+    },
+    "lighting_flatness": {
+      "score": 0.43,
+      "issues": ["Broad soft illumination reveals shape, but offers limited reflection contrast for distinguishing materials."]
+    },
+    "contact_shadow": {
+      "score": 0.14,
+      "issues": ["Contact shadows generally ground the samples; several broad bases have weak edge contrast."]
+    },
+    "atmospheric_depth": {
+      "score": 0.05,
+      "issues": ["No visible atmospheric gradient; the compact material display does not clearly require one."]
+    },
+    "style_compatibility": {
+      "score": 0.67,
+      "issues": ["Clean simplified forms support an ACG presentation, but the shared smooth finish undermines the intended industrial material vocabulary."]
+    }
+  },
+  "bounded_semantic_actions": [
+    {
+      "action": "roughness_variation",
+      "recommendation": "Trial a small, material-specific increase on concrete and painted metal; compare against this image without globally adding noise."
+    },
+    {
+      "action": "lighting_direction",
+      "recommendation": "Trial a modest lateral shift of the key light to strengthen grazing highlights and distinguish surface response."
+    },
+    {
+      "action": "camera_framing",
+      "recommendation": "Pull back slightly if showing the full platform is desired."
+    }
+  ],
+  "separate_material_plan_review": [
+    "Confirm bare-metal reflectance and concrete surface structure.",
+    "Confirm the intended rubber finish before reducing its prominent glossy highlights.",
+    "Specify whether glass/light should transmit light, emit light, or contain separate glass and luminous elements. Its opaque appearance requires material-plan review; roughness variation alone cannot fix it.",
+    "Establish distinct material colors and baseline finishes before further lighting adjustments."
+  ]
+}

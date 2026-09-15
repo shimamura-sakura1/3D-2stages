@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "object_id": {
+            "$ref": "visual_common.schema.json#/$defs/id"
+          },
+          "slot": {
+            "$ref": "visual_common.schema.json#/$defs/id"
+          },
+          "material_class": {
+            "$ref": "visual_common.schema.json#/$defs/material_class"
+          },
+          "condition": {
+            "enum": [
+              "clean",
+              "lightly_weathered",
+              "weathered"
+            ]
+          },
+          "surface_source": {
+            "anyOf": [
+              {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "roughness_variation_scale": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 2
+          }
+        },
+        "required": [
+          "object_id",
+          "slot",
+          "material_class",
+          "condition",
+          "surface_source"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "mappings"
+  ],
+  "additionalProperties": false
+}

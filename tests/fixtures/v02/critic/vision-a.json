@@ -1,0 +1,59 @@
+{
+  "categories": {
+    "plasticity": {
+      "score": 0.85,
+      "issues": ["Most samples share a smooth pale finish; the rubber ring looks especially glossy and plastic."]
+    },
+    "material_separation": {
+      "score": 0.95,
+      "issues": ["Painted metal, bare metal, and concrete have very similar visible responses.", "The glass/light panel appears opaque and has no evident luminous response."]
+    },
+    "surface_uniformity": {
+      "score": 0.9,
+      "issues": ["Concrete lacks visible grain or pores; broad surfaces show little material-specific variation."]
+    },
+    "composition": {
+      "score": 0.15,
+      "issues": ["The display base is cropped at both sides, though all samples and labels remain readable."]
+    },
+    "depth_separation": {
+      "score": 0.2,
+      "issues": ["Shared sample and floor colors slightly weaken separation; overlaps, shading, and perspective still communicate depth."]
+    },
+    "lighting_flatness": {
+      "score": 0.35,
+      "issues": ["Broad soft lighting produces restrained contrast, limiting differentiation across the large faces."]
+    },
+    "contact_shadow": {
+      "score": 0.1,
+      "issues": ["Contact shadows are visible and generally anchor the objects; the ring has a particularly clear contact point."]
+    },
+    "atmospheric_depth": {
+      "score": 0.0,
+      "issues": []
+    },
+    "style_compatibility": {
+      "score": 0.7,
+      "issues": ["The clean display and simple silhouettes support stylization, but the uniform finish reads more like a material placeholder study than resolved industrial ACG materials."]
+    }
+  },
+  "bounded_actions": [
+    {
+      "action": "roughness_variation",
+      "recommendation": "Test subtle, material-local roughness variation on painted metal and concrete; avoid uniform noise across every sample."
+    },
+    {
+      "action": "lighting_direction",
+      "recommendation": "Test a 10–20 degree more oblique key-light direction to reveal surface and face differences."
+    },
+    {
+      "action": "camera_framing",
+      "recommendation": "Widen framing by approximately 5–10% if the full display base should be visible."
+    }
+  ],
+  "separate_material_plan_review": [
+    "Differentiate bare metal, painted metal, concrete, and rubber through their base material responses and appropriate surface detail.",
+    "Decide whether glass/light represents transmissive glass, an emissive fixture, or both; its current opaque appearance requires a material review, not merely roughness variation."
+  ],
+  "scope": "Visual inspection of the supplied image only; no modification or approval."
+}

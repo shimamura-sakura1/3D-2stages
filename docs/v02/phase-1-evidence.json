@@ -1,0 +1,528 @@
+{
+  "evidence_kind": "Non-contractual Phase 1 maintenance evidence, not production state or accepted change",
+  "baseline": "changes/change-006.json",
+  "target_governance_version": "S6",
+  "scope": "Phase 1 contracts only; no rendering, vision inference, or installed migration",
+  "development_evidence": [
+    {
+      "path": ".deps/v02-phase1/test-first.txt",
+      "sha256": "e94ebd593b6b583e4badb5a6387c3c48d3e57967dd6c2dcf72737489dd337fa8",
+      "last_line": "35 failed, 10 passed in 2.15s"
+    },
+    {
+      "path": ".deps/v02-phase1/test-first-confirmed.txt",
+      "sha256": "b5b61da8e99115a65914ec257bdf88786671e627384da4a06c3a96ad261a1b16",
+      "last_line": "45 failed in 2.33s"
+    },
+    {
+      "path": ".deps/v02-phase1/tests-implemented.txt",
+      "sha256": "1e4fa35ac92244d5825ef345447e96572995b5302e211660cd9e965b8e1680c6",
+      "last_line": "45 passed in 5.70s"
+    },
+    {
+      "path": ".deps/v02-phase1/boundary-tests.txt",
+      "sha256": "5b2344442f44a76d73b950794d4d01bc44dadd919e98ce5ebf83633f786c4215",
+      "last_line": "2 failed, 54 passed in 6.37s"
+    },
+    {
+      "path": ".deps/v02-phase1/tests-final-local.txt",
+      "sha256": "d05d4f014413c488234bc07d100827758ddfd3d4c7170bbcaec64428642998c8",
+      "last_line": "56 passed in 6.77s"
+    },
+    {
+      "path": ".deps/v02-phase1/impact-before.json",
+      "sha256": "b2176b952773c4507ff2c57c1b343f0e074724e979ad8ece50403bda1e64bfc8",
+      "last_line": "}"
+    },
+    {
+      "path": ".deps/v02-phase1/impact-confirmed.json",
+      "sha256": "b2176b952773c4507ff2c57c1b343f0e074724e979ad8ece50403bda1e64bfc8",
+      "last_line": "}"
+    },
+    {
+      "path": ".deps/v02-phase1/consistency-impact.json",
+      "sha256": "4736e1f398b6d73a7ab1b4145d40f03c38575d6e4eb275b0fa18e01c03a746e4",
+      "last_line": "}"
+    },
+    {
+      "path": ".deps/v02-phase1/timestamp-boundary-first.txt",
+      "sha256": "df8b652c0c911339dea1377118f581a500544332a3020c4d03ca94da9ecbb945",
+      "last_line": "1 failed, 3 passed, 55 deselected in 0.19s"
+    },
+    {
+      "path": ".deps/v02-phase1/timestamp-impact.json",
+      "sha256": "fa0d3e5d69748e17278b665965ee05948d9895d254a8b7d32581e9cd1441e303",
+      "last_line": "}"
+    },
+    {
+      "path": ".deps/v02-phase1/tests-final-59.txt",
+      "sha256": "b741441f3c9ae856168b0dbc4bd861fcf5d90575d3cfea745a9a49b1a9efa572",
+      "last_line": "59 passed in 6.79s"
+    }
+  ],
+  "external_validation": {
+    "gpu": "not_run",
+    "ssh": "not_run",
+    "blender": "not_run",
+    "windows_host": "not_run"
+  },
+  "final_verification": [
+    {
+      "report": ".skillctl/reports/validate-630023f67025.json",
+      "sha256": "c286ccd6ae3823f984950903c7d77fbc7797c76d24541c8b576882e8f29d20c8",
+      "status": "pass",
+      "errors": [],
+      "warnings": [],
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      }
+    },
+    {
+      "report": ".skillctl/reports/contract-test-8e7c9aad380f.json",
+      "sha256": "c589997139d11af1191ef1e77b8b175e7fa83015ce43f12530f6b8c8c8c397fc",
+      "declared_contract": "pass",
+      "runtime_contract": "pass",
+      "errors": [],
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      }
+    },
+    {
+      "report": ".skillctl/reports/test-045213bb1f07.json",
+      "sha256": "2d766e4f39f3ef2ca68ebc8b985e1cef09d45c2bc6137e2136302d1c0fcdfdf9",
+      "status": "pass",
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      },
+      "tests": [
+        {
+          "id": "T-LEGACY-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "95 passed in 9.59s"
+          ]
+        },
+        {
+          "id": "T-CLI-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "{\"approved_preflight\": true, \"asset_delivery_with_provenance\": true, \"asset_review_required\": true, \"incomplete_outputs_blocked\": true, \"mcp_preparation_is_not_build\": true, \"plan_only_unchanged\": true, \"route\": \"library_direct\", \"unapproved_stage2_blocked\": true}"
+          ]
+        },
+        {
+          "id": "T-DOC-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "{\"documented_examples_executed\": 3, \"scope\": \"command behavior only\"}"
+          ]
+        },
+        {
+          "id": "T-AUDIT-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "2 passed in 0.32s"
+          ]
+        },
+        {
+          "id": "T-INIT-VALID",
+          "status": "pass",
+          "returncode": null,
+          "summary": []
+        },
+        {
+          "id": "T-INIT-INVALID",
+          "status": "pass",
+          "returncode": null,
+          "summary": []
+        },
+        {
+          "id": "T-AUDIT-CONTRACT",
+          "status": "pass",
+          "returncode": null,
+          "summary": []
+        },
+        {
+          "id": "T-MAINT-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "4 passed in 0.04s"
+          ]
+        },
+        {
+          "id": "T-ENV-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "3 passed in 0.17s"
+          ]
+        },
+        {
+          "id": "T-README-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "{\"readme_offline_asset\": \"pass\", \"review_required\": true}"
+          ]
+        },
+        {
+          "id": "T-FLOW-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "6 passed, 15 deselected in 1.90s"
+          ]
+        },
+        {
+          "id": "T-FLOW-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "4 passed, 17 deselected in 0.93s"
+          ]
+        },
+        {
+          "id": "T-FLOW-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "11 passed, 10 deselected in 1.31s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "9 passed, 14 deselected in 0.53s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "2 passed, 21 deselected in 0.65s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "12 passed, 11 deselected in 2.14s"
+          ]
+        },
+        {
+          "id": "T-STAGE1-E2E",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "7 passed in 5.91s"
+          ]
+        },
+        {
+          "id": "T-GOVERN-NEWLINES",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "5 passed in 0.04s"
+          ]
+        },
+        {
+          "id": "T-V02-BASELINE",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "8 passed in 3.87s"
+          ]
+        },
+        {
+          "id": "T-V02-CONTRACTS",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "59 passed in 9.17s"
+          ]
+        },
+        {
+          "id": "T-V02-CONTRACT-IO",
+          "status": "pass",
+          "returncode": null,
+          "summary": []
+        }
+      ]
+    }
+  ],
+  "prior_verification": [
+    {
+      "report": ".skillctl/reports/test-cd48c32785fc.json",
+      "sha256": "674298f1ff341561e15e991f4fca2071951d2ad1a63e769c971d133ec56ae3c9",
+      "status": "pass",
+      "source_projection": {
+        "restored_newlines": [
+          "changes/change-001.json",
+          "changes/change-002.json",
+          "changes/change-003.json",
+          "tests/fixtures/governance/contract_bundle.json",
+          "tests/fixtures/governance/init_args.json",
+          "tests/fixtures/governance/invalid_args.json",
+          "tests/fixtures/governance/invalid_bundle.json"
+        ]
+      },
+      "tests": [
+        {
+          "id": "T-LEGACY-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "95 passed in 9.49s"
+          ]
+        },
+        {
+          "id": "T-CLI-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "{\"approved_preflight\": true, \"asset_delivery_with_provenance\": true, \"asset_review_required\": true, \"incomplete_outputs_blocked\": true, \"mcp_preparation_is_not_build\": true, \"plan_only_unchanged\": true, \"route\": \"library_direct\", \"unapproved_stage2_blocked\": true}"
+          ]
+        },
+        {
+          "id": "T-DOC-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "{\"documented_examples_executed\": 3, \"scope\": \"command behavior only\"}"
+          ]
+        },
+        {
+          "id": "T-AUDIT-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "2 passed in 0.33s"
+          ]
+        },
+        {
+          "id": "T-INIT-VALID",
+          "status": "pass",
+          "returncode": null,
+          "summary": []
+        },
+        {
+          "id": "T-INIT-INVALID",
+          "status": "pass",
+          "returncode": null,
+          "summary": []
+        },
+        {
+          "id": "T-AUDIT-CONTRACT",
+          "status": "pass",
+          "returncode": null,
+          "summary": []
+        },
+        {
+          "id": "T-MAINT-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "4 passed in 0.04s"
+          ]
+        },
+        {
+          "id": "T-ENV-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "3 passed in 0.17s"
+          ]
+        },
+        {
+          "id": "T-README-001",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "{\"readme_offline_asset\": \"pass\", \"review_required\": true}"
+          ]
+        },
+        {
+          "id": "T-FLOW-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "6 passed, 15 deselected in 1.91s"
+          ]
+        },
+        {
+          "id": "T-FLOW-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "4 passed, 17 deselected in 0.89s"
+          ]
+        },
+        {
+          "id": "T-FLOW-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "11 passed, 10 deselected in 1.29s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-POSITIVE",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "9 passed, 14 deselected in 0.52s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-DEFAULT",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "2 passed, 21 deselected in 0.57s"
+          ]
+        },
+        {
+          "id": "T-PORTABLE-REJECTION",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "12 passed, 11 deselected in 1.79s"
+          ]
+        },
+        {
+          "id": "T-STAGE1-E2E",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "7 passed in 5.51s"
+          ]
+        },
+        {
+          "id": "T-GOVERN-NEWLINES",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "5 passed in 0.04s"
+          ]
+        },
+        {
+          "id": "T-V02-BASELINE",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "8 passed in 3.73s"
+          ]
+        },
+        {
+          "id": "T-V02-CONTRACTS",
+          "status": "pass",
+          "returncode": 0,
+          "summary": [
+            "56 passed in 8.29s"
+          ]
+        },
+        {
+          "id": "T-V02-CONTRACT-IO",
+          "status": "pass",
+          "returncode": null,
+          "summary": []
+        }
+      ]
+    }
+  ],
+  "representative_operation": {
+    "scope": "Actual local CLI, migration planning and 12 JSON audit outputs; fixture render/review values are synthetic; no production execution",
+    "directory": ".deps/v02-phase1/representative-mgggirnw",
+    "legacy_source": ".deps/v02-phase0/representative-j58i4g2y/library",
+    "source_unchanged": true,
+    "source_files_checked": 20,
+    "document_outputs": 12,
+    "legal_transition_checks": 16,
+    "new_project_state": "initialized",
+    "migration_status": "migration_required_input",
+    "required_inputs": [
+      "visual_brief",
+      "reference_board",
+      "scene_spec",
+      "style_assignment"
+    ],
+    "files": {
+      "audit/blockout_plan.json": "fbda9a3bc39bbdde55850d0d5821732d87fccfb1c9b5c574b69e032ecf6e478b",
+      "audit/lookdev_plan.json": "1ddb31e06d71f8a113f24a57e1f09f829b4ff986a698c2d3164bf892e0d04df2",
+      "audit/project_manifest_v02.json": "47ec40db8c7376add33d60a280aebc3d83d127618b7fdda0fb6d16c55ee6c036",
+      "audit/reference_board.json": "60cc3c9ff27ccfe96bca19cfe63462a1e6908683d6476fe0de9a224ffdfd2956",
+      "audit/render_metadata.json": "bb955cc07f26c3a166e913c1c354eff4b8e7428a49421786822698f8a28da593",
+      "audit/render_plan.json": "68796cb2ae6ec8dddb99caa1adf9cdd3b6f4d3237ae7c7bfe697ffaa3af4fa18",
+      "audit/revision_plan.json": "15e2d7335f01dec0e2ba9dbdb11604d28fb9f1e4497c26e42a3d5cfdb735e87b",
+      "audit/scene_spec.json": "b1a1baf8800e907e47a5b350e6173fc133bf1207d7fd5aab3d637fe2aceba7fb",
+      "audit/semantic_material_map.json": "e925d347deb2626dd84795344b62b05a66ccc76a48b7155f277520014f31e462",
+      "audit/style_assignment.json": "72cdc4e1f47f932c6a50c83fb4a367676f7817c26dfe3e087889d61bf86b402c",
+      "audit/visual_brief.json": "ceebdd8c7630d72ac91a0af6ec988feac98b5f105ae9070f7e147fcd73201182",
+      "audit/visual_review.json": "f56cf9f2e56366383d80ada473fb8b955b1945b389f170dfda3b7e8bafaa53a6",
+      "edge-00.json": "5c6fb613675c7af18bbd8191589df79a9ec56347ace4aa8848b6f6096e154452",
+      "edge-01.json": "7d13313b74ee30a287dbffc7a847c431327d44f9268959a0dc7014a9c9d3484e",
+      "edge-02.json": "2b2b6ba1748ece54e4d6f2a50fadf388066f1bf43e9d17bda0f6190969d05b3c",
+      "edge-03.json": "7c916c20b64a20c1ef228ef6c00651ccd5042a1795948bec4143f321ac530474",
+      "edge-04.json": "4eac8b1a25b8608849f15ee2c7077b21b051a9ba25cd0faaf2ced643dd746c6b",
+      "edge-05.json": "09878dc6d44ac12cbea61acc96268ef87bb07da17f0db90ad51d47ccf189cf92",
+      "edge-06.json": "ddd53e90433f3bcd20a637c78e191f189635ec910c51b0a30f4fbda6a0284527",
+      "edge-07.json": "f0df8b6fd5189c743ec5ca8ce6387bf1cea35e145edb99c31f53f1f56d9bc816",
+      "edge-08.json": "64e22a9938953f9bc25903154572912fc4644536461cd03770b3f9006b320dea",
+      "edge-09.json": "e8e6ae090d6006f38be45cec6271ed84fbd5a16060cecddf60748c8ed41afea1",
+      "edge-10.json": "05dda3908e634af92336030680c4c44c93c3ebab599981d9e28ebac4a7f7444d",
+      "edge-11.json": "4de2c8566dfb5f6228b3f1997a4d49c559b30f0cba99e26308e23e14557dcfe4",
+      "edge-12.json": "e8e6ae090d6006f38be45cec6271ed84fbd5a16060cecddf60748c8ed41afea1",
+      "edge-13.json": "371a1693b2505f235a8c89f17c576b56507f98b71fa72fda901c09c29537c143",
+      "edge-14.json": "98a3a3bd5a3dc164a8a073d61266f32c8892ef0671f0ac016acdd8a9f77806a4",
+      "edge-15.json": "d5e2f7fc9d1c3b9cc71fe05d622f3890aaed8943e71af52890f81dd8c8f6b688",
+      "init.json": "670b7abd0c1a0b9091646b8acae779130467719f27e4057b8d6a3c79ff9348de",
+      "migration-plan.json": "119d7fa56f4e198f4cc91ed3b8cce495bf386bd32204c9ede23150a7ced7efc6",
+      "rejected-edge.json": "bf1d2bbf37ad2c4723b31bfa8715e1e4db40178abb19aac805555fa7cc57e120",
+      "rejected-legacy-execution.json": "d7a8edf44aaeb1fbc7321c2dba5947ab404acfc3273d03d92995eeb4b198c1c2",
+      "status.json": "670b7abd0c1a0b9091646b8acae779130467719f27e4057b8d6a3c79ff9348de",
+      "visual/manifest.yaml": "262cb7f5e4561ad3f820bd7d036dd3050b4b08c15dc97a185cc1af48886d4847",
+      "visual/user_brief.md": "a4fe5fb1359597d845726b841b2974ac152f3ff7c5340eae8f7932c930cf96df"
+    }
+  },
+  "integrity": {
+    "historical_requirements_unchanged": 9,
+    "historical_test_entries_unchanged": 19,
+    "old_schema_bytes_unchanged": true,
+    "historical_test_content_unchanged": true,
+    "phase0_evidence_unchanged": true,
+    "legacy_source_files_checked_unchanged": 20
+  },
+  "next_phase_readiness": "READY; formal acceptance only by generated changes/change-007.json"
+}

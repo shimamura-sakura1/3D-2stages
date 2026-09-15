@@ -1,23 +1,44 @@
 import json
+import re
 import struct
+from datetime import datetime
 from importlib.resources import files
 from pathlib import Path
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
 from runtime.errors import BoundaryError, ValidationError
 from runtime.io import inside, load_data, sha256
 
 
+CONTRACT_FORMATS = FormatChecker()
+
+
+@CONTRACT_FORMATS.checks("date-time", raises=(ValueError, TypeError))
+def valid_timestamp(value):
+    # Do not depend on jsonschema's optional RFC3339 extra being installed.
+    if not isinstance(value, str):
+        return True  # The schema's type constraint handles non-strings.
+    return (re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt][0-9]{2}:[0-9]{2}:[0-9]{2}"
+                         r"(?:\.[0-9]+)?(?:[Zz]|[+-][0-9]{2}:[0-9]{2})", value) is not None
+            and datetime.fromisoformat(value.replace("Z", "+00:00").replace("z", "+00:00")).tzinfo is not None)
+
+
 def validate_contract(name, value):
+    if isinstance(value, dict) and (value.get("schema_version") == "0.2" or name == "visual_audit_bundle"):
+        try:
+            json.dumps(value, allow_nan=False)
+        except (TypeError, ValueError) as exc:
+            raise ValidationError("Visual contracts require finite JSON values") from exc
     resources = {p.name: (Path(str(p)).resolve().as_uri(), json.loads(p.read_text(encoding="utf-8")))
                  for p in files("contracts").iterdir() if p.name.endswith(".schema.json")}
     registry = Registry().with_resources((uri, Resource.from_contents(schema)) for uri, schema in resources.values())
     if name + ".schema.json" not in resources:
         raise ValidationError(f"Unknown contract: {name}")
     uri, _ = resources[name + ".schema.json"]
-    errors = sorted(Draft202012Validator({"$ref": uri}, registry=registry).iter_errors(value),
+    errors = sorted(Draft202012Validator({"$ref": uri}, registry=registry,
+                    format_checker=CONTRACT_FORMATS).iter_errors(value),
                     key=lambda e: str(list(e.path)))
     if errors:
         error = errors[0]
@@ -26,7 +47,10 @@ def validate_contract(name, value):
 
 
 def validate_manifest(manifest):
-    validate_contract("project_manifest", manifest)
+    version = manifest.get("schema_version") if isinstance(manifest, dict) else None
+    if version not in ("0.1", "0.2"):
+        raise ValidationError(f"Unsupported manifest schema_version: {version}")
+    validate_contract("project_manifest_v02" if version == "0.2" else "project_manifest", manifest)
     for asset_id, task in manifest["assets"].items():
         if task["asset_id"] != asset_id:
             raise ValidationError("Asset map key must match asset_id")
@@ -35,7 +59,15 @@ def validate_manifest(manifest):
             raise ValidationError("Result belongs to another asset or revision")
         if task["status"] in ("approved", "review_required") and result is None:
             raise ValidationError("Reviewable assets must have a validated result")
+    if version == "0.2":
+        from runtime.visual_contracts import validate_visual_manifest
+        validate_visual_manifest(manifest)
     return manifest
+
+
+def require_legacy_manifest(manifest):
+    if manifest["schema_version"] != "0.1":
+        raise BoundaryError("Legacy production execution is unavailable for schema 0.2; Phase 1 supports contracts only")
 
 
 def validate_model(path):
@@ -79,11 +111,11 @@ def validate_model(path):
 def validate_result(root, result):
     validate_contract("stage1_result", result)
     source = result["source"]
-    policy = load_data(files("policies").joinpath("licensing_policy.yaml"))
-    if not source["license_verified"] or source["license"] not in policy["allowed_licenses"]:
-        raise BoundaryError("Result has unverified or unsupported licensing")
     if source["license"] == "cc_by" and not source["attribution_required"]:
         raise BoundaryError("CC BY assets must retain required attribution")
+    from runtime.asset_router import AssetRouter
+    if not AssetRouter().legal({"source": source}, generated_output=result["route"] == "hy3d_generate"):
+        raise BoundaryError("Result has unverified or unsupported licensing")
     if result["route"] == "library_hy3d_refine" and not source["modification_allowed"]:
         raise BoundaryError("Refinement requires modification rights")
     prefix = f"stage1/outputs/{result['asset_id']}/rev{result['revision']:02d}/"
@@ -97,6 +129,7 @@ def validate_result(root, result):
 
 def stage2_preflight(root, manifest, plan):
     validate_manifest(manifest)
+    require_legacy_manifest(manifest)
     validate_contract("blender_plan", plan)
     if manifest["mode"] not in ("stage2_only", "full_pipeline", "repair"):
         raise BoundaryError(f"Stage 2 prohibited in {manifest['mode']} mode")

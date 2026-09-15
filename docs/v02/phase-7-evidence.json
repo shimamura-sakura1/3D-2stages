@@ -1,0 +1,72 @@
+{
+  "phase": 7,
+  "baseline": "S11/change-012",
+  "new_version": "S12",
+  "scope": "Real MCP fixed-render observation and formal station preview review. Geometry generation and visual/geometry approvals are labeled maintenance simulations; no GPU inference or final artistic approval.",
+  "first_test_failure": {
+    "path": ".deps/v02-phase7/test-first.txt",
+    "sha256": "f89c3955d275019b757b64ca154b5f7eac88c4b8d459b608191b2474901da6eb"
+  },
+  "focused_tests": {
+    "critic": 46,
+    "historical_preview_production": 24
+  },
+  "fixed_fixture": {
+    "path": "tests/fixtures/v02/critic/plasticity_fixture.png",
+    "sha256": "f9992099d67bf78a01a547bab50fc14ad6585fdd62430317bfd25fe180535565",
+    "width": 960,
+    "height": 640,
+    "observations": [
+      "tests/fixtures/v02/critic/vision-a.json",
+      "tests/fixtures/v02/critic/vision-b.json"
+    ],
+    "assessment": "Both independent observations identify plasticity, weak material separation and insufficient surface-specific variation; subjective scores differ. This establishes qualitative recurrence on this fixture only."
+  },
+  "representative": {
+    "project": ".deps/v02-phase7/station-m1wq9fue",
+    "state": "visual_revision",
+    "scene_version": 1,
+    "metadata": {
+      "schema_version": "0.2",
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "document_id": "render_metadata_pass_00",
+      "revision": 0,
+      "build_id": "build_f1a6e3f5aa2e22c3",
+      "pass_id": "pass_00",
+      "style_profile": "industrial_acg_v1",
+      "render_plan_id": "render_plan_01",
+      "render_plan_hash": "49338057111167b6bf00359691cee6c5d49dbf263c0b761d1c31dea7a949257e",
+      "image": {
+        "path": "stage2/previews/pass_00/preview.png",
+        "sha256": "2c66c7590a81f78316304ae56e5a35adfcf29741ce1f21f7852a83fc7d7566cc"
+      },
+      "render_success": true,
+      "error": null,
+      "renderer": "cycles",
+      "timestamp": "2026-09-14T12:16:59.473789+00:00"
+    },
+    "review_record": {
+      "document_id": "station_review_00",
+      "revision": 0,
+      "scene_version": 1,
+      "path": "stage2/reviews/rev_0000/visual_review.yaml",
+      "sha256": "52e69f51bd15529e5e5abd2ca141d8005f355672ef19fa20837cc5de0f0be22d"
+    },
+    "approval_scopes": [
+      "visual",
+      "geometry"
+    ]
+  },
+  "gate7": "Actual image observed; current formal review persisted; complete acceptance remains authority of generated change record.",
+  "validation": {
+    "validate": "pass, no warnings",
+    "declared_contract": "pass",
+    "runtime_contract": "pass",
+    "active_test_groups": 27,
+    "tests_report": ".skillctl/reports/test-3fcb23cfb8a3.json",
+    "spec_review": "pass",
+    "quality_review": "pass",
+    "next_phase_readiness": "READY"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "phase": 10,
+  "version_target": "S15",
+  "status": "implemented_local_and_blender_verified_formal_acceptance_pending",
+  "last_accepted_version": "S13",
+  "user_scope": "Continue Phase 10→11→12 independently of HY3D; real GPU test explicitly suspended due insufficient VRAM",
+  "requirement": "REQ-V02-REFINEMENT-001",
+  "style": "industrial_acg_v1",
+  "profile_version": "1.1.0",
+  "legacy_default": "1.0.0",
+  "reference_evidence": [
+    {
+      "path": "projects/blue-sky-station/references/station-reference.png",
+      "sha256": "ebd188d33615494a9c554b1af6f2e8e1f68fc47ada068d6d948a331b911f669f",
+      "scope": "user reference: composition and geometry only; rights not verified for generation"
+    },
+    {
+      "path": ".deps/v02-phase2/calibration_preview.png",
+      "sha256": "39d4c22b9c7abee51807b26c6fe5aad15365f9f59d9eceb63f142795f5c68bd6",
+      "scope": "original prior material calibration baseline"
+    },
+    {
+      "path": ".deps/v02-phase9/original-machine-reference/pump.png",
+      "sha256": "594fdb6f0208a1ecdfadfb688bd8e21be31cba9cb169b1152d0e3222d0036f3e",
+      "scope": "original procedural manufactured geometry and surface reference"
+    }
+  ],
+  "test_first": [
+    ".deps/v02-phase10/red.txt",
+    ".deps/v02-phase10/red-consumers.txt",
+    ".deps/v02-phase10/red-library-names.txt",
+    ".deps/v02-phase10/red-component-bounds.txt",
+    ".deps/v02-phase10/red-version-packet-isolation.txt"
+  ],
+  "focused_tests": {
+    "count": 119,
+    "status": "pass",
+    "log": ".deps/v02-phase10/focused-final.txt",
+    "subsequent_repair": {
+      "count": 40,
+      "status": "pass",
+      "log": ".deps/v02-phase10/isolation-final.txt"
+    }
+  },
+  "validate": ".deps/v02-phase10/validate-final.json",
+  "contract": ".deps/v02-phase10/contract-final.json",
+  "real_blender": {
+    "version": "4.5.13 LTS",
+    "backend": "MCP",
+    "canonical_library_repeat_check": ".deps/v02-phase10/library-real-verification.json",
+    "calibration": ".deps/v02-phase10/calibration-1.1.0.png",
+    "station": "projects/industrial_station_v02/proposals/style-study-v1/status.json"
+  },
+  "visual_inspection": {
+    "reviewer": "Codex",
+    "images": [
+      "projects/industrial_station_v02/proposals/style-study-v1/preview-00.png",
+      "projects/industrial_station_v02/proposals/style-study-v1/preview-01.png"
+    ],
+    "observations": [
+      "Concrete is diffuse, rails have localized metallic reflections, glass preserves rear bench visibility and emissive signage is readable.",
+      "Roof casts directional shelter shadow; foreground rails, platform and distant service buildings are separable.",
+      "Both cameras retain muted teal/neutral material language and identical geometry fingerprint."
+    ],
+    "limitations": [
+      "Background service buildings are simple blockout geometry; these are style studies rather than final presentation frames.",
+      "Procedural and local-library assets tested; genuine generated geometry comparison deferred.",
+      "No user artistic approval or full final workflow execution claimed."
+    ]
+  },
+  "independent_review": {
+    "spec": "pass",
+    "quality": "pass after version dependency isolation repair"
+  },
+  "full_active_regression": {
+    "status": "pass",
+    "groups": 34,
+    "report": ".skillctl/reports/test-b414e4fd3f4f.json",
+    "summary": ".deps/v02-phase12/full-active-s17-final.json",
+    "scope": "All active historical groups; HTTP loopback and HY3D doubles are not real GPU inference."
+  },
+  "formal_acceptance": "Not performed: real HY3D comparison and original full final-scene acceptance remain pending."
+}

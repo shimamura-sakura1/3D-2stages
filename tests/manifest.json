@@ -684,6 +684,791 @@
         ],
         "timeout_seconds": 120
       }
+    },
+    {
+      "id": "T-V02-BASELINE",
+      "type": "characterization",
+      "status": "active",
+      "covers": [
+        "REQ-V02-BASELINE-001-C1",
+        "REQ-V02-BASELINE-001-C2",
+        "REQ-V02-BASELINE-001-C3"
+      ],
+      "exercises": [
+        "v02-baseline",
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "v02-baseline",
+        "workflow-cli",
+        "runtime.validators",
+        "runtime.manifest_manager",
+        "runtime.stage1_executor",
+        "runtime.delivery_executor",
+        "contracts.project_manifest.schema",
+        "contracts.asset_task.schema",
+        "contracts.stage1_result.schema",
+        "contracts.blender_plan.schema",
+        "contracts.review_report.schema",
+        "contracts.delivery.schema"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_baseline.py"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-V02-CONTRACTS",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-CONTRACTS-001-C1",
+        "REQ-V02-CONTRACTS-001-C2",
+        "REQ-V02-CONTRACTS-001-C3",
+        "REQ-V02-CONTRACTS-001-C4",
+        "REQ-V02-CONTRACTS-001-C5"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "v02-contract-audit",
+        "runtime.visual_contracts",
+        "runtime.migrations.v01_to_v02",
+        "runtime.state_machine"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "v02-contract-audit",
+        "runtime.visual_contracts",
+        "runtime.migrations.v01_to_v02",
+        "runtime.validators",
+        "runtime.manifest_manager",
+        "runtime.state_machine",
+        "policies.scene_transitions_v02",
+        "contracts.visual_brief.schema",
+        "contracts.reference_board.schema",
+        "contracts.scene_spec.schema",
+        "contracts.style_assignment.schema",
+        "contracts.blockout_plan.schema",
+        "contracts.lookdev_plan.schema",
+        "contracts.render_plan.schema",
+        "contracts.semantic_material_map.schema",
+        "contracts.visual_review.schema",
+        "contracts.revision_plan.schema",
+        "contracts.render_metadata.schema",
+        "contracts.project_manifest_v02.schema"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_contracts.py"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-V02-CONTRACT-IO",
+      "type": "contract",
+      "status": "active",
+      "covers": [
+        "REQ-V02-CONTRACTS-001-C1"
+      ],
+      "exercises": [
+        "v02-contract-audit"
+      ],
+      "depends_on_artifacts": [
+        "v02-contract-audit",
+        "contracts.visual_audit_bundle.schema",
+        "contracts.visual_brief.schema",
+        "contracts.reference_board.schema",
+        "contracts.scene_spec.schema",
+        "contracts.style_assignment.schema",
+        "contracts.blockout_plan.schema",
+        "contracts.lookdev_plan.schema",
+        "contracts.render_plan.schema",
+        "contracts.semantic_material_map.schema",
+        "contracts.visual_review.schema",
+        "contracts.revision_plan.schema",
+        "contracts.render_metadata.schema",
+        "contracts.project_manifest_v02.schema"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "runtime",
+        "artifact": "v02-contract-audit",
+        "cases": [
+          {
+            "id": "valid-bundle",
+            "fixture": "tests/fixtures/v02/industrial_station.json",
+            "expect": "valid",
+            "expected_exit_code": 0
+          },
+          {
+            "id": "invalid-bundle",
+            "fixture": "tests/fixtures/v02/invalid_bundle.json",
+            "expect": "invalid",
+            "expected_exit_code": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "T-V02-STYLE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-STYLE-001-C1",
+        "REQ-V02-STYLE-001-C2",
+        "REQ-V02-STYLE-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.style_registry",
+        "runtime.style_resolver",
+        "scripts.govern"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.style_registry",
+        "runtime.style_resolver",
+        "scripts.govern"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_style.py"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-V02-PLANNING",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-PLANNING-001-C1",
+        "REQ-V02-PLANNING-001-C2",
+        "REQ-V02-PLANNING-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.manifest_manager",
+        "runtime.visual_planning",
+        "runtime.reference_manager"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.manifest_manager",
+        "runtime.visual_planning",
+        "runtime.reference_manager"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_planning.py"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-V02-GEOMETRY",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-GEOMETRY-001-C1",
+        "REQ-V02-GEOMETRY-001-C2",
+        "REQ-V02-GEOMETRY-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.geometry_acquisition",
+        "runtime.geometry_router",
+        "runtime.manifest_manager"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.geometry_acquisition",
+        "runtime.geometry_router",
+        "runtime.manifest_manager",
+        "runtime.visual_contracts",
+        "contracts.geometry_result.schema"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_geometry.py"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-V02-PRODUCTION",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-PRODUCTION-001-C1",
+        "REQ-V02-PRODUCTION-001-C2",
+        "REQ-V02-PRODUCTION-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.scene_production",
+        "runtime.blender_operations",
+        "runtime.manifest_manager"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.scene_production",
+        "runtime.blender_operations",
+        "runtime.manifest_manager"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_production.py"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-V02-PREVIEW",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-PREVIEW-001-C1",
+        "REQ-V02-PREVIEW-001-C2",
+        "REQ-V02-PREVIEW-001-C3",
+        "REQ-V02-PREVIEW-001-C4"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.preview_renderer",
+        "runtime.manifest_manager",
+        "runtime.blender_operations"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.preview_renderer",
+        "runtime.blender_operations",
+        "runtime.scene_production",
+        "runtime.manifest_manager"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_preview.py"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-V02-CRITIC",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-CRITIC-001-C1",
+        "REQ-V02-CRITIC-001-C2",
+        "REQ-V02-CRITIC-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.visual_review",
+        "runtime.manifest_manager"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.visual_review",
+        "runtime.manifest_manager",
+        "contracts.visual_review.schema",
+        "runtime.preview_renderer",
+        "runtime.scene_production"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_critic.py"
+        ],
+        "timeout_seconds": 180
+      }
+    },
+    {
+      "id": "T-V02-REVISION",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-REVISION-001-C1",
+        "REQ-V02-REVISION-001-C2",
+        "REQ-V02-REVISION-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.revision_controller",
+        "runtime.manifest_manager",
+        "runtime.blender_operations"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.revision_controller",
+        "runtime.manifest_manager",
+        "runtime.blender_operations",
+        "runtime.scene_production",
+        "contracts.revision_plan.schema"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_revision.py"
+        ],
+        "timeout_seconds": 180
+      }
+    },
+    {
+      "id": "T-V02-HY3D",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-HY3D-001-C1",
+        "REQ-V02-HY3D-001-C2",
+        "REQ-V02-HY3D-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.hy3d_client",
+        "runtime.geometry_acquisition",
+        "runtime.hy3d_surface"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.hy3d_client",
+        "runtime.geometry_acquisition",
+        "runtime.hy3d_surface",
+        "contracts.geometry_result.schema",
+        "runtime.scene_production"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_hy3d.py"
+        ],
+        "timeout_seconds": 180
+      }
+    },
+    {
+      "id": "T-HY3D-PROVENANCE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-HY3D-PROVENANCE-001-C1",
+        "REQ-HY3D-PROVENANCE-001-C2",
+        "REQ-HY3D-PROVENANCE-001-C3",
+        "REQ-HY3D-PROVENANCE-001-C4"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "hy3d-provenance-guide",
+        "runtime.asset_router",
+        "runtime.validators",
+        "runtime.geometry_acquisition",
+        "runtime.stage1_executor",
+        "runtime.delivery_executor",
+        "policies.licensing_policy"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "hy3d-provenance-guide",
+        "runtime.asset_router",
+        "runtime.validators",
+        "runtime.geometry_acquisition",
+        "runtime.stage1_executor",
+        "runtime.delivery_executor",
+        "policies.licensing_policy"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_hy3d_provenance.py"
+        ],
+        "timeout_seconds": 180
+      }
+    },
+    {
+      "id": "T-HY3D-IMAGE-CONDITIONING",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-HY3D-IMAGE-CONDITIONING-001-C1",
+        "REQ-HY3D-IMAGE-CONDITIONING-001-C2",
+        "REQ-HY3D-IMAGE-CONDITIONING-001-C3",
+        "REQ-HY3D-IMAGE-CONDITIONING-001-C4"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "hy3d-image-conditioning-guide",
+        "runtime.hy3d_client",
+        "runtime.geometry_acquisition",
+        "contracts.geometry_result.schema"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "hy3d-image-conditioning-guide",
+        "runtime.hy3d_client",
+        "runtime.geometry_acquisition",
+        "contracts.geometry_result.schema"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_hy3d_image_conditioning.py"
+        ],
+        "timeout_seconds": 180
+      }
+    },
+    {
+      "id": "T-V02-REFINEMENT",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-REFINEMENT-001-C1",
+        "REQ-V02-REFINEMENT-001-C2",
+        "REQ-V02-REFINEMENT-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "v02-refinement-guide",
+        "runtime.style_registry",
+        "runtime.style_resolver",
+        "runtime.visual_planning",
+        "runtime.scene_production",
+        "runtime.geometry_acquisition",
+        "runtime.visual_review",
+        "runtime.blender_style_worker"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "v02-refinement-guide",
+        "runtime.style_registry",
+        "runtime.style_resolver",
+        "runtime.visual_planning",
+        "runtime.scene_production",
+        "runtime.geometry_acquisition",
+        "runtime.visual_review",
+        "runtime.blender_style_worker",
+        "contracts.geometry_result.schema"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_refinement.py"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-V02-EXAMPLES",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-MIGRATION-DOCS-001-C1",
+        "REQ-V02-MIGRATION-DOCS-001-C2",
+        "REQ-V02-MIGRATION-DOCS-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "v02-quickstart-guide",
+        "v02-stage0-template",
+        "v02-reference-example",
+        "v02-reference-source",
+        "v02-reference-license",
+        "runtime.migrations.v01_to_v02",
+        "runtime.reference_manager",
+        "runtime.visual_planning"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "v02-quickstart-guide",
+        "v02-stage0-template",
+        "v02-reference-example",
+        "v02-reference-source",
+        "v02-reference-license",
+        "runtime.migrations.v01_to_v02",
+        "runtime.reference_manager",
+        "runtime.visual_planning",
+        "README",
+        "SKILL",
+        "operator-guide",
+        "docs.mcp_and_ssh",
+        "v02-contract-guide",
+        "tests.v02_examples"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_examples.py"
+        ],
+        "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-V02-DELIVERY",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-DELIVERY-001-C1",
+        "REQ-V02-DELIVERY-001-C2",
+        "REQ-V02-DELIVERY-001-C3",
+        "REQ-V02-DELIVERY-001-C4"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "v02-delivery-guide",
+        "runtime.visual_delivery",
+        "runtime.manifest_manager",
+        "runtime.preview_renderer",
+        "runtime.visual_review",
+        "contracts.completion_evidence.schema",
+        "contracts.final_snapshot.schema",
+        "contracts.delivery_inventory.schema"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "v02-delivery-guide",
+        "runtime.visual_delivery",
+        "runtime.manifest_manager",
+        "runtime.preview_renderer",
+        "runtime.visual_review",
+        "contracts.completion_evidence.schema",
+        "contracts.final_snapshot.schema",
+        "contracts.delivery_inventory.schema",
+        "contracts.project_manifest_v02.schema",
+        "runtime.revision_controller",
+        "runtime.scene_production",
+        "SKILL",
+        "tests.v02_delivery_resources"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_delivery.py",
+          "tests/test_v02_delivery_resources.py"
+        ],
+        "timeout_seconds": 240
+      }
+    },
+    {
+      "id": "T-V02-OVERVIEW",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-OVERVIEW-001-C1",
+        "REQ-V02-OVERVIEW-001-C2"
+      ],
+      "exercises": [
+        "README",
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "README",
+        "workflow-cli",
+        "SKILL"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_readme.py"
+        ],
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-V02-ROUTER",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-ROUTER-001-C1",
+        "REQ-V02-ROUTER-001-C2",
+        "REQ-V02-ROUTER-001-C3"
+      ],
+      "exercises": [
+        "SKILL",
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "SKILL",
+        "workflow-cli",
+        "tests.v02_skill_router"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_skill_router.py"
+        ],
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-RELEASE-ARCHIVE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-RELEASE-001-C1",
+        "REQ-RELEASE-001-C2"
+      ],
+      "exercises": [
+        "release-export-attributes"
+      ],
+      "depends_on_artifacts": [
+        "release-export-attributes",
+        "SKILL",
+        "README",
+        "scripts.govern"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_release_archive.py"
+        ],
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-RELEASE-LFS",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-RELEASE-TRANSPORT-001-C1"
+      ],
+      "exercises": [
+        "release-export-attributes"
+      ],
+      "depends_on_artifacts": [
+        "release-export-attributes",
+        "SKILL",
+        "README"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_release_lfs.py"
+        ],
+        "timeout_seconds": 60
+      }
     }
   ]
 }

@@ -11,7 +11,7 @@ from pathlib import Path
 from runtime.errors import BoundaryError
 from runtime.io import atomic_write, inside, load_data, sha256
 from runtime.stage2_executor import input_digest
-from runtime.validators import stage2_preflight, validate_model
+from runtime.validators import stage2_preflight, validate_model, require_legacy_manifest
 
 
 class McpBlenderExecutor:
@@ -21,6 +21,7 @@ class McpBlenderExecutor:
     def prepare(self, plan_path="stage2/blender_plan.yaml"):
         root = self.manager.root
         manifest = self.manager.read()
+        require_legacy_manifest(manifest)
         plan = load_data(inside(root, plan_path))
         resolved = stage2_preflight(root, manifest, plan)
         digest = input_digest(root, manifest, plan)
@@ -97,6 +98,7 @@ class McpBlenderExecutor:
         return packet
 
     def complete(self, build_id):
+        require_legacy_manifest(self.manager.read())
         if not re.fullmatch(r"mcp-[0-9a-f]{12}", build_id):
             raise BoundaryError("Invalid MCP build ID")
         root = self.manager.root

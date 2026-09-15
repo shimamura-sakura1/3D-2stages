@@ -1,5 +1,7 @@
 # Blender MCP + 远程 HY3D
 
+新视觉场景先完成 [v0.2 离线规划](v02/quickstart.md)，审核与执行授权后再进入下面的 MCP/HY3D 边界。本页后面的 `stage2` 操作包示例保留 v0.1 兼容行为；新视觉场景不使用旧入口。
+
 本项目当前采用以下执行方式：
 
 ```mermaid
@@ -20,7 +22,9 @@ flowchart LR
 
 每台宿主分别安装 Blender 4.2+（4.5 LTS 部署基线）、MCP 插件和独立 MCP Python 环境，并在该宿主配置 Codex MCP。检查当前会话是否提供 `get_addon_status`、`get_scene_info`、`execute_blender_code`，再调用状态工具验证实际连接；不能把旧会话的工具清单或连接状态当成通用事实。平台路径与发现顺序见 [平台说明](platforms.md)。
 
-MCP 连接正在运行的 Blender 图形界面，插件必须在该进程中启动。此模式不要求 Blender 加入系统 PATH；CLI 不会另起后台 Blender。当前 CLI 默认 `--backend mcp`：
+MCP 连接正在运行的 Blender 图形界面，插件必须在该进程中启动。此模式不要求 Blender 加入系统 PATH；CLI 不会另起后台 Blender。v0.2 使用 `scene-plans-submit` → `scene-prepare` 取得带摘要的语义操作包，按实际包调用 `asset.import`、`asset.place`、`material.assign_semantic`、`lighting.apply_profile`、`atmosphere.apply_profile`、`camera.apply_profile`。`scene-setup-complete` 验证真实 setup BLEND 和几何回执；随后 `preview-prepare` 生成正式渲染 job，经 MCP 实际执行并得到文件后，才调用 `preview-complete` 回收真实 PNG/metadata。`render.preview` 是显式渲染操作；排队状态不能冒充完成。见 [分离式组装](v02/production.md) 和 [预览回收](v02/preview.md)。
+
+v0.1 兼容 CLI 默认 `--backend mcp`：
 
 ```powershell
 python -m runtime.cli stage2 projects/my_station
@@ -69,7 +73,7 @@ SSH 使用严格主机密钥校验，不自动接受未知服务器。首次连�
 部署顺序：
 
 1. 参考 `.env.example` 填写根目录 `.env`，执行只读检查 `ssh-check`，确认 SSH、系统、Python 和 GPU/显存。
-2. 复用已部署的 Hunyuan3D-2.1 环境和权重，补充匹配本项目协议的网关适配层；核对显式 GPU 分配后再启动推理服务。部署记录不包含 API 启动命令。
+2. 复用已部署的 Hunyuan3D-2.1 环境和权重，补充匹配本项目协议的网关适配层；核对显式 GPU 分配后再启动推理服务。早期部署记录的缺项不能推断当前服务仍未启动；当前网关、模型身份、GPU 和能力需分别核对。
 3. 服务绑定服务器自身的 `127.0.0.1:<remote_port>`，通过 SSH 隧道访问，执行 `hy3d-health`。
 4. 核实模型输出许可，填写 `output_source`，再用一项获准的生成任务验证真实推理和资产回传。
 
@@ -83,6 +87,8 @@ SSH 隧道只负责传输。远程服务还需要实现 [本项目网关协议](
 
 模型选型需结合形状生成和纹理生成的不同资源需求。作为候选参考，Hunyuan3D 2.1 官方仓库分别列出了形状、纹理和联合任务的显存要求，以及测试环境；实际运行前结合部署记录和 GPU 分配核对，不在本机预装其推理依赖。参见 [Hunyuan3D 2.1 官方安装说明](https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1#get-started-with-hunyuan3d-21)。
 
-## 当前验证状态
+## 验证证据范围
 
-自动测试覆盖 MCP 操作顺序、撤销审批后阻断执行、输出收集、SSH 字段校验、端口冲突拒绝、`.env` 配置解析、请求失败后的隧道清理，以及未配置时的明确错误。MCP 和 SSH 进程使用测试替身，不代表已经连接真实 Blender 或远程 GPU。真实联调仍需确认 Blender 插件在线、网关适配完成并分配 GPU。完成环境和权重准备不代表接口或推理验证通过；直接客户端 shape smoke 成功也不代表正式 Stage 1 的来源许可、路由、版本、审核及交付均通过。
+自动测试覆盖 MCP 操作顺序、撤销审批后阻断执行、输出收集、SSH 字段校验、端口冲突拒绝、`.env` 配置解析、请求失败后的隧道清理，以及未配置时的明确错误。MCP 和 SSH 进程使用测试替身，不代表已经连接真实 Blender 或远程 GPU。2026-09-14 本机已保存真实 Blender MCP 校准与站台渲染证据，见 [Phase 10](v02/style-refinement.md)；这些日期记录不说明每次会话在线，也不证明远程 GPU 当前可用或 Windows 实机已验证。远程 HY3D 在此次会话按用户的显存安排暂停，恢复后需重新核对实际服务与资源。完成环境和权重准备不代表接口或推理验证通过；直接客户端 shape smoke 成功也不代表正式 Stage 1 的来源许可、路由、版本、审核及交付均通过。
+
+通用库资产与参考图仍按各自的 CC0/CC BY 或明确来源政策检查；官方 Hunyuan3D-2.1 生成输出的限定例外见 [provenance](hy3d-provenance.md)，它不是 CC0 声明。`hy3d-health` 只证明一次协议探测，不能替代推理产物、来源审核或用户美术批准。

@@ -6,7 +6,7 @@ from runtime.asset_router import AssetRouter
 from runtime.asset_search import search_assets
 from runtime.errors import BoundaryError, WorkflowError
 from runtime.io import atomic_write, inside, load_data, sha256
-from runtime.validators import validate_model, validate_contract
+from runtime.validators import validate_model, validate_contract, require_legacy_manifest
 
 
 class Stage1Executor:
@@ -17,6 +17,7 @@ class Stage1Executor:
 
     def run(self, asset_id):
         manifest = self.manager.read()
+        require_legacy_manifest(manifest)
         if manifest["mode"] in ("plan_only", "stage2_only"):
             raise BoundaryError(f"Stage 1 prohibited in {manifest['mode']} mode")
         if not manifest["plan_approved"]:
@@ -64,7 +65,7 @@ class Stage1Executor:
                     raise BoundaryError("HY3D gateway is not configured; no generation was performed")
                 if decision.route == "hy3d_generate":
                     source = self.hy3d.config.get("output_source")
-                    if not source or not AssetRouter().legal({"source": source}, modification=True):
+                    if not source or not AssetRouter().legal({"source": source}, modification=True, generated_output=True):
                         raise BoundaryError("Configure verified output rights for the selected HY3D backend")
                     # Validate provenance before any paid or expensive request.
                     source = copy.deepcopy(source)

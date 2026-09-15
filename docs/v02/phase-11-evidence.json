@@ -1,0 +1,35 @@
+{
+  "phase": 11,
+  "version_target": "S16",
+  "status": "implementation_and_local_operation_verified_formal_acceptance_pending",
+  "last_accepted_version": "S13",
+  "requirement": "REQ-V02-MIGRATION-DOCS-001",
+  "test_first": ".deps/v02-phase11/first-failure.txt",
+  "focused_tests": {
+    "count": 10,
+    "status": "pass",
+    "log": ".deps/v02-phase11/focused.txt",
+    "root_repeat": "10 passed in 2.32s"
+  },
+  "governance_selected_tests": ".deps/v02-phase11/observed-tests.json",
+  "validate": ".deps/v02-phase11/validate.json",
+  "contracts": ".deps/v02-phase11/contracts.json",
+  "representative_operation": ".deps/v02-phase11/representative-operation.json",
+  "historical_examples": "README and workflow original command blocks unchanged and actually executed",
+  "independent_reviews": {
+    "spec": "pass",
+    "quality": "pass"
+  },
+  "limitations": [
+    "Migration remains a read-only candidate, not installation.",
+    "No artistic approval or remote inference from offline example.",
+    "Full active regression passed; formal tool acceptance remains pending the original dependent real gates."
+  ],
+  "full_active_regression": {
+    "status": "pass",
+    "groups": 34,
+    "report": ".skillctl/reports/test-b414e4fd3f4f.json",
+    "summary": ".deps/v02-phase12/full-active-s17-final.json",
+    "scope": "All active historical groups; HTTP loopback and HY3D doubles are not real GPU inference."
+  }
+}

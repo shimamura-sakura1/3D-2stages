@@ -1,107 +1,124 @@
-# Two-Stage 3D
+# Visual Scene Production Skill
 
-把一段场景需求变成**可审核、可返工、保留来源的 3D 资产和 Blender 场景**。本项目由 Codex Skill 和 Python 运行时组成：Codex 理解需求、制定计划和做美术判断，Python 负责检索、模型调用、文件校验和状态管理。
+**由 Codex 编排的 3D 视觉场景生产框架：将场景需求与参考图，逐步转化为可审核、可返工、保留来源的 Blender 场景。**
 
-工作分成两阶段：**Stage 1 先获得并审核单个资产；Stage 2 再把获批资产放入 Blender 构建场景。** 可以只做规划、只交付资产，或使用已有资产直接构建场景。
+项目最初以 `Two-Stage 3D` 命名，只有资产获取和场景组装两个阶段。当前 v0.2 已扩展为 **Stage 0–3 四阶段流程，并贯穿用户审核与交付**。仓库 `3D-2stages`、Skill 标识 `two-stage-3d` 和 Python 命令保留兼容名称；这些名称不再代表当前架构的阶段数量。
 
-当前约定是 Codex 通过 MCP 控制 Blender，HY3D 在远程 GPU 服务器推理，通过 SSH 隧道接入。macOS 与 Windows 共用运行时；本机自动发现、独立 Conda 环境和项目搬迁规则见 [平台说明](docs/platforms.md)。服务是否已部署、推理或渲染是否已验证，以该机器当前检查和实际产物为准；早期部署报告不能代表所有后续环境状态。
+## 项目定义
 
-## 一次建模任务怎样运行
+本项目将场景制作中的美术判断与确定性执行连接起来：Codex 理解需求、规划场景并检查实际画面；Python 运行时管理文件、来源、版本与审核门禁；Blender 执行几何、材质、灯光、相机和渲染操作。
+
+适用范围是**静态环境、建筑与站台等场景原型、工业硬表面道具，以及已有资产的统一风格组装**。用户可以先审方向，再审几何和最终画面，在保留历史的前提下逐轮调整。
+
+生产编排从 [SKILL.md](SKILL.md) 进入。CLI 提供各阶段的确定性操作，视觉理解和美术评价仍由 Codex 根据实际参考与渲染图完成；Python 运行时本身不启动一个自主美术 Agent。
+
+## 四阶段生产框架
 
 ```mermaid
 flowchart TD
-    U[用户需求] --> P[Codex 拆分资产、样式与场景计划]
-    P --> M[创建 Manifest 与任务文件；确认计划]
-    M --> S[Stage 1：搜索已配置资产库]
-    S --> A[A：直接使用库资产]
-    S --> B[B：库资产交给 HY3D 重贴图]
-    S --> C[C：HY3D 生成新资产]
-    A --> R[保存模型、来源和配方；审核资产]
-    B --> R
-    C --> R
-    R -->|返工| S
-    R -->|仅交付资产| D[打包文件、来源与校验和]
-    R -->|资产获批| L[Stage 2：读取 Blender 计划并预检]
-    L --> MCP[Codex 执行 Blender MCP 操作包]
-    MCP --> F[校验实际 BLEND、GLB 和预览文件]
-    F --> V[最终场景审核]
-    V --> D
+    U[场景需求与参考图] --> S0[Stage 0 · 视觉方向与场景规划]
+    S0 --> A0{用户审核视觉方案}
+    A0 -->|修改方案| S0
+    A0 -->|批准| S1[Stage 1 · 几何获取]
+    S1 --> A1{用户审核几何}
+    A1 -->|返工| S1
+    A1 -->|批准| S2[Stage 2 · Blender 场景与外观制作]
+    S2 --> P[实际预览图与渲染元数据]
+    P --> S3[Stage 3 · 视觉评论与修订规划]
+    S3 -->|受限视觉调整| R[执行修订并保留历史]
+    R --> S2
+    S3 -->|提交最终审核| F{用户审核最终画面}
+    F -->|拒绝：重新诊断| S3
+    F -->|批准| D[校验并交付本地文件包]
 ```
 
-1. **规划**：Codex 从 `SKILL.md` 的 Execution Router 进入，结合 `prompts/` 理解需求，通过 CLI 创建项目、资产任务与样式文件。`init --brief` 只保存需求，Python 不会自行调用语言模型分解任务。
-2. **检索与路由**：`asset_search.py` 调用 `providers/`，`asset_router.py` 按 `policies/` 选择 A/B/C。先检索再决策；检索服务失败不能当成“没有资产”直接生成。当前实际资产库适配器是本地目录。
-3. **获取与审核**：`stage1_executor.py` 复制库资产或通过 `hy3d_client.py` 请求模型，保存结果及来源，进入 `review_required`。B 当前仅支持 B1 重贴图。未经批准的资产不能进入场景计划执行。
-4. **场景构建**：`stage2_executor.py` 预检，`blender_mcp.py` 准备操作包，Codex 通过 MCP 让 Blender 执行 `blender_worker.py` 的加载、组装、导出和渲染。创建新场景，保留已有场景。
-5. **验证与交付**：`stage2-complete` 检查真实输出和输入版本，然后才能审核场景。`delivery_executor.py` 打包获批资产或场景，保留来源声明、Manifest 快照和校验和。操作包或排队渲染不代表构建完成。
+| 阶段 | 负责什么 | 主要产物 |
+| --- | --- | --- |
+| **Stage 0 · Visual Direction** | 解释需求与参考用途，明确情绪、构图、对象、尺度、层次和风格选择 | `visual_brief`、`reference_board`、`scene_spec`、`style_assignment` |
+| **Stage 1 · Geometry Acquisition** | 先搜索已配置的本地资产库，再选择直接使用、缩放修改、生成或程序化几何；记录来源并等待审核 | 几何结果、模型或程序化配方、语义信息、原始表面来源与审核记录 |
+| **Stage 2 · Scene & Look Development** | 分别处理布局、语义材质、灯光、氛围、相机和渲染计划，通过 Blender MCP 执行 | `blockout_plan`、`semantic_material_map`、`lookdev_plan`、`render_plan`、BLEND、预览 PNG 与元数据 |
+| **Stage 3 · Visual Critic & Revision** | 查看实际预览，诊断视觉问题，提交结构化评论和允许范围内的修订计划 | `visual_review`、`revision_plan`、后续预览与修订历史 |
 
-`manifest_manager.py` 是正式状态的写入入口；`state_machine.py` 和 `validators.py` 检查阶段、格式、路径及审批约束。返工生成资产的新版本，不覆盖既有结果。
+视觉方案、几何与最终画面的审核是不同门禁。默认模式为 `plan_only`；保存计划、准备操作包、排队渲染或通过文件校验，都不会代替实际执行或用户批准。
 
-## 文件在哪里，各自负责什么
+## 组件职责与架构原则
 
-| 文件 / 目录 | 作用与所在阶段 |
+| 组件 | 职责 |
 | --- | --- |
-| `SKILL.md` | Codex 的编排入口，决定何时规划、调用工具、审核和结束 |
-| `docs/workflow.md`、`prompts/` | 规划、资产审核和 Blender 操作的详细指导 |
-| `runtime/cli.py`、`scripts/two-stage-3d.ps1` | 统一命令入口；PowerShell 脚本帮助本机选择 Python |
-| `runtime/planning.py` | 将规划输入落为项目文件 |
-| `runtime/asset_search.py`、`runtime/asset_router.py`、`providers/` | 搜索候选资产及 A/B/C 路由 |
-| `runtime/stage1_executor.py` | 执行单资产获取，记录版本、来源和配方 |
-| `runtime/hy3d_client.py`、`runtime/ssh_transport.py` | HY3D HTTP 协议、SSH 转发与环境检查 |
-| `runtime/env_config.py`、`configs/hy3d_ssh.yaml`、`.env.example` | 部署参数读取与配置样例；真实连接值保存在被忽略的 `.env` |
-| `runtime/stage2_executor.py`、`runtime/blender_mcp.py`、`runtime/blender_worker.py` | 场景预检、MCP 操作包与 Blender 内执行代码 |
-| `runtime/manifest_manager.py`、`runtime/state_machine.py`、`runtime/validators.py` | 正式状态、审核门禁、版本及文件校验 |
-| `runtime/delivery_executor.py` | 交付打包 |
-| `contracts/` | Manifest、任务、候选、Stage 1 结果、Blender 计划、审核、交付等 JSON Schema |
-| `templates/`、`policies/` | 可编辑的输入起点，以及路由、许可、状态规则 |
-| `examples/library/` | 自带原创 CC0 长椅、资产目录和许可说明，用于离线验证 |
-| `projects/` | 实际建模任务的输入与产物，不属于 Skill 源码验收快照 |
-| `interface.json`、`requirements.json`、`tests/manifest.json` | Skill 文件依赖、需求断言及测试证据关系 |
-| `tests/`、`changes/`、`scripts/govern.ps1` | 回归测试、正式版本记录和迭代验收入口 |
-| `two_stage_3d_skill_codex_spec_v0.1.md` | 初始设计规格；当前实现以运行时和验收记录为准 |
+| **Codex / Skill** | 理解需求，解释参考图，规划几何和视觉方向，选择语义操作，查看画面并提出修订 |
+| **Python Runtime** | 检索与路由、协议调用、契约检查、来源与版本管理、审核门禁、交付校验；`ManifestManager` 是正式项目状态的唯一写入入口 |
+| **Style System** | 将语义材质类别和风格配置落实为 Blender 材质、灯光、氛围、相机与颜色管理参数 |
+| **Blender / MCP** | 执行导入、放置、程序化几何、材质赋值、灯光、相机与真实渲染 |
+| **Hunyuan3D（可选远程后端）** | 提供几何候选和可选的原始表面证据；最终外观由场景的 Style Profile 决定 |
 
-一个项目的文件按下面的顺序产生或被读取：
+核心关系是：**几何来源与最终风格分离，视觉评论与执行分离，技术校验与美术批准分离。** 库资产、程序化几何和生成几何进入同一套场景与材质流程；改变灯光、相机等视觉配置时，运行时检查获批几何的一致性。
 
-```text
-projects/<项目名>/
-  user_brief.md                    原始需求
-  manifest.yaml                    项目模式、资产状态、审批和输出索引
-  style_bible.yaml                 两阶段共用的样式约定
-  planning/                       规划资料目录
-  stage1/
-    tasks/<asset_id>.yaml          单资产任务
-    candidates/                   检索候选与评分记录
-    sources/                      原始库资产
-    outputs/                      各资产各版本的模型
-    results/<asset_id>_rev00.json   模型路径、来源、校验和与生成配方
-    reviews/                      资产审核与返工意见
-  stage2/
-    blender_plan.yaml             Codex 提供的布局、几何、摄影机和灯光计划
-    scene/mcp-<编号>/              请求、执行票据、MCP 操作包及实际场景输出
-    reviews/                      场景审核记录
-  delivery/outputs/package-*/      交付文件、来源声明、快照与校验和
-```
+## 当前能做什么
 
-`init` 创建目录、Manifest、需求、样式和任务；Blender 计划由 Codex 后续提供，其他结果随执行产生。模板不会自动成为经过用户确认的设计。
+- **把需求和参考整理成可审核方案。** 导入参考原始文件与来源，区分构图、材质语言、几何等用途，保存版本化的视觉简报和场景规格。
+- **获取和组合几何。** v0.2 支持 A 直接使用库资产、B 对库资产做明确缩放修改、C 调用生成后端、D 程序化几何。程序化构件包括地面、墙、平台、柱、栏杆和管道，可组合成更大的场景结构。
+- **统一场景材质与风格。** `industrial_acg_v1` 包含可执行 Blender 材质库、校准场景及灯光、相机、颜色管理和评论规则。默认 1.0.0 提供六类材质；显式 1.1.0 增加植被及风格细化。目前可执行类别为涂漆金属、裸金属、混凝土、橡胶、玻璃、发光、植被，支持 clean、lightly_weathered、weathered 三种状态。
+- **制作并验证真实预览。** 分开提交布局、材质和渲染计划，通过 MCP 执行后核验实际 PNG、BLEND、执行回执、输入版本与几何指纹。失败和重渲染均保留记录。
+- **根据画面进行受限返工。** Codex 提交视觉诊断后，可调整粗糙度变化、灯光强度与方向、雾量、相机构图、曝光。最多三次预览尝试，包含初次预览和失败尝试；几何替换或重新生成需要另行审核。
+- **交付可核对的场景文件。** 明确批准当前最终画面后，打包已有预览、setup BLEND、布局文件、正式文档、来源、修订历史、依赖版本副本和 Manifest 快照。交付清单记录文件哈希，重复交付会重新校验已登记内容。
 
-## 先跑一个离线资产示例
+## 产物与使用范围
 
-本地运行时需要 Python 3.11+。在仓库根目录安装：
+| 用户拿到什么 | 当前含义 |
+| --- | --- |
+| 视觉方案与场景规格 | 可审阅、可版本化的制作输入；模板本身不是获批设计 |
+| 几何与来源记录 | 已获取的模型或程序化配方，以及可追溯的来源、版本和审核信息 |
+| Blender 场景与 PNG | 实际构建的场景文件和已完成的预览；准备请求不算输出 |
+| 评论与返工历史 | 每一轮评论关联具体图片和版本，修订不覆盖旧记录 |
+| 本地交付包 | 当前获批结果及其来源、依赖和校验清单；跨机器执行前重新生成含宿主路径的 MCP 操作包 |
 
-先用 `conda env list` 确认目标名称未被其他用途占用，再创建新的独立环境：
+当前重点是环境场景的制作、视觉迭代与本地交付。角色绑定、动画、游戏引擎集成、在线发布、模型训练和复杂拓扑自动修复不在现有能力范围内。
+
+## 从一个离线视觉方案开始
+
+本地运行时需要 Python 3.11+。在专用 Conda 或虚拟环境中、仓库根目录执行；不要向 base、系统 Python 或其他用途的环境安装依赖。
 
 ```text
-conda create --name two-stage-3d python=3.11 pip --copy -y
-conda activate two-stage-3d
-conda env config vars set PYTHONNOUSERSITE=1
-python -I -m pip --isolated install -r requirements-tested.txt -e '.[dev]'
+python -m pip install -e .
 python -m runtime.cli doctor
 ```
 
-`doctor` 不连接服务。不要向 base 或已有的其他环境安装依赖；MCP 使用另一个独立环境。
+`doctor` 只检查本机发现结果。Blender 最低 4.2，当前真实验证基线为 **4.5.13 LTS + MCP**。本地 Python、MCP、Blender 自带 Python 和远程模型环境分别管理。平台安装与路径规则见 [平台说明](docs/platforms.md)，远程连接见 [MCP / SSH](docs/mcp_and_ssh.md)。
 
-两平台优先使用当前隔离环境中的 `python -m runtime.cli`。Windows 另有 `scripts/two-stage-3d.ps1` 帮助脚本（含 Windows 特有的解释器与 `.deps/` 路径处理），不能原样用作 macOS 入口。依赖声明见 `pyproject.toml`，已测试版本见 `requirements-tested.txt`。
+下面的例子只做 Stage 0，不要求 Blender 或 HY3D 在线。使用尚不存在的 `projects/v02_demo`：
 
-以下示例使用新项目目录，只复制仓库内的长椅，不连接远程服务器或 Blender。执行计划批准命令前应确认示例任务符合意图。
+<!-- executable: readme-visual-start -->
+```text
+python -m runtime.cli init-v02 projects/v02_demo --id v02_demo --brief "Quiet industrial station with matte teal equipment and warm concrete"
+python -m runtime.cli reference-add-v02 projects/v02_demo examples/v02/reference.svg --id ref_material --role material_language --source examples/v02/reference_source.yaml
+python -m runtime.cli stage0-submit projects/v02_demo --proposal templates/v02_stage0.yaml --expected-version 0
+python -m runtime.cli status projects/v02_demo
+```
+
+完成后应处于 `plan_only / visual_review_required`，Manifest 版本为 1，审批记录为空；四份视觉文档与原创参考已保存。下一步由用户审核方案，再授权几何获取。
+
+各阶段的具体命令和前置条件见 [快速入门](docs/v02/quickstart.md)、[几何获取](docs/v02/geometry.md)、[场景制作](docs/v02/production.md)、[预览](docs/v02/preview.md)、[视觉评论](docs/v02/visual-review.md)、[受限修订](docs/v02/controlled-revision.md)、[最终审核与交付](docs/v02/delivery.md)。
+
+## 已实现范围与限制
+
+- **素材输入：** 当前资产库适配器是本地目录。支持嵌入资源的 GLB 和不引用 MTL 的纯几何 OBJ；HY3D 表面解析不支持 Draco、meshopt 或稀疏 UV。远程资产库尚未实现。
+- **材质粒度：** 每个语义对象目前支持一个 `body` 材质槽；不同部件需要不同材质时，先拆分语义对象。`asphalt` 已预留契约词汇，但还没有可执行材质实现。
+- **HY3D 表面：** 可保存原始 Paint 结果作来源证据，目前不支持将它混合进最终语义材质。真实模型权重和远程网关不包含在本仓库；接入需满足 [网关协议](docs/hy3d_gateway.md) 与 [来源规则](docs/hy3d-provenance.md)。
+- **输出与迁移：** v0.2 交付已有预览和 setup BLEND，目前没有独立的高质量 `final-render`、v0.2 GLB 导出或 Web 发布流程。`migrate-v02` 只生成只读迁移草案，不直接安装或改写旧项目。
+- **自动化边界：** 视觉评分是 Codex 对实际图像的判断，不是确定性美术分数。当前没有并行 Worker 调度器；MCP 失败不会自动改用 batch。没有获批几何、真实执行结果或明确最终批准时，流程会停在对应门禁。
+
+核心实现已经通过活动历史回归和契约检查，并有真实 Blender 材质校准、两轮预览、受限修订、交付与 BLEND 重载证据。工程集成测试中的模拟审核决定不代表用户已批准正式车站。
+
+**完整 v0.2 视觉验收仍待完成：** 真实 HY3D 推理及原始/风格化对比因显存不足暂停；标准混合来源车站还需要最终画面审核。服务健康检查和本地测试替身不能代替这些证据。
+
+## 兼容与维护
+
+`init-v02` 创建当前视觉流程的 Schema 0.2 项目。旧 `init`、`run`、`stage1`、`stage2` 等命令继续服务 Schema 0.1 项目，不会静默迁移；旧流程中的 B1 重贴图与 v0.2 的几何缩放修改含义不同。旧资产流程详见 [工作流说明](docs/workflow.md)。
+
+<details>
+<summary>保留的 v0.1 离线资产示例</summary>
+
+以下命令只复制自带长椅，并停在资产待审状态。执行计划批准前，应先确认示例任务符合意图；它不是新视觉场景的推荐入口。
 
 <!-- executable: offline-asset -->
 ```powershell
@@ -111,90 +128,18 @@ python -m runtime.cli stage1 projects/readme_demo --asset-id bench --catalog exa
 python -m runtime.cli status projects/readme_demo
 ```
 
-预期：`stage1/results/bench_rev00.json` 记录 `library_direct` 路由，实际模型位于 `stage1/outputs/`，长椅状态为 `review_required`。先检查模型与来源，再执行批准及后续命令：
+预期实际保存长椅模型与来源，路由为 `library_direct`，资产状态为 `review_required`。此示例不连接 Blender 或远程推理服务。
+
+</details>
+
+开发时在 macOS 和 Windows 都 clone 完整仓库：`tests/`、`tests/manifest.json`、fixtures 和工具生成的 `changes/` 必须随源码提交并 push，Windows 才能进行同一套测试与治理验收。大型 change records 通过 Git LFS 传输；Windows 先安装 Git LFS，并在 checkout 中执行 `git lfs install` 和 `git lfs pull`，确认 `changes/change-*.json` 是实际 JSON 而不是 pointer 后再运行治理工具。`git push` 不会按发布用途裁剪文件；未跟踪或未提交的新测试也不会出现在另一个 checkout。
+
+给 Skill 使用者分发时，从已经验收并提交的 revision 单独生成 ZIP：
 
 ```powershell
-.\scripts\two-stage-3d.ps1 review projects/readme_demo bench --decision approved
-Copy-Item templates/blender_plan.yaml projects/readme_demo/stage2/blender_plan.yaml
-.\scripts\two-stage-3d.ps1 stage2 projects/readme_demo --dry-run
-.\scripts\two-stage-3d.ps1 stage2 projects/readme_demo
+git archive --format=zip --output=two-stage-3d-skill.zip REVISION
 ```
 
-`--dry-run` 只预检。下一条命令准备 MCP 操作包，**需要 Codex 通过 Blender MCP 实际执行**；CLI 不直接调用 Codex 会话工具。执行及输出回收步骤见 [MCP 接入说明](docs/mcp_and_ssh.md)。用返回的真实 build_id 完成回收，检查预览和场景后再批准交付：
+仓库的 `.gitattributes` 只让 `git archive` 排除测试、验收历史与维护工具；完整 Git checkout 仍保留它们。发布 ZIP 包含 `SKILL.md` 及它实际读取或调用的代码、契约、提示词、模板、示例和指南，不能只复制 `SKILL.md`。真实项目、凭据、模型权重和治理缓存不属于运行分发。源代码、契约与资源的职责见 [SKILL.md](SKILL.md) 和 [契约说明](docs/v02/contracts.md)。
 
-```powershell
-.\scripts\two-stage-3d.ps1 stage2-complete projects/readme_demo --build-id mcp-实际编号
-.\scripts\two-stage-3d.ps1 approve-final projects/readme_demo
-.\scripts\two-stage-3d.ps1 deliver projects/readme_demo
-```
-
-只需要已批准的资产时，可设置 `configure <project> --target asset` 后 `deliver <project>`，不需要构建 Blender 场景。
-
-| 模式 | 行为 |
-| --- | --- |
-| `plan_only` | 默认，只保存和展示计划 |
-| `stage1_only` | 获取资产，在审核处停下 |
-| `stage2_only` | 使用 `supply` 导入的已有资产和来源，不执行检索 |
-| `full_pipeline` | 两阶段执行，仍保留审核节点 |
-| `repair` | 针对指定资产返工，保留旧版本并受版本次数限制 |
-
-`run` 按保存模式继续，处理待执行资产与已请求的返工；失败资产保持待处理，确认远程任务结果后可显式选择重试。`run --asset-id ID` 只处理指定资产并停在资产检查点，即使开启自动审核也不会继续构建场景；`stage1 --asset-id ID` 仍可显式执行单项。自动审核需要明确启用 `configure --auto-approve`，部分场景需要明确启用 `--allow-partial`；这些选项不会让计划里列出的未批准资产通过。更多命令见 `--help` 和 [操作指导](docs/workflow.md)。
-
-## 远程模型的调用方式与接口
-
-**已有明确协议，客户端已实现；远程服务需要实现本项目网关协议 v0.1，或增加适配层。** 仅部署模型权重、推理脚本或原生 Web UI，不能据此认定接口已经兼容。本仓库不包含远程推理服务器或模型权重。
-
-用户提供的本地部署报告位于 `ssh-deployment-report/DEPLOYMENT.md`（外部部署证据，不纳入 Skill 源码验收快照）。它记录了 Hunyuan3D-2.1、Python 3.10.21、torch 2.5.1+cu124、A100 40 GB，Shape/Paint 权重及导入检查已完成。远程 Python 环境独立于本地运行时，不需要升级到本地要求的 Python 3.11。远程依赖中的 bpy 4.0 也不等同于 Stage 2 的 Blender MCP 宿主。
-
-报告中没有 HTTP 监听端口或 API 启动命令；SSH 端口和模型服务端口是不同配置。报告还要求显式分配单张 GPU，默认隐藏 GPU；提供连接信息不等于已授权运行推理。下一步是确认 GPU 分配、实现并启动兼容网关，再做真实任务验证。实际 SSH 别名、端口及远程路径只写入本地部署配置，不复制到共享配置样例。
-
-```text
-本地 Stage1Executor → Hy3DClient → 本机 127.0.0.1:local_port
-  → SSH 隧道 → 服务器 127.0.0.1:remote_port → 网关/适配层 → 模型推理
-  ← JSON 中的 model_base64 ← 完整 GLB 文件
-```
-
-| 请求 | 用途 / 约定 |
-| --- | --- |
-| `GET /health` | 返回 `status: "ok"` 和 `capabilities` 数组，只声明实际支持的能力 |
-| `POST /v1/generate_shape` | 生成几何模型 |
-| `POST /v1/generate_textured_asset` | 生成带材质的资产 |
-| `POST /v1/retexture_mesh` | 对传入网格重贴图 |
-
-生成前会先调用健康检查并核对所需能力。POST 使用 JSON，字段为 `prompt`、`reference_images`、`style_bible`、`seed`；重贴图额外传 `mesh`。图片和网格以 `{name, data_base64}` 传输。成功响应必须同步返回 `{"model_base64":"完整 GLB 的 Base64"}`；不支持直接返回服务器路径、下载 URL 或异步 job_id。失败返回非 2xx。完整示例与限制见 [网关协议](docs/hy3d_gateway.md)，实现见 [hy3d_client.py](runtime/hy3d_client.py)。
-
-接入已部署的模型时：
-
-1. 核对模型名称/版本、启动方式、接口文档或请求样例、服务端口，以及是否异步返回任务。接口不同时，先适配参数、状态和 GLB 输出。
-2. 参考 `.env.example` 填写根目录 `.env` 的 SSH 主机/别名、端口、账户、可选密钥路径、转发端口和超时。不要覆盖已有 `.env`。真实值不写入版本库；进程环境变量优先于 `.env`。
-3. 配置模板指定 `token_env: HY3D_API_TOKEN`，因此必须提供非空令牌；客户端使用 `Authorization: Bearer ...`。若网关明确不需要鉴权，应在所用配置中移除 `token_env`，空令牌不会自动禁用鉴权。
-4. 执行下面的 SSH 检查与协议健康检查。SSH 使用严格主机密钥验证；服务通过服务器回环端口转发。每次 HTTP 请求单独打开并清理隧道。
-5. 根据实际模型输出使用条款配置 `output_source`；C 路由在缺少已核实来源许可时阻止生成。随后用一项获准任务验证真实推理、GLB 回传和资产审核。
-
-```powershell
-.\scripts\two-stage-3d.ps1 ssh-check --config configs/hy3d_ssh.yaml
-.\scripts\two-stage-3d.ps1 hy3d-health --config configs/hy3d_ssh.yaml
-.\scripts\two-stage-3d.ps1 stage1 projects/my_station --asset-id bench --catalog examples/library/catalog.yaml --hy3d-config configs/hy3d_ssh.yaml
-```
-
-最后一条命令要求已有相应项目、获批计划和任务，是否调用 HY3D 由路由决定；库资产直接命中时不触发推理。健康检查通过也不等于完成推理。超时后先检查服务端任务，不自动重复昂贵生成。当前 `.env.example` 的请求超时是 300 秒，可按实测耗时配置 `HY3D_TIMEOUT_S`。
-
-## 当前能力边界
-
-已实现本地资产库检索、A/B/C 路由、审批和返工、远程模型客户端、默认 Blender MCP 操作包及输出回收、资产/场景交付。支持嵌入资源的 GLB 和不引用 MTL 的纯几何 OBJ；输出许可当前仅接受已核实的 `cc0` 或 `cc_by`，后者需要归属声明。
-
-远程资产库、B2/B3 细化、自动视觉评分、并行 Worker 调度和 Web 交付尚未实现。Blender 工作者要求 4.2+ 并在场景修改前检查版本，4.5 LTS 为部署基线；它不会自动修复复杂拓扑或推断全部尺寸；技术文件检查不等于美术验收。默认按 Blender 能访问本机项目路径设计，若 Blender 也放到远程，仍需文件同步与路径映射。批处理后端必须显式选择，MCP 断开时不自动切换。批处理可执行文件按 `--blender`、`BLENDER_EXECUTABLE`、PATH 和平台常规安装目录顺序发现；显式配置错误不会静默回退。
-
-自动测试包含实际文件流和本地 HTTP 网关交互；SSH/MCP 进程边界使用测试替身。本机另有真实 Blender 导出/渲染和远程 shape 客户端测试记录，见 `AGENTS.md` 中的证据位置；它们不能证明 Windows 实机、完整远程 Stage 1 或美术质量已通过。完整 Stage 1 的真实生成仍需补齐参考图和输出许可，再经过正式审核与交付。
-
-## 怎样迭代这个 Skill
-
-所有迭代必须严格遵循用户指定的 `/Users/tachibanakanade/contract-govern-skil` 定义和 [项目迭代步骤](docs/governance/EVOLVE.md)；其他宿主定位同一规范的本地 checkout，不能套用本机绝对路径。项目持久要求见 [AGENTS.md](AGENTS.md)：需求与 claims → 测试先行 → 影响分析 → 修改 → 契约与历史回归 → 正式验收。
-
-```powershell
-python scripts/govern.py validate
-python scripts/govern.py contract-test
-python scripts/govern.py test
-```
-
-版本接受使用该文档中的 `accept` 流程，由工具生成 `changes/` 记录，不能手写成功证据或弱化历史测试。治理版本记录在 `interface.json`，独立于 Python 包版本 `0.1.0` 和生产数据 Schema 版本 `0.1`。治理副本不包含实际 `projects/`、`.deps/`、`.env`；报告位于 `.skillctl/reports/`。
+修改 Skill 必须在具备完整维护资料的 checkout 中，依照 [AGENTS.md](AGENTS.md) 与 [Contract-Governed 维护步骤](docs/governance/EVOLVE.md) 执行。`interface.json` 的治理版本、Python 包版本、生产 Schema 和风格版本各自独立；已实现或已发布不等于正式接受，正式接受状态以工具生成的 `changes/` 记录为准。

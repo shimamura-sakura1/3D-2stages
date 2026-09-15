@@ -1,0 +1,11 @@
+# Explicit HY3D image conditioning
+
+At Router Step 1G, an authorized Route C geometry request may set `"image_only": true` for a gateway that accepts image conditions only. Select exactly one licensed PNG/JPEG/WebP reference ID and leave `task.hy3d.prompt` exactly empty. A nonempty prompt, including whitespace, is rejected locally rather than discarded. `task.target.description` remains semantic metadata for scene planning and library search; it is not sent as model conditioning in this explicit mode. Unknown fields, such as an additional style-conditioning object, remain unsupported.
+
+The runtime sends `prompt: ""`, `style_bible: {}` and the selected image to shape generation and, when explicitly requested, the same conditions to separate surface evidence generation. Omitted or false `image_only` preserves legacy prompt fallback. The result recipe records `conditioning_mode: image_only` and one reference SHA-256; ordinary recipes retain their existing form. Image selection does not bypass reference rights, output provenance or artistic review.
+
+The inspected deployment requires one static image, at least 16 pixels per side and at most 16 MP. Its gateway validates decoded image content and dimensions. The client checks selected reference count and filename extension before inference. Optional retexture evidence is a separate operation whose input mesh limits still apply; this flag neither simplifies generated geometry nor replaces it with a combined shape-and-paint result.
+
+HTTP failures expose the numeric status and, when present in a JSON body of at most 8 KiB, one of the verified static protocol codes `invalid_request`, `unsupported_conditioning`, `invalid_seed`, or `unexpected_mesh`. Unknown or malformed codes remain generic. Response messages, headers, body fragments and credentials are never included. Redirects remain disabled and failures do not trigger retries or backend changes.
+
+These protocol facts come from the user-specified deployment README and protocol source inspected during this repair. Local transport doubles prove request and rejection behavior; they do not prove remote inference, GPU availability or successful artistic production. Real deployment evidence is recorded separately.

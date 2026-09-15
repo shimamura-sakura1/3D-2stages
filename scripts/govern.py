@@ -18,9 +18,10 @@ from runtime.platform_support import find_framework
 from runtime.errors import BoundaryError
 
 DIRECTORIES = ("runtime", "providers", "contracts", "policies", "templates", "prompts", "configs",
-               "examples", "tests", "docs", "scripts")
+               "examples", "tests", "docs", "scripts", "styles")
 FILES = ("AGENTS.md", "SKILL.md", "interface.json", "requirements.json", "README.md", "pyproject.toml",
-         "requirements-tested.txt", ".gitignore", ".env.example", "two_stage_3d_skill_codex_spec_v0.1.md")
+         "requirements-tested.txt", ".gitignore", ".gitattributes", ".env.example",
+         "two_stage_3d_skill_codex_spec_v0.1.md")
 IGNORED = {"__pycache__", ".pytest_cache"}
 
 

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "style_profile": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "profile_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lighting_profile": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "atmosphere_profile": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "camera_profile": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "color_profile": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "reference_id": {
+            "$ref": "visual_common.schema.json#/$defs/id"
+          },
+          "roles": {
+            "$ref": "visual_common.schema.json#/$defs/reference_roles"
+          }
+        },
+        "required": [
+          "reference_id",
+          "roles"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "style_profile",
+    "profile_version",
+    "lighting_profile",
+    "atmosphere_profile",
+    "camera_profile",
+    "color_profile",
+    "references"
+  ],
+  "additionalProperties": false
+}

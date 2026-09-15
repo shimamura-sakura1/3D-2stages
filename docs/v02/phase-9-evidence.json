@@ -1,0 +1,99 @@
+{
+  "phase": 9,
+  "version_target": "S14",
+  "status": "implementation_verified_real_gate_blocked_not_accepted",
+  "requirement": "REQ-V02-HY3D-001",
+  "first_failure": ".deps/v02-phase9/test-first.txt",
+  "impact": ".deps/v02-phase9/impact.json",
+  "remote_health": "ok: generate_shape, generate_textured_asset, retexture_mesh",
+  "real_comparison": "deferred by user: remote available VRAM insufficient; no actual textured output or comparison",
+  "first_failures": [
+    ".deps/v02-phase9/test-first.txt",
+    ".deps/v02-phase9/test-uv-first.txt",
+    ".deps/v02-phase9/test-malformed-first.txt",
+    ".deps/v02-phase9/test-encoding-first.txt"
+  ],
+  "focused_tests": {
+    "new": 44,
+    "including_historical": 81,
+    "status": "pass",
+    "log": ".deps/v02-phase9/test-encoding-focused-final.txt"
+  },
+  "governance": {
+    "full_regression": {
+      "groups": 29,
+      "status": "pass",
+      "report": ".skillctl/reports/test-e705e95144a8.json"
+    },
+    "final_validate_and_contract": {
+      "validate": "pass",
+      "warnings": [],
+      "declared_contract": "pass",
+      "runtime_contract": "pass",
+      "contract_report": ".skillctl/reports/contract-test-d118e6eaa67d.json"
+    }
+  },
+  "independent_reviews": {
+    "spec": "pass",
+    "quality": "pass after unsupported encoding rejection repair"
+  },
+  "real_external_validation": {
+    "remote_health": {
+      "status": "ok",
+      "capabilities": [
+        "generate_shape",
+        "generate_textured_asset",
+        "retexture_mesh"
+      ]
+    },
+    "blender_mcp": "4.5.13 LTS connected",
+    "inference_executed": false,
+    "inference_request_attempted": true,
+    "attempt_record": ".deps/v02-phase9/real-textured-pump-cfb4e773/inference.json",
+    "attempt_result": "Corrected pure-image request returned HTTP 503; user confirmed insufficient VRAM; no successful inference",
+    "comparison_render_executed": false,
+    "formal_geometry_or_artistic_approval_created": false
+  },
+  "blockers": [
+    "Real HY3D generation and raw/style comparison deferred by user because remote VRAM is insufficient."
+  ],
+  "next_phase_readiness": "User authorized progressing Phase 10–12 work independent of HY3D; Gate 9 remains unaccepted, dependent final validation stays pending.",
+  "last_accepted_version": "S13",
+  "comparison_helper": ".deps/v02-phase9/compare_asset.py",
+  "provenance_update": {
+    "confirmed_model": "tencent/Hunyuan3D-2.1",
+    "confirmation_source": "User explicitly confirmed official model identity in this conversation",
+    "reference": ".deps/v02-phase9/original-machine-reference/pump.png",
+    "reference_origin": "Original procedural Blender reference; no third-party geometry or textures",
+    "output_license": "hunyuan3d_21_community",
+    "configuration_scope": "Per-operation verified source metadata; existing deployment configs preserved",
+    "requirement": "REQ-HY3D-PROVENANCE-001",
+    "focused_tests": "90 passed including 31 provenance cases; full active regression is recorded separately",
+    "source_policy_scope": "Explicit generated-output context only; CC0/CC BY reference and library defaults preserved",
+    "auth_diagnostic": ".deps/v02-phase9/gateway-auth-diagnostic.json"
+  },
+  "limitations": [
+    "The image check validates lightweight containers and associations, not full image decoding or visual quality.",
+    "Sparse UV, Draco and meshopt are unsupported and explicitly rejected.",
+    "Unit test gateway data are test doubles; live health alone does not prove real inference."
+  ],
+  "conditioning_update": {
+    "focused_tests": "127 passed",
+    "log": ".deps/v02-image-conditioning/focused-final-tests.txt",
+    "scope": "local test doubles; no successful GPU inference",
+    "full_regression_after_updates": {
+      "status": "pass",
+      "groups": 34,
+      "report": ".skillctl/reports/test-b414e4fd3f4f.json",
+      "summary": ".deps/v02-phase12/full-active-s17-final.json",
+      "scope": "All active historical groups; HTTP loopback and HY3D doubles are not real GPU inference."
+    }
+  },
+  "latest_non_gpu_regression": {
+    "status": "pass",
+    "groups": 34,
+    "report": ".skillctl/reports/test-b414e4fd3f4f.json",
+    "summary": ".deps/v02-phase12/full-active-s17-final.json",
+    "scope": "All active historical groups; HTTP loopback and HY3D doubles are not real GPU inference."
+  }
+}
