@@ -794,6 +794,37 @@
       "introduced_in": "S18",
       "status": "active",
       "supersedes": []
+    },
+    {
+      "id": "REQ-V02-ROUTER-001",
+      "description": "The Skill presents the current four-stage workflow with isolated schema-specific dispatch and executable entry examples; agent semantic routing is additionally reviewed independently.",
+      "claims": [
+        {
+          "id": "REQ-V02-ROUTER-001-C1",
+          "kind": "invariant",
+          "statement": "Declared v0.2 dispatch and its reachable production steps exclude legacy acquisition and assembly; final rejection retains a diagnosis/revision/preview cycle."
+        },
+        {
+          "id": "REQ-V02-ROUTER-001-C2",
+          "kind": "behavior",
+          "statement": "The Skill entry command creates a schema0.2 plan_only project with empty approvals and no acquisition or rendering; the documented authorized geometry command produces local geometry with retained provenance and pending review."
+        },
+        {
+          "id": "REQ-V02-ROUTER-001-C3",
+          "kind": "rejection",
+          "statement": "The documented v0.2 acquisition command refuses missing execution authorization without changing project bytes; explicit legacy asset acquisition continues to produce a reviewable schema0.1 asset without scene execution."
+        }
+      ],
+      "implemented_by": [
+        "SKILL",
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-ROUTER"
+      ],
+      "introduced_in": "S19",
+      "status": "active",
+      "supersedes": []
     }
   ]
 }

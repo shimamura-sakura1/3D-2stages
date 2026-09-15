@@ -1,9 +1,9 @@
 {
   "distribution": "runtime-only",
-  "working_version": "S18",
-  "last_formally_accepted_version": "S13",
+  "working_version": "S19",
+  "last_formally_accepted_version": "S19",
   "source_parent_commit": "c8a9c12a3b5edc6dd7838911e44edc17c43ba0ba",
-  "source_state": "Current S18 documentation update; production runtime remains byte-identical to the S17 distribution.",
+  "source_state": "S19 Skill orchestration repair; production Python and resources remain byte-identical to the S17 distribution.",
   "version_layers": {
     "production_schema": [
       "0.1",
@@ -12,11 +12,13 @@
     "python_package": "0.1.0"
   },
   "source_verification": {
-    "active_test_groups": 35,
+    "active_test_groups": 36,
     "all_passed": true,
     "declared_contract": "pass",
     "runtime_contract": "pass",
-    "blender": "4.5.13 LTS through MCP; isolated engineering fixture with scripted review decisions"
+    "blender": "4.5.13 LTS through MCP; isolated engineering fixture with scripted review decisions",
+    "governance_record": "changes/change-015.json",
+    "governance_scope": "Contract and active regression acceptance of the source snapshot; pending real HY3D and user artistic acceptance remain separate."
   },
   "acceptance_pending": [
     "Real HY3D inference and raw/style comparison",
@@ -41,7 +43,7 @@
     },
     {
       "path": "SKILL.md",
-      "sha256": "23761c99780888e5893dda2a9b28f72c6b3b1fa1611ed02b88834467f05d9bbc"
+      "sha256": "56d74598ef6481439a7433b2b54f64362341233e92b792134195e6a21684b443"
     },
     {
       "path": "configs/hy3d_ssh.yaml",
@@ -289,7 +291,7 @@
     },
     {
       "path": "interface.json",
-      "sha256": "3fc6f735e14f16b70e1052d5be389aaf1a6305ca1022b7b2acb9e370388b04ab"
+      "sha256": "ea351a04f2b7484b7942abf3cc7cd41e2baac1da810609e1c18d92664595dde3"
     },
     {
       "path": "policies/__init__.py",
@@ -365,7 +367,7 @@
     },
     {
       "path": "requirements.json",
-      "sha256": "cc89927b0549c82b6281eafd4ef6112cb74802d1e53d4439887bb244886832ef"
+      "sha256": "bdcee88fa8db53a5c79961f551b430069d7065a118396989d2931e1993c89c3c"
     },
     {
       "path": "runtime/__init__.py",
@@ -682,5 +684,5 @@
   ],
   "maintenance": "Full tests and immutable changes are retained in the original maintenance checkout; they are not distributed here.",
   "runtime_implementation_version": "S17",
-  "documentation_update": "README defines the Stage0–3 visual production framework, responsibilities, capabilities, outputs and limitations; its isolated CLI example was executed."
+  "documentation_update": "SKILL makes Stage0–3 primary, isolates legacy dispatch and calibration, and handles authorized geometry, final rejection and preview-job recovery explicitly. Independent semantic scenarios and real offline CLI operations verified."
 }

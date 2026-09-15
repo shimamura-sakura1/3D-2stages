@@ -2,7 +2,7 @@
   "spec_version": "0.1",
   "skill": {
     "id": "two-stage-3d",
-    "version": "S18"
+    "version": "S19"
   },
   "artifacts": [
     {
@@ -1626,6 +1626,14 @@
       "id": "tests.v02_delivery_resources",
       "path": "tests/test_v02_delivery_resources.py",
       "type": "example",
+      "enforcement": {
+        "mode": "advisory"
+      }
+    },
+    {
+      "id": "tests.v02_skill_router",
+      "type": "script",
+      "path": "tests/test_v02_skill_router.py",
       "enforcement": {
         "mode": "advisory"
       }
@@ -3721,6 +3729,16 @@
       "to": {
         "artifact": "v02-delivery-guide"
       }
+    },
+    {
+      "type": "reads",
+      "from": {
+        "artifact": "tests.v02_skill_router"
+      },
+      "to": {
+        "artifact": "SKILL"
+      },
+      "id": "router-test-reads-skill"
     }
   ],
   "invariants": [
@@ -3732,7 +3750,7 @@
   "capabilities": [
     {
       "id": "mode-selection",
-      "router_step": "2",
+      "router_step": "L",
       "requirement": "REQ-BASE-001"
     }
   ]
