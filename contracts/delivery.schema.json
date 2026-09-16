@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "target": {
+      "enum": [
+        "asset",
+        "scene",
+        "web"
+      ]
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+      }
+    },
+    "attribution": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "minLength": 1
+          },
+          "asset_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "original_url": {
+            "type": "string",
+            "minLength": 1
+          },
+          "creator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "license": {
+            "type": "string",
+            "minLength": 1
+          },
+          "license_verified": {
+            "type": "boolean"
+          },
+          "attribution_required": {
+            "type": "boolean"
+          },
+          "modification_allowed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "provider",
+          "asset_id",
+          "original_url",
+          "creator",
+          "license",
+          "license_verified",
+          "attribution_required",
+          "modification_allowed"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "target",
+    "files",
+    "attribution"
+  ],
+  "additionalProperties": false
+}

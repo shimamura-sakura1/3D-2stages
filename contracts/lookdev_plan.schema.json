@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "style_assignment_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "material_map_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "lighting": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "visual_common.schema.json#/$defs/id"
+        },
+        "intensity": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "azimuth_offset_degrees": {
+          "type": "number",
+          "minimum": -45,
+          "maximum": 45
+        }
+      },
+      "required": [
+        "profile",
+        "intensity"
+      ],
+      "additionalProperties": false
+    },
+    "atmosphere": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "visual_common.schema.json#/$defs/id"
+        },
+        "amount": {
+          "enum": [
+            "none",
+            "subtle",
+            "medium",
+            "dense"
+          ]
+        }
+      },
+      "required": [
+        "profile",
+        "amount"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "style_assignment_id",
+    "material_map_id",
+    "lighting",
+    "atmosphere"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,24 @@
+assets:
+  - candidate_id: demo_bench
+    provider: local_library
+    source:
+      provider: local_library
+      asset_id: demo_bench
+      original_url: local:examples/library/bench.obj
+      creator: Two-Stage 3D demo
+      license: cc0
+      license_verified: true
+      attribution_required: false
+      modification_allowed: true
+    model: bench.obj
+    format: obj
+    scale_m: 1
+    geometry_usable: true
+    scores:
+      semantic_fit: 0.95
+      geometry_quality: 0.85
+      style_fit: 0.90
+      editability: 0.95
+      texture_quality: 0.75
+      cleanup_cost: 0.05
+    keywords: [bench, station bench, wooden bench, 长椅]

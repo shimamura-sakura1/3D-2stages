@@ -1,0 +1,7 @@
+# This is OUR gateway contract. Upstream HY3D needs a compatible service adapter.
+type: local
+endpoint: ${HY3D_ENDPOINT}
+timeout_s: ${HY3D_TIMEOUT_S}
+token_env: HY3D_API_TOKEN
+# Configure output_source after checking the backend's output rights.
+# Without verified output_source, Route C is blocked before inference.

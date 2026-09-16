@@ -1,0 +1,3 @@
+The original demonstration geometry in bench.obj is dedicated to the public
+domain under CC0 1.0 Universal: https://creativecommons.org/publicdomain/zero/1.0/
+The catalog scores are illustrative review inputs, not automated mesh analysis.

@@ -1,0 +1,14 @@
+# Values are resolved from the ignored repository-root .env file.
+type: ssh
+ssh:
+  host: ${HY3D_SSH_HOST}
+  port: ${HY3D_SSH_PORT}
+  user: ${HY3D_SSH_USER}
+  identity_file: ${HY3D_SSH_IDENTITY_FILE}
+  known_hosts_file: ${HY3D_SSH_KNOWN_HOSTS_FILE}
+  local_port: ${HY3D_SSH_LOCAL_PORT}
+  remote_port: ${HY3D_SSH_REMOTE_PORT}
+  connect_timeout_s: ${HY3D_SSH_CONNECT_TIMEOUT_S}
+timeout_s: ${HY3D_TIMEOUT_S}
+token_env: HY3D_API_TOKEN
+# output_source must be configured after verifying the chosen backend's output rights.

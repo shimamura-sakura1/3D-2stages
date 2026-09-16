@@ -1,0 +1,4 @@
+profile: environment
+focal_length_mm: 48
+clip_start: 0.1
+clip_end: 500

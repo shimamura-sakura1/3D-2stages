@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "route": {
+      "enum": [
+        "library_direct",
+        "library_hy3d_refine",
+        "hy3d_generate"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "original_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "creator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license_verified": {
+          "type": "boolean"
+        },
+        "attribution_required": {
+          "type": "boolean"
+        },
+        "modification_allowed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "provider",
+        "asset_id",
+        "original_url",
+        "creator",
+        "license",
+        "license_verified",
+        "attribution_required",
+        "modification_allowed"
+      ],
+      "additionalProperties": false
+    },
+    "files": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+        }
+      },
+      "required": [
+        "model"
+      ],
+      "additionalProperties": false
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status": {
+      "enum": [
+        "review_required"
+      ]
+    },
+    "recipe": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "asset_id",
+    "revision",
+    "route",
+    "source",
+    "files",
+    "sha256",
+    "status",
+    "recipe"
+  ],
+  "additionalProperties": false
+}

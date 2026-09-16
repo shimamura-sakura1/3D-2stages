@@ -1,0 +1,102 @@
+materials:
+  painted_metal:
+    base_color:
+    - 0.12
+    - 0.25
+    - 0.23
+    roughness: 0.38
+    metallic: 0.15
+    transmission: 0
+    emission_strength: 0
+    bump_distance: 0.008
+    noise_scale: 24
+    roughness_variation: 0.08
+    ior: 1.45
+  bare_metal:
+    base_color:
+    - 0.58
+    - 0.62
+    - 0.66
+    roughness: 0.22
+    metallic: 1
+    transmission: 0
+    emission_strength: 0
+    bump_distance: 0.002
+    noise_scale: 24
+    roughness_variation: 0.06
+    ior: 1.45
+  concrete:
+    base_color:
+    - 0.38
+    - 0.35
+    - 0.3
+    roughness: 0.82
+    metallic: 0
+    transmission: 0
+    emission_strength: 0
+    bump_distance: 0.012
+    noise_scale: 24
+    roughness_variation: 0.12
+    ior: 1.45
+  rubber:
+    base_color:
+    - 0.015
+    - 0.02
+    - 0.023
+    roughness: 0.68
+    metallic: 0
+    transmission: 0
+    emission_strength: 0
+    bump_distance: 0.009
+    noise_scale: 24
+    roughness_variation: 0.12
+    ior: 1.45
+  glass:
+    base_color:
+    - 0.82
+    - 0.94
+    - 0.96
+    roughness: 0.06
+    metallic: 0
+    transmission: 1
+    emission_strength: 0
+    bump_distance: 0
+    noise_scale: 24
+    roughness_variation: 0
+    ior: 1.45
+  emissive:
+    base_color:
+    - 1
+    - 0.55
+    - 0.15
+    roughness: 0.31
+    metallic: 0
+    transmission: 0
+    emission_strength: 4
+    bump_distance: 0
+    noise_scale: 24
+    roughness_variation: 0
+    ior: 1.45
+  vegetation:
+    base_color:
+    - 0.12
+    - 0.2
+    - 0.065
+    roughness: 0.74
+    metallic: 0
+    transmission: 0
+    emission_strength: 0
+    bump_distance: 0.005
+    noise_scale: 18
+    roughness_variation: 0.08
+    ior: 1.45
+conditions:
+  clean:
+    roughness_add: 0
+    variation_scale: 0.5
+  lightly_weathered:
+    roughness_add: 0.05
+    variation_scale: 1
+  weathered:
+    roughness_add: 0.12
+    variation_scale: 1.6

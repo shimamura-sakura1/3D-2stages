@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "decision": {
+      "enum": [
+        "approved",
+        "revision_requested",
+        "failed"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "instruction": {
+      "type": "string"
+    },
+    "reviewer": {
+      "enum": [
+        "user",
+        "automatic"
+      ]
+    }
+  },
+  "required": [
+    "asset_id",
+    "revision",
+    "decision",
+    "issues",
+    "instruction",
+    "reviewer"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,31 @@
+focus:
+- material separation
+- plausible roughness variation
+- legible glass transmission
+- contact shadows
+scope: Human/Codex visual guidance; no automated artistic approval.
+score_semantics: 'Problem severity: 0 = no visible problem, 1 = severe problem. Scores
+  are subjective observations, not measurements or approval thresholds.'
+categories:
+  plasticity: Do surfaces read as undifferentiated molded plastic? Identify visible
+    reflection, edge and surface cues.
+  material_separation: Distinguish painted metal, bare metal, concrete, rubber, glass,
+    emission and sparse vegetation by surface response, beyond color alone.
+  surface_uniformity: Check material-specific roughness variation and surface structure;
+    both featureless gloss and excessive uniform noise are problems.
+  composition: Check focal hierarchy, framing, competing elements and readable silhouettes
+    against the brief.
+  depth_separation: Check foreground, midground and background using overlap, value,
+    perspective and scale; do not demand landscape depth from a compact calibration
+    chart.
+  lighting_flatness: Check key direction, fill hierarchy and useful reflection gradients;
+    softness alone is not a defect.
+  contact_shadow: Check plausible grounding and readable contact, without demanding
+    black ambient occlusion everywhere.
+  atmospheric_depth: Assess haze for scene scale and brief; a clean small calibration
+    display may need no fog.
+  style_compatibility: Assess slate/teal industrial materials, restrained warm emission
+    and directional daylight. User station reference supplies composition and geometry
+    only. Original calibration and pump renders supply limited material evidence.
+    No automatic artistic approval.
+profile_version: 1.1.0

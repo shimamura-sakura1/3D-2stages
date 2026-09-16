@@ -1,0 +1,774 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "mode": {
+      "enum": [
+        "plan_only",
+        "stage1_only",
+        "stage2_only",
+        "full_pipeline",
+        "repair"
+      ]
+    },
+    "user_brief": {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refined": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "raw",
+        "refined"
+      ],
+      "additionalProperties": false
+    },
+    "assets": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+      },
+      "additionalProperties": {
+        "$ref": "asset_task.schema.json"
+      }
+    },
+    "supplied_assets": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "type": "string",
+                "minLength": 1
+              },
+              "asset_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "original_url": {
+                "type": "string",
+                "minLength": 1
+              },
+              "creator": {
+                "type": "string",
+                "minLength": 1
+              },
+              "license": {
+                "type": "string",
+                "minLength": 1
+              },
+              "license_verified": {
+                "type": "boolean"
+              },
+              "attribution_required": {
+                "type": "boolean"
+              },
+              "modification_allowed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "provider",
+              "asset_id",
+              "original_url",
+              "creator",
+              "license",
+              "license_verified",
+              "attribution_required",
+              "modification_allowed"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "model",
+          "sha256",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "auto_approve": {
+      "type": "boolean"
+    },
+    "allow_partial": {
+      "type": "boolean"
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "asset_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "time",
+          "action",
+          "asset_id",
+          "detail"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "schema_version": {
+      "const": "0.2"
+    },
+    "state": {
+      "$ref": "visual_common.schema.json#/$defs/scene_state"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "artifacts": {
+      "type": "object",
+      "properties": {
+        "visual_brief": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "reference_board": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "scene_spec": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "style_assignment": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "blockout_plan": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "lookdev_plan": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "render_plan": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "semantic_material_map": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "visual_review": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "revision_plan": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "render_metadata": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "document_id": {
+                "$ref": "visual_common.schema.json#/$defs/id"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scene_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "sha256": {
+                "$ref": "visual_common.schema.json#/$defs/sha256"
+              }
+            },
+            "required": [
+              "document_id",
+              "revision",
+              "scene_version",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "enum": [
+              "visual",
+              "geometry",
+              "final"
+            ]
+          },
+          "scene_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "reviewer": {
+            "const": "user"
+          },
+          "decision": {
+            "enum": [
+              "approved",
+              "rejected"
+            ]
+          },
+          "artifact_hashes": {
+            "type": "array",
+            "items": {
+              "$ref": "visual_common.schema.json#/$defs/sha256"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "scope",
+          "scene_version",
+          "reviewer",
+          "decision",
+          "artifact_hashes"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "legacy_manifest": {
+      "anyOf": [
+        {
+          "$ref": "project_manifest.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "migration_required_input": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "visual_brief",
+          "reference_board",
+          "scene_spec",
+          "style_assignment"
+        ]
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "geometry_assets": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "visual_common.schema.json#/$defs/id"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "review_required",
+              "approved",
+              "revision_requested"
+            ]
+          },
+          "versions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "geometry_result.schema.json"
+            }
+          }
+        },
+        "required": [
+          "status",
+          "versions"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "completion_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scene_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pass_id": {
+            "type": "string",
+            "pattern": "^pass_[0-9]{2,}$"
+          },
+          "path": {
+            "$ref": "visual_common.schema.json#/$defs/path"
+          },
+          "sha256": {
+            "$ref": "visual_common.schema.json#/$defs/sha256"
+          },
+          "file_sha256": {
+            "$ref": "visual_common.schema.json#/$defs/sha256"
+          }
+        },
+        "required": [
+          "scene_version",
+          "pass_id",
+          "path",
+          "sha256",
+          "file_sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "final_reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scene_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pass_id": {
+            "type": "string",
+            "pattern": "^pass_[0-9]{2,}$"
+          },
+          "path": {
+            "$ref": "visual_common.schema.json#/$defs/path"
+          },
+          "sha256": {
+            "$ref": "visual_common.schema.json#/$defs/sha256"
+          },
+          "file_sha256": {
+            "$ref": "visual_common.schema.json#/$defs/sha256"
+          },
+          "decision": {
+            "enum": [
+              "approved",
+              "rejected"
+            ]
+          }
+        },
+        "required": [
+          "scene_version",
+          "pass_id",
+          "path",
+          "sha256",
+          "file_sha256",
+          "decision"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "deliveries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scene_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pass_id": {
+            "type": "string",
+            "pattern": "^pass_[0-9]{2,}$"
+          },
+          "package": {
+            "$ref": "visual_common.schema.json#/$defs/path"
+          },
+          "inventory_sha256": {
+            "$ref": "visual_common.schema.json#/$defs/sha256"
+          },
+          "snapshot_sha256": {
+            "$ref": "visual_common.schema.json#/$defs/sha256"
+          }
+        },
+        "required": [
+          "scene_version",
+          "pass_id",
+          "package",
+          "inventory_sha256",
+          "snapshot_sha256"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "project_id",
+    "version",
+    "mode",
+    "user_brief",
+    "assets",
+    "supplied_assets",
+    "auto_approve",
+    "allow_partial",
+    "history",
+    "schema_version",
+    "state",
+    "scene_version",
+    "artifacts",
+    "approvals",
+    "legacy_manifest",
+    "migration_required_input"
+  ],
+  "additionalProperties": false
+}

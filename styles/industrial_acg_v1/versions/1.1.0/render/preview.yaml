@@ -1,0 +1,6 @@
+renderer: cycles
+width: 960
+height: 640
+samples: 32
+seed: 19
+denoise: true

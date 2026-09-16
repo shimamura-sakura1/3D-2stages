@@ -1,0 +1,19 @@
+# Geometry acquisition v0.2
+
+After an explicit Stage 0 decision, `configure-v02 PROJECT --mode full_pipeline --expected-version VERSION` enables execution but grants no review approval. `geometry-acquire PROJECT --request REQUEST.yaml --catalog CATALOG.yaml [--hy3d-config CONFIG.yaml]` acquires one declared object. Requested libraries are all searched before routing. Default plan_only refuses execution.
+
+A request contains task (the existing asset-task contract, with matching scene object ID), primitive (null or floor/wall/platform/column/rail/pipe), preferred_route (auto/A/B/C/D), modification (null or a positive scale vector), material_class, condition and reference_ids. The new explicit route and reference_ids fields control geometry acquisition. Configure HY3D shape inputs here; legacy textured-asset/retexture operations retain their v0.1 interface. Remote transport itself is unchanged.
+
+D takes priority for an explicitly selected supported primitive. Compose simple roofs and repeated structures from these six primitives; no free-form architectural generator or keyword classifier exists. A selects usable, licensed geometry by semantic/geometry quality independently of old material style fit. B preserves the original and records an explicit scale modification, applied by the Blender geometry worker. C calls generate_shape only after complete search and verified output/reference rights. It does not treat painting as final LookDev.
+
+Results separate geometry, scale, surface_semantics, surface_sources, provenance and recipe. Original library surfaces are retained as source files; the surface_sources contract also distinguishes hy3d_paint from final materials. This phase does not add a paint gateway operation. Models/sources use immutable version directories, and ManifestManager indexes result versions. Generated replies must stay inside their assigned output directory.
+
+`geometry-review-v02 PROJECT --decision approved|rejected --expected-version VERSION` reviews the complete current scene geometry and binds result hashes. Rejection marks current objects for explicit reacquisition and retains all previous versions. Geometry rework is bounded to three replacements. There is no automatic geometry approval.
+
+Blender imports models or builds the six primitives through runtime/blender_geometry_worker.py. The worker applies source units and Route B scale, while material assignment uses the independent Phase 2 resolver. B's scale is a reproducible assembly recipe, not an overwrite of original source vertices on disk.
+
+Acceptance uses real local library and Blender geometry. The architecture specification section 57 explicitly allows generated-or-generated-test-double: any generated replacement is labeled in backend and provenance. This evidence does not establish remote GPU availability, licensing or image-to-shape quality. The earlier HY3D smoke remains separate and its rights remain unresolved.
+
+## Phase 4 validation, 2026-09-14
+
+First run: 15 new tests failed for missing geometry configuration/acquisition. Final focused run: 15 passed. Validate has no warnings; declared/runtime contracts and all 24 active groups passed. Raw first failures and final Blender evidence are in `.deps/v02-phase4/`. The actual MCP scene includes six procedural primitives, the local CC0 bench and an explicitly labeled generated_test_double machine, all using the same resolved painted-metal material. The first rendered inspection exposed OBJ axis rotation; the new worker now imports the documented Z-up OBJ convention and bakes imported transforms. World-space height was verified as 1.7 m, and an actual Route B scale check doubled the bench width exactly. The corrected PNG was rendered and visually inspected. The original user scene remains intact. This is the architecture section 57 permitted mixed-source acceptance, not a real remote GPU generation or artistic approval.

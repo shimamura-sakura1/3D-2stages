@@ -1,0 +1,9 @@
+# Metadata must come from a verified catalog, not inferred from website text.
+allowed_licenses: [cc0, cc_by]
+require_verified: true
+# Explicit generation context only; never a generic library/reference whitelist.
+generated_output_licenses:
+  hunyuan3d_21_community:
+    provider: hy3d
+    asset_id: tencent/Hunyuan3D-2.1
+    original_url: https://huggingface.co/tencent/Hunyuan3D-2.1

@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "reference_id": {
+            "$ref": "visual_common.schema.json#/$defs/id"
+          },
+          "path": {
+            "$ref": "visual_common.schema.json#/$defs/path"
+          },
+          "roles": {
+            "$ref": "visual_common.schema.json#/$defs/reference_roles"
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "user",
+                  "generated",
+                  "library"
+                ]
+              },
+              "creator": {
+                "type": "string",
+                "minLength": 1
+              },
+              "license": {
+                "type": "string",
+                "minLength": 1
+              },
+              "license_verified": {
+                "type": "boolean"
+              },
+              "attribution": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "creator",
+              "license",
+              "license_verified",
+              "attribution"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "reference_id",
+          "path",
+          "roles",
+          "weight",
+          "source"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "references"
+  ],
+  "additionalProperties": false
+}

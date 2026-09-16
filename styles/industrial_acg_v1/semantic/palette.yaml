@@ -1,0 +1,8 @@
+base:
+- muted teal
+- warm concrete
+- dark rubber
+accent:
+- warm amber emissive
+avoid:
+- uniform saturated surfaces

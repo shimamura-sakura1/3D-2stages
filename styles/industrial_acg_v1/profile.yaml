@@ -1,0 +1,16 @@
+id: industrial_acg_v1
+version: 1.0.0
+blender_minimum:
+- 4
+- 2
+- 0
+resources:
+  library: materials/library.blend
+  calibration: calibration/calibration.blend
+components:
+  materials: materials/definitions.yaml
+  lighting: lighting/overcast.yaml
+  atmosphere: atmosphere/default.yaml
+  camera: camera/environment.yaml
+  color: color/default.yaml
+  render: render/preview.yaml
