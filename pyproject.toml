@@ -9,9 +9,6 @@ description = "Reviewable library-first 3D asset and Blender workflow"
 requires-python = ">=3.11"
 dependencies = ["PyYAML>=6.0,<7", "jsonschema>=4.18,<5"]
 
-[project.optional-dependencies]
-dev = ["pytest>=8,<10"]
-
 [project.scripts]
 two-stage-3d = "runtime.cli:main"
 
@@ -23,7 +20,3 @@ contracts = ["*.json"]
 policies = ["*.yaml"]
 templates = ["*.yaml"]
 styles = ["industrial_acg_v1/**/*.yaml", "industrial_acg_v1/**/*.blend", "industrial_acg_v1/*.yaml"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = ["."]

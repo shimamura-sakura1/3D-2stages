@@ -1,6 +1,6 @@
 # Industrial style 1.1.0 refinement
 
-Phase 10 is an explicitly selected refinement of `industrial_acg_v1`. The original
+This is an explicitly selected profile of `industrial_acg_v1`. The original
 1.0.0 files and default resolver behavior remain the six-material foundation.
 Set `style_assignment.profile_version` to `1.1.0` when authoring Stage 0; this
 selection is retained through geometry validation, scene preparation and critic
@@ -52,8 +52,4 @@ Both YAML and Blender files are hashed in prepared packets. Changing the
 signature invalidates an existing packet, while a style-only change leaves the
 geometry-derived blockout key unchanged.
 
-Maintenance tests use explicitly labeled Blender/receipt doubles. Real Blender
-calibration and scene inspection are separate evidence. HY3D real GPU testing is
-suspended at the user's request because of VRAM limits; no synthetic gateway
-result is presented as a real GPU result. This change remains pending until the
-governance and real-operation gates are completed by the parent maintenance run.
+使用外部视觉导演时，参阅 [Render Director 接入](render-director.md)。

@@ -113,6 +113,16 @@ def geometry_hashes(manifest):
 def formal_files(manager, manifest, *, exclude=()):
     """Enumerate formal history only; never walk/copy the project directory."""
     records = []
+    if manifest.get('render_direction'):
+        from runtime.render_context_builder import read_direction_state
+        read_direction_state(manager,manifest)
+        ref=manifest['render_direction']
+        for item in [*ref.get('history',[]),ref]:
+            for key,digest_key in [('artifact_path','hash'),('context_path','context_hash'),('scene_context_path','scene_context_hash')]:
+                path=inside(manager.root,item[key])
+                require(document_hash(load_data(path))==item[digest_key], 'Director history changed')
+                records.append(anchor(manager.root,path))
+        records.extend(anchor(manager.root,inside(manager.root,r['path'])) for r in ref['reviews'])
     for kind, entries in manifest['artifacts'].items():
         for entry in entries:
             if entry['path'] in exclude: continue

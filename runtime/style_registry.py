@@ -4,6 +4,7 @@ import hashlib
 import json
 import math
 import re
+import copy
 import yaml
 from runtime.io import inside
 from runtime.errors import BoundaryError
@@ -175,9 +176,19 @@ class StyleRegistry:
             if any(path.name in ('package-lock.json','calibration-request.json','calibration-result.json','preview.png') for path in resolved):
                 raise ValueError('reserved style output path')
             result={**p,'root':str(folder)}
+            priors = copy.deepcopy(p.get('direction_prior', {}))
             for key,path in p['components'].items():
                 result[key]=read(path)
                 if not isinstance(result[key],dict):raise ValueError('component must be an object: '+key)
+                component=result[key]
+                if 'execution_default' in component:
+                    if not isinstance(component['execution_default'],dict):raise ValueError('execution_default must be an object')
+                    result[key]={**{k:v for k,v in component.items() if k not in ('execution_default','direction_prior')},
+                                 **component['execution_default']}
+                if 'direction_prior' in component:
+                    if not isinstance(component['direction_prior'],dict):raise ValueError('direction_prior must be an object')
+                    priors[key]=copy.deepcopy(component['direction_prior'])
+                    result[key].pop('direction_prior',None)
             if custom:
                 for key in ('lighting','atmosphere','camera','color'):
                     profile_name = result[key].get('profile')
@@ -243,6 +254,9 @@ class StyleRegistry:
                 result[key]=str(resource)
             if custom:
                 result['source_hashes']={path:hashlib.sha256(raw).hexdigest() for path,raw in sorted(raw_files.items())}
+            result['direction_prior']=priors
+            result['execution_default']={key:copy.deepcopy(result[key]) for key in
+                                          ('lighting','atmosphere','camera','color','render')}
             return result
         except (KeyError,TypeError,ValueError,OverflowError,OSError,yaml.YAMLError) as exc:
             raise BoundaryError(f'Invalid style definition: {exc}') from exc

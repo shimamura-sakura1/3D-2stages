@@ -7,7 +7,7 @@ description: Create and revise reviewable static 3D environments and Blender sce
 
 A four-stage production workflow: **Stage 0 visual direction → Stage 1 geometry acquisition → Stage 2 scene and look development → Stage 3 visual critique and revision**, followed by explicit final review and local delivery. The invocation name `two-stage-3d` remains compatible; it does not describe the stage count. Stage numbers describe production responsibilities; the stable Step IDs below preserve existing links.
 
-Codex owns intent, planning and artistic judgment. Runtime performs deterministic retrieval, validation, versioning and review gates; only ManifestManager writes official project state. Blender executes the scene operations. HY3D is an optional geometry/surface-source backend; final appearance belongs to the style system. This Skill owns orchestration; interface.json registers implementations and dependencies, not a second workflow engine.
+Codex owns intent, planning and artistic judgment. Runtime performs deterministic retrieval, validation, versioning and review gates; only ManifestManager writes official project state. Blender executes the scene operations. HY3D is an optional geometry/surface-source backend; final appearance belongs to the style system. This Skill owns production orchestration; interface.json lists available implementations and data interfaces.
 
 Use for static environments, architecture and station prototypes, hard-surface props, or assembling existing assets. Current scope excludes animation/rigging, model training, automatic geometry regeneration during visual revision, and web publication. Detailed capabilities and evidence limits are in [README.md](README.md).
 
@@ -20,6 +20,7 @@ Resolve guide/template paths relative to this Skill's directory and scene output
 ### Step 1 — Identify the project and requested work
 Type: agent
 Read:
+- .gitattributes
 - docs/platforms.md
 - docs/v02/quickstart.md
 - prompts/parent.md
@@ -31,26 +32,13 @@ Action:
 - Optional contract audits inspect document structure only; they neither execute a scene nor approve it.
 - Resolve the brief, project directory, references and authorized scope. For an existing project, read validated `status` before choosing a path; resume its current state rather than recreate it. Unknown or invalid schema requires a concrete error and END.
 - New visual scenes enter Step 0V with `init-v02`; existing schema 0.2 projects resume at Step 2. Existing schema 0.1 projects, or explicitly requested legacy standalone asset work, enter Step L. Do not infer legacy mode from the compatible Skill name or an environment subject such as a station.
-- A maintainer request to distribute this Skill from a complete accepted checkout enters Step R. Consumer archives are separate from project scene delivery and never run production steps.
 - Standalone style calibration enters Step C; it does not advance a project. Read-only `migrate-v02` produces a candidate requiring missing visual inputs, not an installed project or transferred approvals. `doctor` reports local discovery, not live Blender or GPU success.
 - User-supplied style packages enter Step C for inspection, optional authorized calibration and project import. User text/images can inform an agent-authored package; they are not executable definitions by themselves.
 Next:
-- Step R
 - Step 0V
 - Step 2
 - Step L
 - Step C
-- END
-
-### Step R — Export an accepted consumer Skill archive
-Type: agent
-Read:
-- .gitattributes
-Action:
-- Keep the full Git checkout, including tests and accepted change records, for maintenance and Windows testing. Large change records use Git LFS; install and hydrate LFS on the testing machine before running governance so that records are real JSON bytes rather than pointers. Choose a committed revision whose governed change record has accepted the complete source; uncommitted work and untracked tests are not a release.
-- Honor the `.gitattributes` LF rule for the digest-bound Stage 0 SVG example on both macOS and Windows checkouts. Verify the imported reference path matches the shipped template before presenting the example; changed bytes must retain the ordinary provenance rejection gate.
-- From that revision run `git archive --format=zip --output=two-stage-3d-skill.zip REVISION`. Verify the ZIP retains SKILL.md and every referenced production resource while excluding tests, governance history and maintenance-only tools. Use the complete checkout, not this consumer ZIP, for future Skill evolution.
-Next:
 - END
 
 ### Step 0V — Stage 0: establish visual direction
@@ -70,7 +58,7 @@ Read:
 Optional Tools:
 - runtime/cli.py
 Action:
-- For new or explicit v0.2 work, interpret the brief and actual references, assign scoped roles and author the four Stage 0 contracts. Import references and submit through the versioned CLI. Present the concrete direction at visual_review_required. Record only the user's explicit decision against the current snapshot. Default plan_only does not authorize acquisition or rendering.
+- For new or explicit v0.2 work, interpret the brief and actual references, assign scoped roles and author the four Stage 0 documents, retaining goals, primary and secondary subjects, required elements, avoid rules, style identity/version, reference roles and user preserve constraints. Do not solve world-space camera or lighting in Stage 0. Import references and submit through the versioned CLI. Present the concrete direction at visual_review_required. Record only the user's explicit decision against the current snapshot. Default plan_only does not authorize acquisition or rendering.
 - If the user supplies a style package, inspect and import it through Step C before submitting the direction. Select its exact ID/version and environment profile names in style_assignment; retain user intent and provenance. Importing a package grants no visual approval.
 - Create only a new project with the entry below, substituting the intended directory, project ID and brief. Existing initialized or rejected plans retain their project and document history. Import with `reference-add-v02`, submit four authored documents with `stage0-submit`, and record an explicit direction decision with `visual-review-v02`, each against current evidence/version. The quickstart's reference and license are examples, not claims about the user's image.
 ```text
@@ -129,13 +117,15 @@ Next:
 ### Step 5V — Stage 2: build separated Blender layers
 Type: agent
 Read:
+- docs/v02/render-director.md
 - docs/v02/production.md
 - docs/mcp_and_ssh.md
 - docs/v02/style-refinement.md
 Optional Tools:
+- runtime/render_direction_adapter.py
 - runtime/cli.py
 Action:
-- For v0.2 approved geometry, author the separate blockout/material/lookdev/render plans, prepare the MCP packet and execute only its registered semantic operations. Preserve the user's open scenes. Inspect actual output and unchanged geometry fingerprints when adjusting materials, lighting or camera. Complete setup only from current real receipts; rendering does not grant artistic approval.
+- For approved geometry, author blockout_plan and semantic_material_map, measure current scene bounds and build RenderContext. Invoke the external render-director analyze entry, validate its RenderDirection, then use scene-plans-submit with --render-direction and --scene-context to compile lookdev_plan and render_plan. Follow docs/v02/render-director.md. Prepare the MCP packet and execute only its registered semantic operations. Preserve the user's open scenes. Inspect actual output and unchanged geometry fingerprints when adjusting materials, lighting or camera. Complete setup only from current real receipts; rendering does not grant artistic approval.
 - When explicitly selecting industrial_acg_v1 profile_version 1.1.0, apply its bounded eleven-dimension signature and scoped critic rubric; preserve 1.0.0 as the default and inspect material separation, daylight hierarchy and approved geometry before review.
 - Use `scene-plans-submit`, `scene-prepare` and, after real MCP execution, `scene-setup-complete`. Preparation is not completion. Stage2-only requires the approved v0.2 geometry records expected by runtime; supplied legacy files alone do not satisfy that gate. See the production guide for receipt recovery and exact arguments.
 Next:
@@ -158,11 +148,13 @@ Next:
 ### Step 7V — Stage 3: diagnose the rendered image
 Type: agent
 Read:
+- docs/v02/render-director.md
 - docs/v02/visual-review.md
 - prompts/render_critic.md
 Optional Tools:
 - runtime/cli.py
 Action:
+- For directed scenes, build render-context --review from the exact completed PNG, then invoke external render-director review. Submit its RenderReview alongside the existing visual_review using --director-review; preserve explicit image observations and user constraints.
 - Read review-context and view its actual PNG. Diagnose the nine rubric categories using subjective problem-severity scores and visible evidence. Use `visual-review-submit` to submit a current versioned visual_review; stale or unavailable evidence requires reinspection. Criticism only observes, diagnoses and recommends: it never changes Blender or grants final approval. For visual_revision continue to Step 8V; for final_review_required continue to Step 6 with the image and diagnosis for explicit final user review. When returning here after a final rejection, submit one new concrete revision_required diagnosis for the same current render before continuing to Step 8V.
 Next:
 - Step 6
@@ -172,10 +164,12 @@ Next:
 ### Step 8V — Stage 3: apply a bounded visual revision
 Type: agent
 Read:
+- docs/v02/render-director.md
 - docs/v02/controlled-revision.md
 Optional Tools:
 - runtime/cli.py
 Action:
+- For directed scenes, invoke external render-director refine with the current context, review and direction. Pass the validated revision + 1 to revision-apply --render-direction together with the existing revision_plan. A review is never executable; preserve fields, geometry approval and preview limits remain production gates.
 - In visual_revision, select only current review recommendations within the six supported visual actions. Submit the exact current revision_plan using revision-apply and expected-version. The controller preserves geometry and approvals and writes new visual plan versions. Use at most three total preview attempts, including failures; at the ceiling or for geometry/regeneration recommendations, stop and present the concrete issue for user review. Preparation alone is not rendering or artistic approval.
 Next:
 - Step 6V
@@ -198,7 +192,6 @@ Next:
 Type: agent
 Read:
 - docs/workflow.md
-- docs/v02/baseline.md
 - prompts/asset_planner.md
 - docs/hy3d-provenance.md
 Optional Tools:
@@ -275,12 +268,10 @@ Next:
 - Step 0V
 - END
 
-## Maintenance and evidence boundaries
+## Execution boundaries
 
-Ordinary scene production uses this Router and needs no external governance checkout. Modifying the Skill requires AGENTS.md and [the maintenance procedure](docs/governance/EVOLVE.md), under the user's designated contract-govern-skil framework. Resolve that framework through explicit `--framework`, `CONTRACT_GOVERN_HOME`, then the sibling `contract-govern-skil` checkout. Report a missing framework instead of bypassing governance; use `scripts/govern.py` to preserve real projects and deployment configuration.
+Actual host paths and credentials belong in ignored `.env` or host MCP settings. Moving a project between machines requires regenerating absolute-path MCP packets. Worker proposals remain isolated; Python role checks are not OS sandboxes.
 
-Actual host paths and credentials belong in ignored `.env` or host MCP settings, never shared templates. Moving a project between machines requires regenerating absolute-path MCP packets. Worker proposals remain isolated; Python role checks are not OS sandboxes, and this version has no parallel worker scheduler.
+Render Director is an external Skill dependency for directed scenes. Invoke its public analyze/review/refine entries through the host; do not copy its prompts, photographic knowledge or memory into this Skill. Missing dependency or unsupported decisions must be reported. Direct authored plans remain available when explicitly selected by the user.
 
-Report technical execution separately from visual acceptance. Deployment reports, test doubles, local protocol tests and real GPU/Blender runs each prove only their recorded scope. Verify current capabilities, input/output rights and actual files; the pending real HY3D experiment must not be represented as passed. Read [gateway protocol](docs/hy3d_gateway.md) and [provenance rules](docs/hy3d-provenance.md) when that backend is selected.
-
-New visual scenes use Schema 0.2 through `init-v02`; `init` retains Schema 0.1 compatibility. Governance version in interface.json, Python package version, production schemas and style profile versions are independent. Formal acceptance is established by tool-generated `changes/` records in the maintenance checkout; runtime distributions omit that history. See requirements.json for unresolved claims and README.md for capability and evidence scope.
+Report technical execution separately from visual acceptance. Verify current capabilities, input/output rights and actual files. New scenes use Schema 0.2 through `init-v02`; `init` retains Schema 0.1 compatibility.

@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "render_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "direction_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "direction_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "render_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category": {
+            "enum": [
+              "camera",
+              "composition",
+              "lighting",
+              "atmosphere",
+              "exposure",
+              "material_readability"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "observation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "category",
+          "severity",
+          "observation",
+          "evidence",
+          "confidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "recommended_changes": {
+      "type": "object",
+      "properties": {
+        "camera": {
+          "type": "object",
+          "properties": {
+            "azimuth_delta_deg": {
+              "type": "number",
+              "minimum": -360,
+              "maximum": 360
+            },
+            "elevation_delta_deg": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            "focal_length_delta_mm": {
+              "type": "number",
+              "minimum": -392,
+              "maximum": 392
+            },
+            "coverage_delta": {
+              "type": "number",
+              "minimum": -1,
+              "maximum": 1
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "lighting": {
+          "type": "object",
+          "properties": {
+            "key_azimuth_delta_deg": {
+              "type": "number",
+              "minimum": -360,
+              "maximum": 360
+            },
+            "key_elevation_delta_deg": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            "fill_ratio_delta": {
+              "type": "number",
+              "minimum": -1,
+              "maximum": 1
+            },
+            "key_softness": {
+              "enum": [
+                "small",
+                "medium",
+                "large"
+              ]
+            },
+            "silhouette_separation": {
+              "enum": [
+                "subtle",
+                "moderate",
+                "strong"
+              ]
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "composition": {
+          "type": "object",
+          "properties": {
+            "negative_space": {
+              "enum": [
+                "low",
+                "moderate",
+                "high"
+              ]
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "atmosphere": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "enum": [
+                "none",
+                "subtle",
+                "moderate",
+                "heavy"
+              ]
+            },
+            "depth_priority": {
+              "enum": [
+                "low",
+                "moderate",
+                "strong"
+              ]
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "exposure": {
+          "type": "object",
+          "properties": {
+            "intent": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "material_readability": {
+          "type": "object",
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "preserve": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "render_id",
+    "project_id",
+    "scene_version",
+    "direction_id",
+    "direction_revision",
+    "render_sha256",
+    "findings",
+    "recommended_changes",
+    "preserve",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

@@ -36,6 +36,8 @@ def _render_context(manager, manifest=None, *, allowed_states):
         require(m['state'] in allowed_states,
                 'No current successful preview is available for review')
         plans = current_documents(manager, m, PLAN_KINDS)
+        from runtime.render_director import verify_compiled_plans
+        verify_compiled_plans(manager,m,plans)
         documents = {**validate_scene_plans(manager, m, plans), **plans}
         metadata = current_documents(manager, m, ('render_metadata',))['render_metadata']
         validate_contract('render_metadata', metadata)

@@ -44,6 +44,8 @@ def validate_scene_plans(manager,m,plans):
     require(look['lighting']['profile']==style['lighting_profile'] and look['atmosphere']['profile']==style['atmosphere_profile'],'Lookdev profile mismatch')
     require(render['camera']['profile']==style['camera_profile'] and render['color']['profile']==style['color_profile'],'Render profile mismatch')
     require(render['camera']['location']!=render['camera']['target'],'Camera location and target must differ')
+    from runtime.render_director import validate_plan_reference
+    validate_plan_reference(m,plans)
     require(render['purpose']=='preview','Only preview rendering is implemented')
     profile=StyleRegistry().load(style['style_profile'],version=style['profile_version'],project_root=manager.root)
     if 'signature' in profile:
@@ -62,6 +64,8 @@ def prepare_scene(manager):
     if m['mode'] not in ('full_pipeline','stage2_only','repair') or m['state'] not in ('blockout_pending','render_pending'):
         raise BoundaryError('Scene preparation requires authorized mode and submitted plans')
     plans=current_documents(manager,m,PLAN_KINDS);docs=validate_scene_plans(manager,m,plans)
+    from runtime.render_director import verify_compiled_plans
+    verify_compiled_plans(manager,m,plans)
     geometry={k:a['versions'][-1] for k,a in m['geometry_assets'].items()}
     blockout_key=document_hash({'geometry_fingerprint_format':2,'blockout':plans['blockout_plan'],'geometry':geometry})
     build_id='build_'+blockout_key[:16]
@@ -71,6 +75,9 @@ def prepare_scene(manager):
     directory=f'stage2/builds/{build_id}/{inputs_digest[:16]}'
     root=Path(__file__).resolve().parents[1]
     dependencies=[manager.path]
+    if m.get('render_direction'):
+        ref=m['render_direction']
+        dependencies.extend(inside(manager.root,ref[k]) for k in ('artifact_path','context_path','scene_context_path'))
     blockout_file=inside(manager.root,f'stage2/builds/{build_id}/blockout.blend')
     if blockout_file.is_file():dependencies.append(blockout_file)
     for kind in (*PLAN_KINDS,'visual_brief','reference_board','scene_spec','style_assignment'):

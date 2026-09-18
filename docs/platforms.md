@@ -1,6 +1,6 @@
 # macOS / Windows 运行约定
 
-两平台使用同一套 Python CLI、Schema 和审批状态机；自动适配只处理操作系统路径、已安装 Blender 的发现及治理框架定位，不代替软件安装、MCP 配置或远程服务授权。
+两平台使用同一套 Python CLI、Schema 和审批状态机；自动适配只处理操作系统路径、已安装 Blender 的发现，不代替软件安装、MCP 配置或远程服务授权。
 
 ## 环境与启动
 
@@ -11,10 +11,9 @@ Python 要求 3.11+。为项目创建独立 Conda 环境；为 MCP 等不同依�
 ```text
 python -m runtime.cli doctor
 python -m runtime.cli --help
-python scripts/govern.py validate
 ```
 
-`doctor` 只报告当前平台、实际 Python、Blender 可执行文件发现结果和治理框架路径，不启动服务，不证明 Blender 版本/MCP 连通或 HY3D 就绪。任一依赖缺失会在相应字段中明确标注，不妨碍只做规划或 Stage 1 本地资产工作。
+`doctor` 只报告当前平台、实际 Python、Blender 可执行文件发现结果，不启动服务，不证明 Blender 版本/MCP 连通或 HY3D 就绪。任一依赖缺失会在相应字段中明确标注，不妨碍只做规划或 Stage 1 本地资产工作。
 
 Windows 的 `.ps1` 文件是可选帮助脚本，不是 macOS 启动入口。两平台优先用激活后环境中的 `python -m runtime.cli`。复制模板时 macOS 用 `cp`，Windows 用 `Copy-Item`；文件路径含空格时作为一个带引号的参数传入。
 
@@ -34,27 +33,3 @@ Windows 的 `.ps1` 文件是可选帮助脚本，不是 macOS 启动入口。两
 Manifest、任务、资产结果与 Blender 计划中使用项目相对路径，输出统一写 `/`。读取相对路径时接受 `/` 或 `\`；无论宿主系统，都拒绝 Windows 盘符、UNC、根路径、POSIX 绝对路径及 `..` 路径逃逸。
 
 `request.json`、`ticket.json` 和 `mcp_calls.json` 包含执行机器的绝对路径和摘要。迁移到另一系统后重新生成操作包，不能复用旧操作包直接执行。现有资产审核仍须检查文件与版本有效性；机器路径、SSH 密钥路径和 MCP 解释器配置各机独立。
-
-## 治理框架
-
-本项目所有 Skill 修改严格遵循用户指定的 `contract-govern-skil` 规范，本机位置为 `/Users/tachibanakanade/contract-govern-skil`。其他机器必须配置同一规范的本地 checkout。
-
-`scripts/govern.py` 按 `--framework`、进程变量 `CONTRACT_GOVERN_HOME`、本仓库同级 `contract-govern-skil` 顺序定位。未找到规范和 CLI 时明确拒绝；默认使用启动它的 Python，支持 `--python` 显式指定已隔离且具备测试依赖的解释器。无需把框架安装进 base，不修改框架源码。
-
-维护顺序、历史保护和正式验收见 [EVOLVE](governance/EVOLVE.md)。`AGENTS.md` 是项目持续加载的维护上下文，纳入源码投影；它不创建第二套生产 Router。
-
-Windows/macOS checkout 可能改变 LF/CRLF。治理入口只在临时源码副本中，依据后续记录的前序 SHA256 和最新接受记录的历史测试摘要恢复原始换行字节；必须精确匹配历史摘要。无法匹配的内容改动直接拒绝。仓库里的历史记录和测试保持原样，外部框架继续核验完整哈希链、历史指纹和行为。恢复列表写入治理报告的 `source_projection.restored_newlines`。
-
-以下是用于验证诊断命令的可执行例子，不代表远程服务已连接：
-
-```json
-[
-  {"argv": ["doctor"], "exit": 0, "field": "mcp.status", "equals": "requires_session_check"}
-]
-```
-
-治理入口对已复制好的临时副本执行以下内部动作。此例由测试建立独立副本后执行并断言恢复结果；不要对真实仓库直接调用内部恢复函数。
-
-```json
-{"projection_action": "restore_recorded_newlines"}
-```

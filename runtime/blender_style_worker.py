@@ -54,8 +54,8 @@ def lighting(scene,p):
     world.node_tree.nodes['Background'].inputs['Color'].default_value=[*p['world_color'],1]
     world.node_tree.nodes['Background'].inputs['Strength'].default_value=p['world_strength'];scene.world=world
     for role in ('key','fill'):
-        data=bpy.data.lights.new(role,'AREA');data.energy=p[role+'_energy'];data.shape='DISK';data.size=p[role+'_size']
-        obj=bpy.data.objects.new(role,data);scene.collection.objects.link(obj);obj['style_light']=True;obj.location=p[role+'_location'];aim(obj,(0,0,0))
+        data=bpy.data.lights.new(role,p.get(role+'_type','AREA'));data.energy=p[role+'_energy'];data.shape='DISK';data.size=p[role+'_size'];data.color=p.get(role+'_color',[1,1,1])
+        obj=bpy.data.objects.new(role,data);scene.collection.objects.link(obj);obj['style_light']=True;obj.location=p[role+'_location'];aim(obj,p.get(role+'_target',(0,0,0)))
 
 def render_settings(scene,p,color):
     scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=p['samples'];scene.cycles.seed=p['seed'];scene.cycles.use_denoising=p['denoise']

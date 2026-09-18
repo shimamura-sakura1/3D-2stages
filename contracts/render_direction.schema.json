@@ -1,0 +1,389 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "direction_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scene_type": {
+      "enum": [
+        "hero_prop",
+        "industrial_environment",
+        "industrial_megastructure",
+        "interior"
+      ]
+    },
+    "intent": {
+      "type": "object",
+      "properties": {
+        "primary_goal": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "primary_goal"
+      ],
+      "additionalProperties": false
+    },
+    "camera": {
+      "type": "object",
+      "properties": {
+        "subject_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "framing": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "three_quarter",
+                "low_three_quarter",
+                "distant_compressed_view",
+                "front",
+                "wide_environment",
+                "interior_perspective"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        "azimuth_deg": {
+          "type": "number",
+          "minimum": -360,
+          "maximum": 360
+        },
+        "elevation_deg": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "focal_length_mm": {
+          "type": "number",
+          "minimum": 8,
+          "maximum": 400
+        },
+        "subject_coverage": {
+          "type": "object",
+          "properties": {
+            "target": {
+              "type": "number",
+              "minimum": 0.01,
+              "maximum": 1
+            }
+          },
+          "required": [
+            "target"
+          ],
+          "additionalProperties": false
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "const": "subject_center"
+            },
+            "offset_normalized": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1,
+                "maximum": 1
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "mode",
+            "offset_normalized"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "subject_ref",
+        "framing",
+        "azimuth_deg",
+        "elevation_deg",
+        "focal_length_mm",
+        "subject_coverage",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "composition": {
+      "type": "object",
+      "properties": {
+        "hierarchy": {
+          "enum": [
+            "strong_single_anchor",
+            "balanced_groups",
+            "leading_depth"
+          ]
+        },
+        "foreground": {
+          "type": "object",
+          "properties": {
+            "role": {
+              "enum": [
+                "framing",
+                "scale_cue",
+                "support",
+                "none"
+              ]
+            },
+            "required": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "role",
+            "required"
+          ],
+          "additionalProperties": false
+        },
+        "midground": {
+          "type": "object",
+          "properties": {
+            "required": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "required"
+          ],
+          "additionalProperties": false
+        },
+        "background": {
+          "type": "object",
+          "properties": {
+            "required": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "required"
+          ],
+          "additionalProperties": false
+        },
+        "negative_space": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "enum": [
+                "low",
+                "moderate",
+                "high"
+              ]
+            }
+          },
+          "required": [
+            "amount"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "hierarchy",
+        "foreground",
+        "midground",
+        "background",
+        "negative_space"
+      ],
+      "additionalProperties": false
+    },
+    "lighting": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "object",
+          "properties": {
+            "reference_frame": {
+              "const": "camera_subject"
+            },
+            "azimuth_deg": {
+              "type": "number",
+              "minimum": -360,
+              "maximum": 360
+            },
+            "elevation_deg": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            "softness": {
+              "enum": [
+                "small",
+                "medium",
+                "large"
+              ]
+            }
+          },
+          "required": [
+            "reference_frame",
+            "azimuth_deg",
+            "elevation_deg",
+            "softness"
+          ],
+          "additionalProperties": false
+        },
+        "fill": {
+          "type": "object",
+          "properties": {
+            "ratio_to_key": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "required": [
+            "ratio_to_key"
+          ],
+          "additionalProperties": false
+        },
+        "silhouette_separation": {
+          "enum": [
+            "subtle",
+            "moderate",
+            "strong"
+          ]
+        }
+      },
+      "required": [
+        "key",
+        "fill",
+        "silhouette_separation"
+      ],
+      "additionalProperties": false
+    },
+    "atmosphere": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "enum": [
+            "none",
+            "subtle",
+            "moderate",
+            "heavy"
+          ]
+        },
+        "depth_priority": {
+          "enum": [
+            "low",
+            "moderate",
+            "strong"
+          ]
+        }
+      },
+      "required": [
+        "amount",
+        "depth_priority"
+      ],
+      "additionalProperties": false
+    },
+    "exposure": {
+      "type": "object",
+      "properties": {
+        "intent": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "intent"
+      ],
+      "additionalProperties": false
+    },
+    "material_readability": {
+      "type": "object",
+      "properties": {
+        "priority": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "strategy": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "priority",
+        "strategy"
+      ],
+      "additionalProperties": false
+    },
+    "avoid": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "preserve": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "changed_fields": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "direction_id",
+    "revision",
+    "project_id",
+    "scene_version",
+    "scene_type",
+    "intent",
+    "camera",
+    "composition",
+    "lighting",
+    "atmosphere",
+    "exposure",
+    "material_readability",
+    "avoid",
+    "preserve",
+    "changed_fields"
+  ],
+  "additionalProperties": false
+}

@@ -87,10 +87,11 @@ def revise_plans(plans, actions):
     return revised
 
 
-def stage_revision(manager, manifest, revision):
+def stage_revision(manager, manifest, revision, *, render_direction=None):
     revision = copy.deepcopy(revision)
     if isinstance(revision, dict): revision.setdefault('max_preview_passes', 3)
     validate_contract('revision_plan', revision)
+    require(manifest['mode'] in ('full_pipeline','stage2_only','repair'), 'Revision requires authorized execution')
     require(manifest['state'] == 'visual_revision', 'No diagnosed visual revision is pending')
     context = current_render_context(manager, manifest)
     review = current_documents(manager, manifest, ('visual_review',))['visual_review']
@@ -130,8 +131,18 @@ def stage_revision(manager, manifest, revision):
                 'Revision exceeds recommended bounded magnitude')
     plans = {k: context['documents'][k] for k in PLAN_KINDS}
     revised = revise_plans(plans, revision['actions'])
+    direction_pending = []
+    if manifest.get('render_direction'):
+        require(render_direction is not None, 'Directed revision requires a new validated RenderDirection')
+        from runtime.render_director import refined_direction
+        # Keep the material map unchanged; the external director cannot revise shaders.
+        revised['semantic_material_map'] = copy.deepcopy(plans['semantic_material_map'])
+        revised['semantic_material_map']['revision'] += 1
+        revised, direction_pending = refined_direction(manager,manifest,render_direction,revision,revised)
+    else:
+        require(render_direction is None, 'Refinement requires a registered initial direction')
     validate_scene_plans(manager, manifest, revised)
-    pending = []
+    pending = direction_pending
     for kind, doc in [(k, revised[k]) for k in VISUAL_KINDS] + [('revision_plan', revision)]:
         path = (f"stage2/revisions/rev_{doc['revision']:04d}/revision_plan.yaml" if kind == 'revision_plan'
                 else f"stage2/plans/rev_{doc['revision']:04d}/{kind}.yaml")

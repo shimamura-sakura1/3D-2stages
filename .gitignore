@@ -1,0 +1,6 @@
+.env
+projects/
+.deps/
+__pycache__/
+*.egg-info/
+*.blend1

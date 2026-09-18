@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "lookdev_plan": {
+      "$ref": "lookdev_plan.schema.json"
+    },
+    "render_plan": {
+      "$ref": "render_plan.schema.json"
+    }
+  },
+  "required": [
+    "lookdev_plan",
+    "render_plan"
+  ],
+  "additionalProperties": false
+}

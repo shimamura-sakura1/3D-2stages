@@ -4,8 +4,7 @@ reviewed_by: user
 review_status: design_reviewed
 evidence_scope:
   user_design_review: >-
-    User explicitly approved this exact signature in the current conversation on 2026-09-17T01:21:21.272579+08:00.
-    Approval record: reviews/20260917T012121+0800-user-approval/approval.json.
+    The user approved this signature for design use.
     This records signature design acceptance; missing library and calibration resources remain pending.
   original_calibration: NONE. No procedural calibration samples were authored for
     this profile; the palette comes from 81 wiki screenshots.
