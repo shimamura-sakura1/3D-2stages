@@ -355,7 +355,7 @@
     {
       "id": "T-README-001",
       "type": "requirement",
-      "status": "active",
+      "status": "superseded",
       "covers": [
         "REQ-README-001-C1"
       ],
@@ -500,7 +500,7 @@
     {
       "id": "T-PORTABLE-POSITIVE",
       "type": "requirement",
-      "status": "active",
+      "status": "superseded",
       "covers": [
         "REQ-PORTABLE-001-C1",
         "REQ-PORTABLE-001-C2",
@@ -542,7 +542,7 @@
     {
       "id": "T-PORTABLE-DEFAULT",
       "type": "requirement",
-      "status": "active",
+      "status": "superseded",
       "covers": [
         "REQ-PORTABLE-001-C1",
         "REQ-PORTABLE-001-C2"
@@ -580,7 +580,7 @@
     {
       "id": "T-PORTABLE-REJECTION",
       "type": "requirement",
-      "status": "active",
+      "status": "superseded",
       "covers": [
         "REQ-PORTABLE-001-C1",
         "REQ-PORTABLE-001-C2",
@@ -656,7 +656,7 @@
     {
       "id": "T-GOVERN-NEWLINES",
       "type": "regression",
-      "status": "active",
+      "status": "superseded",
       "covers": [
         "REQ-PORTABLE-001-C6"
       ],
@@ -1001,7 +1001,7 @@
     {
       "id": "T-V02-CRITIC",
       "type": "requirement",
-      "status": "active",
+      "status": "superseded",
       "covers": [
         "REQ-V02-CRITIC-001-C1",
         "REQ-V02-CRITIC-001-C2",
@@ -1036,7 +1036,7 @@
     {
       "id": "T-V02-REVISION",
       "type": "requirement",
-      "status": "active",
+      "status": "superseded",
       "covers": [
         "REQ-V02-REVISION-001-C1",
         "REQ-V02-REVISION-001-C2",
@@ -1299,7 +1299,7 @@
     {
       "id": "T-V02-DELIVERY",
       "type": "requirement",
-      "status": "active",
+      "status": "superseded",
       "covers": [
         "REQ-V02-DELIVERY-001-C1",
         "REQ-V02-DELIVERY-001-C2",
@@ -1415,7 +1415,7 @@
     {
       "id": "T-RELEASE-ARCHIVE",
       "type": "requirement",
-      "status": "active",
+      "status": "superseded",
       "covers": [
         "REQ-RELEASE-001-C1",
         "REQ-RELEASE-001-C2"
@@ -1468,6 +1468,659 @@
           "tests/test_release_lfs.py"
         ],
         "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-PORTABLE-REFERENCE-WINDOWS",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-PORTABLE-REFERENCE-001-C1"
+      ],
+      "exercises": [
+        "release-export-attributes",
+        "v02-stage0-template",
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "release-export-attributes",
+        "v02-reference-example",
+        "v02-stage0-template",
+        "workflow-cli",
+        "tests.checkout_reference_eol"
+      ],
+      "tags": [
+        "conditional-positive"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_checkout_reference_eol.py",
+          "-k",
+          "windows_autocrlf"
+        ],
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-PORTABLE-REFERENCE-MACOS",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-PORTABLE-REFERENCE-001-C2"
+      ],
+      "exercises": [
+        "release-export-attributes",
+        "v02-stage0-template",
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "release-export-attributes",
+        "v02-reference-example",
+        "v02-stage0-template",
+        "workflow-cli",
+        "tests.checkout_reference_eol"
+      ],
+      "tags": [
+        "conditional-default"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_checkout_reference_eol.py",
+          "-k",
+          "macos_default"
+        ],
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-PORTABLE-REFERENCE-REJECTION",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-PORTABLE-REFERENCE-001-C3"
+      ],
+      "exercises": [
+        "release-export-attributes",
+        "v02-stage0-template",
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "release-export-attributes",
+        "v02-reference-example",
+        "v02-stage0-template",
+        "workflow-cli",
+        "tests.checkout_reference_eol"
+      ],
+      "tags": [
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_checkout_reference_eol.py",
+          "-k",
+          "changed_imported_reference"
+        ],
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-PORTABLE-DELIVERY-WINDOWS",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-PORTABLE-DELIVERY-PATH-001-C1",
+        "REQ-PORTABLE-DELIVERY-PATH-001-C2"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.visual_delivery",
+        "runtime.io",
+        "runtime.manifest_manager"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.visual_delivery",
+        "runtime.io",
+        "runtime.manifest_manager",
+        "tests.v02_delivery",
+        "tests.delivery_long_path",
+        "SKILL"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_delivery_long_path.py",
+          "-k",
+          "delivery_from_long_project_root"
+        ],
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-PORTABLE-DELIVERY-REJECTION",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-PORTABLE-DELIVERY-PATH-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.visual_delivery",
+        "runtime.io",
+        "runtime.manifest_manager"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.visual_delivery",
+        "runtime.io",
+        "runtime.manifest_manager",
+        "tests.v02_delivery",
+        "tests.delivery_long_path",
+        "SKILL"
+      ],
+      "tags": [
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_delivery_long_path.py",
+          "-k",
+          "delivery_copy_failure_rolls_back"
+        ],
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "T-V02-CRITIC-PORTABLE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-CRITIC-PORTABLE-001-C1",
+        "REQ-V02-CRITIC-PORTABLE-001-C2",
+        "REQ-V02-CRITIC-PORTABLE-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.visual_review",
+        "runtime.manifest_manager"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.visual_review",
+        "runtime.manifest_manager",
+        "contracts.visual_review.schema",
+        "runtime.preview_renderer",
+        "runtime.scene_production",
+        "tests.v02_critic_portable"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_critic_portable.py"
+        ],
+        "timeout_seconds": 420
+      }
+    },
+    {
+      "id": "T-V02-REVISION-PORTABLE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-REVISION-PORTABLE-001-C1",
+        "REQ-V02-REVISION-PORTABLE-001-C2",
+        "REQ-V02-REVISION-PORTABLE-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.revision_controller",
+        "runtime.manifest_manager",
+        "runtime.blender_operations"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.revision_controller",
+        "runtime.manifest_manager",
+        "runtime.blender_operations",
+        "runtime.scene_production",
+        "contracts.revision_plan.schema",
+        "tests.v02_revision_portable"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_revision_portable.py"
+        ],
+        "timeout_seconds": 420
+      }
+    },
+    {
+      "id": "T-V02-DELIVERY-PORTABLE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-V02-DELIVERY-PORTABLE-001-C1",
+        "REQ-V02-DELIVERY-PORTABLE-001-C2",
+        "REQ-V02-DELIVERY-PORTABLE-001-C3",
+        "REQ-V02-DELIVERY-PORTABLE-001-C4"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "v02-delivery-guide",
+        "runtime.visual_delivery",
+        "runtime.manifest_manager",
+        "runtime.preview_renderer",
+        "runtime.visual_review",
+        "contracts.completion_evidence.schema",
+        "contracts.final_snapshot.schema",
+        "contracts.delivery_inventory.schema"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "v02-delivery-guide",
+        "runtime.visual_delivery",
+        "runtime.manifest_manager",
+        "runtime.preview_renderer",
+        "runtime.visual_review",
+        "contracts.completion_evidence.schema",
+        "contracts.final_snapshot.schema",
+        "contracts.delivery_inventory.schema",
+        "contracts.project_manifest_v02.schema",
+        "runtime.revision_controller",
+        "runtime.scene_production",
+        "SKILL",
+        "tests.v02_delivery_resources",
+        "tests.v02_delivery_portable"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_v02_delivery_portable.py",
+          "tests/test_v02_delivery_resources.py"
+        ],
+        "timeout_seconds": 1200
+      }
+    },
+    {
+      "id": "T-USER-STYLE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-USER-STYLE-001-C1",
+        "REQ-USER-STYLE-001-C2",
+        "REQ-USER-STYLE-001-C3",
+        "REQ-USER-STYLE-001-C4",
+        "REQ-USER-STYLE-001-C5",
+        "REQ-USER-STYLE-001-C6"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.style_registry",
+        "runtime.style_resolver",
+        "runtime.manifest_manager",
+        "runtime.visual_planning",
+        "runtime.scene_production",
+        "runtime.visual_review",
+        "runtime.visual_delivery",
+        "runtime.user_styles",
+        "runtime.geometry_acquisition",
+        "contracts.style_package.schema"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.style_registry",
+        "runtime.style_resolver",
+        "runtime.manifest_manager",
+        "runtime.visual_planning",
+        "runtime.scene_production",
+        "runtime.visual_review",
+        "runtime.visual_delivery",
+        "runtime.blender_style_worker",
+        "SKILL",
+        "runtime.user_styles",
+        "runtime.geometry_acquisition",
+        "contracts.style_package.schema",
+        "tests.user_styles",
+        "v02-user-style-guide"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_user_styles.py"
+        ],
+        "timeout_seconds": 240
+      }
+    },
+    {
+      "id": "T-USER-STYLE-IO",
+      "type": "contract",
+      "status": "active",
+      "covers": [],
+      "exercises": [
+        "runtime.user_styles",
+        "contracts.style_package.schema",
+        "contracts.style_package_arguments.schema"
+      ],
+      "depends_on_artifacts": [
+        "runtime.user_styles",
+        "runtime.style_registry",
+        "contracts.style_package.schema",
+        "contracts.style_package_arguments.schema"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "runtime",
+        "artifact": "runtime.user_styles",
+        "cases": [
+          {
+            "id": "draft-package",
+            "fixture": "tests/fixtures/user_styles/inspect_valid.json",
+            "expect": "valid",
+            "expected_exit_code": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "T-USER-STYLE-IO-INVALID",
+      "type": "contract",
+      "status": "active",
+      "covers": [],
+      "exercises": [
+        "runtime.user_styles",
+        "contracts.style_package_arguments.schema"
+      ],
+      "depends_on_artifacts": [
+        "runtime.user_styles",
+        "runtime.style_registry",
+        "contracts.style_package.schema",
+        "contracts.style_package_arguments.schema"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "runtime",
+        "artifact": "runtime.user_styles",
+        "cases": [
+          {
+            "id": "missing-package-argument",
+            "fixture": "tests/fixtures/user_styles/inspect_invalid.json",
+            "expect": "invalid",
+            "expected_exit_code": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "T-RENDER-DIRECTOR",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-RENDER-DIRECTOR-001-C1",
+        "REQ-RENDER-DIRECTOR-001-C2",
+        "REQ-RENDER-DIRECTOR-001-C3",
+        "REQ-RENDER-DIRECTOR-001-C4",
+        "REQ-RENDER-DIRECTOR-001-C5"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "runtime.render_direction_adapter",
+        "runtime.render_context_builder",
+        "runtime.render_director"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "runtime.render_direction_adapter",
+        "runtime.render_context_builder",
+        "runtime.render_director"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_render_director.py",
+          "tests/test_render_director_revision.py"
+        ],
+        "timeout_seconds": 1200
+      }
+    },
+    {
+      "id": "T-CONSUMER",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-CONSUMER-001-C1",
+        "REQ-CONSUMER-001-C2",
+        "REQ-CONSUMER-001-C3"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "README",
+        "scripts.export_production",
+        "scripts.sanitize_blend_paths",
+        "runtime.style_registry",
+        "platform-guide",
+        "render-director-guide"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "README",
+        "scripts.export_production",
+        "scripts.sanitize_blend_paths",
+        "runtime.style_registry"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_production_distribution.py",
+          "tests/test_v02_readme.py"
+        ],
+        "timeout_seconds": 1200
+      }
+    },
+    {
+      "id": "T-RUNTIME-PORTABLE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-RUNTIME-PORTABLE-001-C1",
+        "REQ-RUNTIME-PORTABLE-001-C2",
+        "REQ-RUNTIME-PORTABLE-001-C3",
+        "REQ-RUNTIME-PORTABLE-001-C4",
+        "REQ-RUNTIME-PORTABLE-001-C6"
+      ],
+      "exercises": [
+        "workflow-cli",
+        "scripts.govern",
+        "scripts.framework_support"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli",
+        "scripts.govern",
+        "scripts.framework_support"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_runtime_portability.py"
+        ],
+        "timeout_seconds": 1200
+      }
+    },
+    {
+      "id": "T-RUNTIME-STAGE1",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-RUNTIME-PORTABLE-001-C5"
+      ],
+      "exercises": [
+        "workflow-cli"
+      ],
+      "depends_on_artifacts": [
+        "workflow-cli"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_stage1_e2e.py"
+        ],
+        "timeout_seconds": 1200
+      }
+    },
+    {
+      "id": "T-DIRECTOR-IO",
+      "type": "contract",
+      "status": "active",
+      "covers": [],
+      "exercises": [
+        "runtime.render_direction_adapter"
+      ],
+      "depends_on_artifacts": [
+        "runtime.render_direction_adapter"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "runtime",
+        "artifact": "runtime.render_direction_adapter",
+        "cases": [
+          {
+            "id": "valid",
+            "fixture": "tests/fixtures/render_director/compile.json",
+            "expect": "valid",
+            "expected_exit_code": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "T-DIRECTOR-IO-INVALID",
+      "type": "contract",
+      "status": "active",
+      "covers": [],
+      "exercises": [
+        "runtime.render_direction_adapter"
+      ],
+      "depends_on_artifacts": [
+        "runtime.render_direction_adapter"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "runtime",
+        "artifact": "runtime.render_direction_adapter",
+        "cases": [
+          {
+            "id": "invalid",
+            "fixture": "tests/fixtures/render_director/invalid.json",
+            "expect": "invalid",
+            "expected_exit_code": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "T-DIRECTOR-IO-PROCESS",
+      "type": "contract",
+      "status": "active",
+      "covers": [],
+      "exercises": [
+        "runtime.render_direction_adapter"
+      ],
+      "depends_on_artifacts": [
+        "runtime.render_direction_adapter"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_director_io.py"
+        ],
+        "timeout_seconds": 120
       }
     }
   ]

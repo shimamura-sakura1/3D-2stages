@@ -178,7 +178,7 @@
         "T-README-001"
       ],
       "introduced_in": "S2",
-      "status": "active",
+      "status": "superseded",
       "supersedes": []
     },
     {
@@ -274,7 +274,7 @@
         "T-GOVERN-NEWLINES"
       ],
       "introduced_in": "S4",
-      "status": "active",
+      "status": "superseded",
       "supersedes": [],
       "conditional": true
     },
@@ -533,7 +533,7 @@
         "T-V02-CRITIC"
       ],
       "introduced_in": "S12",
-      "status": "active",
+      "status": "superseded",
       "supersedes": []
     },
     {
@@ -563,7 +563,7 @@
         "T-V02-REVISION"
       ],
       "introduced_in": "S13",
-      "status": "active",
+      "status": "superseded",
       "supersedes": []
     },
     {
@@ -766,7 +766,7 @@
         "T-V02-DELIVERY"
       ],
       "introduced_in": "S17",
-      "status": "active",
+      "status": "superseded",
       "supersedes": []
     },
     {
@@ -850,7 +850,7 @@
         "T-RELEASE-ARCHIVE"
       ],
       "introduced_in": "S20",
-      "status": "active",
+      "status": "superseded",
       "supersedes": []
     },
     {
@@ -873,6 +873,369 @@
       ],
       "introduced_in": "S21",
       "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-PORTABLE-REFERENCE-001",
+      "description": "Keep the digest-bound shipped Stage 0 reference byte-identical in macOS and Windows Git checkouts so the documented offline entry works without editing its template.",
+      "claims": [
+        {
+          "id": "REQ-PORTABLE-REFERENCE-001-C1",
+          "kind": "activation",
+          "statement": "A Windows-style core.autocrlf=true checkout retains the committed reference SVG bytes and the public Stage 0 entry reaches visual_review_required with no approval or acquisition."
+        },
+        {
+          "id": "REQ-PORTABLE-REFERENCE-001-C2",
+          "kind": "invariant",
+          "statement": "A macOS-style core.autocrlf=false checkout retains the existing reference digest and public Stage 0 behavior unchanged."
+        },
+        {
+          "id": "REQ-PORTABLE-REFERENCE-001-C3",
+          "kind": "rejection",
+          "statement": "Preserving checkout bytes does not weaken Stage 0 provenance: a changed imported reference rejects submission without writing Stage 0 artifacts or approvals."
+        }
+      ],
+      "implemented_by": [
+        "release-export-attributes",
+        "v02-reference-example",
+        "v02-stage0-template",
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-PORTABLE-REFERENCE-WINDOWS",
+        "T-PORTABLE-REFERENCE-MACOS",
+        "T-PORTABLE-REFERENCE-REJECTION"
+      ],
+      "introduced_in": "S22",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
+    },
+    {
+      "id": "REQ-PORTABLE-DELIVERY-PATH-001",
+      "description": "Local delivery must publish and verify its existing content-addressed package when Windows project roots make nested resource paths exceed the legacy filesystem path limit.",
+      "claims": [
+        {
+          "id": "REQ-PORTABLE-DELIVERY-PATH-001-C1",
+          "kind": "activation",
+          "statement": "On Windows, an explicitly approved schema 0.2 project under a long project root publishes its full resource inventory and reaches delivered without changing package-relative names or content hashes."
+        },
+        {
+          "id": "REQ-PORTABLE-DELIVERY-PATH-001-C2",
+          "kind": "invariant",
+          "statement": "On macOS and other hosts, approved delivery retains the existing path layout, package verification and atomic failure behavior."
+        },
+        {
+          "id": "REQ-PORTABLE-DELIVERY-PATH-001-C3",
+          "kind": "rejection",
+          "statement": "A failed copy while staging an approved project under a long root leaves no package or staging directory and does not change the approved Manifest."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "runtime.visual_delivery",
+        "runtime.io",
+        "SKILL"
+      ],
+      "verified_by": [
+        "T-PORTABLE-DELIVERY-WINDOWS",
+        "T-PORTABLE-DELIVERY-REJECTION",
+        "T-V02-DELIVERY"
+      ],
+      "introduced_in": "S22",
+      "status": "active",
+      "supersedes": [],
+      "conditional": true
+    },
+    {
+      "id": "REQ-V02-CRITIC-PORTABLE-001",
+      "description": "Record a Codex visual diagnosis of the current real preview against the nine-category style rubric, independently of Blender execution and user approval. Vision judgement is demonstrated separately with a fixed render; deterministic runtime validates identity, integrity and persistence.",
+      "claims": [
+        {
+          "id": "REQ-V02-CRITIC-PORTABLE-001-C1",
+          "kind": "behavior",
+          "statement": "The read-only critic context supplies current successful render metadata, validated image and nine-category rubric without changing formal state or invoking Blender."
+        },
+        {
+          "id": "REQ-V02-CRITIC-PORTABLE-001-C2",
+          "kind": "behavior",
+          "statement": "Submitting a valid current nine-category visual review persists an immutable review through ManifestManager and selects visual_revision or final_review_required without approving, changing geometry or invoking Blender."
+        },
+        {
+          "id": "REQ-V02-CRITIC-PORTABLE-001-C3",
+          "kind": "rejection",
+          "statement": "Stale project, scene, render, image or revision identities, tampered current artifacts, invalid category/action scopes and missing or failed previews reject before formal writes; schema 0.1 and plan_only remain isolated."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-CRITIC-PORTABLE"
+      ],
+      "introduced_in": "S22",
+      "status": "active",
+      "supersedes": [
+        "REQ-V02-CRITIC-001"
+      ]
+    },
+    {
+      "id": "REQ-V02-REVISION-PORTABLE-001",
+      "description": "Phase 8 applies bounded review-linked visual revisions and rerenders with immutable history and a three-pass ceiling.",
+      "claims": [
+        {
+          "id": "REQ-V02-REVISION-PORTABLE-001-C1",
+          "kind": "behavior",
+          "statement": "An explicit current revision plan applies only the six permitted visual adjustments recommended by the current review, atomically preserving geometry, blockout, approvals and prior documents through ManifestManager."
+        },
+        {
+          "id": "REQ-V02-REVISION-PORTABLE-001-C2",
+          "kind": "rejection",
+          "statement": "Stale, tampered, replayed, unsupported or out-of-scope revision plans and exhausted preview budgets reject before formal writes or Blender execution; the controlled revision loop counts failed attempts toward at most three total preview passes."
+        },
+        {
+          "id": "REQ-V02-REVISION-PORTABLE-001-C3",
+          "kind": "invariant",
+          "statement": "Revised semantic operations deterministically change material, light, fog, camera or exposure parameters without geometry regeneration; explicit preview execution and completion remain separate from preparation and artistic approval, with legacy defaults unchanged."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-V02-REVISION-PORTABLE"
+      ],
+      "introduced_in": "S22",
+      "status": "active",
+      "supersedes": [
+        "REQ-V02-REVISION-001"
+      ]
+    },
+    {
+      "id": "REQ-V02-DELIVERY-PORTABLE-001",
+      "description": "Phase 12 provides immutable current completion evidence, explicit final user review and reproducible local visual scene delivery.",
+      "claims": [
+        {
+          "id": "REQ-V02-DELIVERY-PORTABLE-001-C1",
+          "kind": "activation",
+          "statement": "Current successful preview captures immutable completion evidence only when current setup, blockout and worker receipt match; explicit authorized final user review binds ten current documents, geometry and raw evidence without critic approval."
+        },
+        {
+          "id": "REQ-V02-DELIVERY-PORTABLE-001-C2",
+          "kind": "rejection",
+          "statement": "Missing, failed, legacy, plan-only, stale or tampered preview, critic, geometry, source, surface, reference or resource evidence rejects final review/delivery atomically before and after approval, including recomputed setup receipts for changed BLEND files."
+        },
+        {
+          "id": "REQ-V02-DELIVERY-PORTABLE-001-C3",
+          "kind": "behavior",
+          "statement": "Exact approved snapshot produces a content-addressed local package with deterministic raw-hash inventory, enumerated formal file history, used resources, provenance and approved Manifest; staging and publication recheck under the Manifest lock and registered repeat delivery verifies all content. Each newly completed preview freezes exact repository dependencies into immutable project content addresses; a subsequent preview may use upgraded dependencies while historical copies remain verified and current live dependencies remain guarded."
+        },
+        {
+          "id": "REQ-V02-DELIVERY-PORTABLE-001-C4",
+          "kind": "invariant",
+          "statement": "Final rejection preserves evidence and user decision while permitting one new concrete revision-required critic for existing bounded correction; old decisions and budgets remain intact, with no automatic approval, new render/export or web publication."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "v02-delivery-guide"
+      ],
+      "verified_by": [
+        "T-V02-DELIVERY-PORTABLE"
+      ],
+      "introduced_in": "S22",
+      "status": "active",
+      "supersedes": [
+        "REQ-V02-DELIVERY-001"
+      ]
+    },
+    {
+      "id": "REQ-USER-STYLE-001",
+      "description": "User-authored style packages are first-class, portable project inputs instead of requiring Skill code edits or a built-in version whitelist.",
+      "conditional": true,
+      "claims": [
+        {
+          "id": "REQ-USER-STYLE-001-C1",
+          "kind": "activation",
+          "statement": "Explicit user style packages declare format_version separately from their own identity and release version; inspection validates all definitions and reports missing design review or Blender resources without granting artistic approval."
+        },
+        {
+          "id": "REQ-USER-STYLE-001-C2",
+          "kind": "behavior",
+          "statement": "Calibration preparation copies declared data into a new isolated candidate, preserves the user source and review status, and emits a guarded MCP request; preparation alone is not Blender execution or visual acceptance."
+        },
+        {
+          "id": "REQ-USER-STYLE-001-C3",
+          "kind": "behavior",
+          "statement": "Before visual approval, ManifestManager atomically imports a validated package with a complete hash inventory into immutable project-relative style storage; stale writers, worker roles and overwrites reject without changing project state."
+        },
+        {
+          "id": "REQ-USER-STYLE-001-C4",
+          "kind": "behavior",
+          "statement": "Explicit project style selection propagates through Stage 0, semantic material resolution, scene operation guards, the selected critic rubric and final delivery, retaining provenance and working after the source directory is removed or the project is relocated."
+        },
+        {
+          "id": "REQ-USER-STYLE-001-C5",
+          "kind": "rejection",
+          "statement": "Unsupported formats, invalid or escaping paths/versions, malformed or nonfinite values, missing rubric/provenance, duplicate fields and changed imported bytes reject explicitly without silently selecting an alternative style."
+        },
+        {
+          "id": "REQ-USER-STYLE-001-C6",
+          "kind": "invariant",
+          "statement": "With no explicit user selection, the existing industrial 1.0.0 default, 1.1.0 refinement and all project artistic-approval gates retain their accepted behavior."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [
+        "T-USER-STYLE"
+      ],
+      "introduced_in": "S23",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-RENDER-DIRECTOR-001",
+      "description": "Integrate only external public visual data with deterministic production compilation and immutable review/revision gates.",
+      "claims": [
+        {
+          "id": "REQ-RENDER-DIRECTOR-001-C1",
+          "kind": "behavior",
+          "statement": "Context carries measured scene bounds, stage intent, exact style, references, user constraints and same-scene direction/review history without mutating the project."
+        },
+        {
+          "id": "REQ-RENDER-DIRECTOR-001-C2",
+          "kind": "behavior",
+          "statement": "Relative camera framing fits measured AABB corners for prop, environment, tall and interior bounds; lighting compiles against executable style defaults, with plan schema validation."
+        },
+        {
+          "id": "REQ-RENDER-DIRECTOR-001-C3",
+          "kind": "behavior",
+          "statement": "Initial direction and compiled plans commit atomically through ManifestManager with immutable hash references; invalid, stale and unapproved input rejects."
+        },
+        {
+          "id": "REQ-RENDER-DIRECTOR-001-C4",
+          "kind": "behavior",
+          "statement": "Only a review tied to the actual PNG can authorize a bounded revision plus one; preserve fields, geometry approvals, unchanged history and attempt budget are enforced."
+        },
+        {
+          "id": "REQ-RENDER-DIRECTOR-001-C5",
+          "kind": "behavior",
+          "statement": "Legacy direct plans remain supported; visual priors cannot override executable defaults."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "runtime.render_direction_adapter",
+        "render-director-guide"
+      ],
+      "verified_by": [
+        "T-RENDER-DIRECTOR"
+      ],
+      "introduced_in": "S24",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-CONSUMER-001",
+      "description": "Provide a project-purpose README and a consumer-only production tree with complete runtime dependencies, without maintenance files or private paths.",
+      "claims": [
+        {
+          "id": "REQ-CONSUMER-001-C1",
+          "kind": "behavior",
+          "statement": "The exported consumer tree retains runtime, data schemas, style resources and resolved documentation links while excluding test suites, maintenance history and private local data."
+        },
+        {
+          "id": "REQ-CONSUMER-001-C2",
+          "kind": "behavior",
+          "statement": "README commands create an unapproved visual plan; runtime diagnostics do not depend on the maintenance framework."
+        },
+        {
+          "id": "REQ-CONSUMER-001-C3",
+          "kind": "behavior",
+          "statement": "Embedded personal PNG output paths can be redacted without altering Blender block headers, lengths, pointers or other payloads."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "render-director-guide"
+      ],
+      "verified_by": [
+        "T-CONSUMER"
+      ],
+      "introduced_in": "S24",
+      "status": "active",
+      "supersedes": [
+        "REQ-RELEASE-001",
+        "REQ-README-001"
+      ]
+    },
+    {
+      "id": "REQ-RUNTIME-PORTABLE-001",
+      "description": "Retain platform execution, Stage 1 lifecycle and history protection while separating maintenance discovery from the consumer runtime.",
+      "claims": [
+        {
+          "id": "REQ-RUNTIME-PORTABLE-001-C1",
+          "kind": "behavior",
+          "statement": "Project-relative paths accept either separator while Windows drive, UNC, rooted, POSIX absolute and parent-traversal paths reject on every host through the public workflow CLI."
+        },
+        {
+          "id": "REQ-RUNTIME-PORTABLE-001-C2",
+          "kind": "behavior",
+          "statement": "Explicit batch execution resolves Blender from an explicit option, BLENDER_EXECUTABLE, PATH or native install locations in that order; invalid explicit configuration rejects, and MCP remains the default without launching or discovering batch Blender."
+        },
+        {
+          "id": "REQ-RUNTIME-PORTABLE-001-C3",
+          "kind": "behavior",
+          "statement": "The worker rejects Blender older than 4.2 before scene mutation; doctor reports the current Python, platform and executable discovery without claiming MCP connectivity or starting external services."
+        },
+        {
+          "id": "REQ-RUNTIME-PORTABLE-001-C4",
+          "kind": "behavior",
+          "statement": "Maintenance-only discovery resolves explicit, environment and sibling framework paths and preserves AGENTS.md in source projections. Runtime doctor reports only runtime dependencies."
+        },
+        {
+          "id": "REQ-RUNTIME-PORTABLE-001-C5",
+          "kind": "behavior",
+          "statement": "Actual CLI and loopback HTTP scenarios cover Stage 1 A/B/C acquisition, review and bounded rework, preserving prior revisions and provenance through asset delivery; missing providers, rights or capabilities do not silently generate or approve."
+        },
+        {
+          "id": "REQ-RUNTIME-PORTABLE-001-C6",
+          "kind": "behavior",
+          "statement": "Governance reconstructs LF/CRLF transport changes only in its temporary projection and only when the candidate bytes match accepted SHA256 anchors for linked history records or historical test support files. Matching bytes remain unchanged; other content changes and escaping paths reject, and real source/history files remain untouched."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli",
+        "scripts.govern"
+      ],
+      "verified_by": [
+        "T-RUNTIME-PORTABLE",
+        "T-RUNTIME-STAGE1"
+      ],
+      "introduced_in": "S24",
+      "status": "active",
+      "supersedes": [
+        "REQ-PORTABLE-001"
+      ]
+    },
+    {
+      "id": "REQ-DIRECTOR-LIVE-001",
+      "description": "Demonstrate real external visual judgement followed by Blender execution of compiled direction and refinement.",
+      "claims": [
+        {
+          "id": "REQ-DIRECTOR-LIVE-001-C1",
+          "kind": "behavior",
+          "statement": "Actual external-agent direction/review and connected Blender rendering preserve geometry and produce visually inspected outputs."
+        }
+      ],
+      "implemented_by": [
+        "workflow-cli"
+      ],
+      "verified_by": [],
+      "introduced_in": "S24",
+      "status": "unresolved",
       "supersedes": []
     }
   ]

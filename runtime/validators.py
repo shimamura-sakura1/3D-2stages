@@ -26,7 +26,7 @@ def valid_timestamp(value):
 
 
 def validate_contract(name, value):
-    if isinstance(value, dict) and (value.get("schema_version") == "0.2" or name == "visual_audit_bundle"):
+    if isinstance(value, dict):
         try:
             json.dumps(value, allow_nan=False)
         except (TypeError, ValueError) as exc:

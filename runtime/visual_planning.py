@@ -19,7 +19,7 @@ def validate_plan(root, manifest, documents):
     for item in assignment['references']:
         require(item['reference_id'] in refs,'Unknown style reference')
         require(set(item['roles']).issubset(refs[item['reference_id']]['roles']),'Style reference role exceeds declared roles')
-    style=StyleRegistry().load(assignment['style_profile'],version=assignment['profile_version'])
+    style=StyleRegistry().load(assignment['style_profile'],version=assignment['profile_version'],project_root=root)
     require(assignment['profile_version']==style['version'],'Style version does not match executable profile')
     for key in ('lighting','atmosphere','camera','color'):
         require(assignment[key+'_profile']==style[key]['profile'],'Unknown '+key+' profile')

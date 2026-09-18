@@ -1,5 +1,7 @@
 """Blender-only style operations. Input dictionaries are resolved by project Python."""
 import math
+import hashlib
+import json
 import uuid
 from pathlib import Path
 import bpy
@@ -52,8 +54,8 @@ def lighting(scene,p):
     world.node_tree.nodes['Background'].inputs['Color'].default_value=[*p['world_color'],1]
     world.node_tree.nodes['Background'].inputs['Strength'].default_value=p['world_strength'];scene.world=world
     for role in ('key','fill'):
-        data=bpy.data.lights.new(role,'AREA');data.energy=p[role+'_energy'];data.shape='DISK';data.size=p[role+'_size']
-        obj=bpy.data.objects.new(role,data);scene.collection.objects.link(obj);obj['style_light']=True;obj.location=p[role+'_location'];aim(obj,(0,0,0))
+        data=bpy.data.lights.new(role,p.get(role+'_type','AREA'));data.energy=p[role+'_energy'];data.shape='DISK';data.size=p[role+'_size'];data.color=p.get(role+'_color',[1,1,1])
+        obj=bpy.data.objects.new(role,data);scene.collection.objects.link(obj);obj['style_light']=True;obj.location=p[role+'_location'];aim(obj,p.get(role+'_target',(0,0,0)))
 
 def render_settings(scene,p,color):
     scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=p['samples'];scene.cycles.seed=p['seed'];scene.cycles.use_denoising=p['denoise']
@@ -80,8 +82,8 @@ def write_material_library(path, materials, profile):
 def calibration(style,output):
     require_blender()
     original=bpy.context.window.scene
-    scene=bpy.data.scenes.new('industrial_acg_v1.calibration');bpy.context.window.scene=scene
-    mats={k:material('industrial_acg_v1.'+k,p) for k,p in style['materials']['materials'].items()}
+    scene=bpy.data.scenes.new(style['id']+'.calibration');bpy.context.window.scene=scene
+    mats={k:material(style['id']+'.'+k,p) for k,p in style['materials']['materials'].items()}
     def cube(name,loc,size,mat,bevel=.04):
         bpy.ops.mesh.primitive_cube_add(size=1,location=loc);obj=bpy.context.object;obj.name=name;obj.scale=size
         bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
@@ -118,3 +120,46 @@ def calibration(style,output):
     bpy.data.libraries.write(str(cal),{scene},fake_user=True,compress=False)
     bpy.context.window.scene=original
     return scene
+
+
+def execute_calibration(request_path, expected_sha256):
+    """Execute one prepared data-only candidate in Blender; preserve the open scene."""
+    request = Path(request_path)
+    raw = request.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != expected_sha256:
+        raise RuntimeError('Calibration request changed')
+    data = json.loads(raw)
+    style = data['style']
+    root = Path(style['root']).resolve()
+    if request.resolve() != root / 'calibration-request.json':
+        raise RuntimeError('Calibration request root mismatch')
+    for name, digest in data['guard'].items():
+        if hashlib.sha256(Path(name).read_bytes()).hexdigest() != digest:
+            raise RuntimeError('Calibration input changed: ' + name)
+    require_blender()
+    if bpy.app.version < tuple(style['blender_minimum']):
+        raise RuntimeError('User style requires a newer Blender version')
+    outputs = {key: Path(style[key]) for key in ('library', 'calibration')}
+    outputs.update(preview=Path(data['preview']), receipt=Path(data['receipt']))
+    for path in outputs.values():
+        if not path.resolve().is_relative_to(root) or path.exists():
+            raise RuntimeError('Calibration output escapes candidate or already exists')
+    original = bpy.context.window.scene
+    try:
+        scene = calibration(style, str(outputs['preview']))
+        expected_names = sorted(style['id'] + '.' + key for key in style['materials']['materials'])
+        with bpy.data.libraries.load(str(outputs['library']), link=False) as (source, target):
+            if sorted(source.materials) != expected_names:
+                raise RuntimeError('Exported library does not contain the named style materials')
+        bpy.ops.render.render(write_still=True, scene=scene.name)
+        result = {'status': 'calibrated', 'style_id': style['id'], 'version': style['version'],
+                  'blender_version': list(bpy.app.version), 'material_names': expected_names,
+                  'artistic_approval': False,
+                  'files': {key: {'path': path.relative_to(root).as_posix(),
+                                  'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+                            for key, path in outputs.items() if key != 'receipt'}}
+        with outputs['receipt'].open('x', encoding='utf-8') as stream:
+            json.dump(result, stream, indent=2)
+        return result
+    finally:
+        bpy.context.window.scene = original

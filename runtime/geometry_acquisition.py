@@ -71,7 +71,7 @@ class GeometryAcquisition:
             scale=modification['scale']
             if not isinstance(scale,list) or len(scale)!=3 or any(isinstance(x,bool) or not isinstance(x,(int,float)) or not math.isfinite(x) or x<=0 for x in scale):raise BoundaryError('Invalid modification scale')
         style=docs['style_assignment']['style_profile']
-        resolve_material(style,request['material_class'],request['condition'],version=docs['style_assignment']['profile_version'])
+        resolve_material(style,request['material_class'],request['condition'],version=docs['style_assignment']['profile_version'],project_root=self.manager.root)
         report=search_assets(task,self.providers);route,candidate=GeometryRouter().choose(request,report)
         if surface_evidence and route!='C':raise BoundaryError('Surface evidence is supported only for Route C')
         if image_only and route!='C':raise BoundaryError('image_only is supported only for Route C')

@@ -9,3 +9,5 @@ projects/
 .deps/
 .skillctl/
 ssh-deployment-report/
+t1/
+*.blend1

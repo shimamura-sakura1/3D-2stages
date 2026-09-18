@@ -19,7 +19,7 @@ Stage 2 continues to resolve semantic material classes through industrial_acg_v1
 
 The new tests cover explicit Paint, default geometry-only behavior, legacy APIs, capability/rights failures before generation, invalid/untextured responses, immutable source linkage and later tamper rejection. Transport responses in unit tests are labelled test doubles. Formal phase acceptance additionally requires a real HY3D asset rendered with its raw materials and with style-resolved materials under comparable conditions; images must be inspected and the geometry fingerprint compared.
 
-Never supply a guessed `license_verified` or assign CC0 to unknown model outputs to make a test proceed. Refer to the configured verified provenance and the user's source information. Current evidence and any missing real inputs are recorded in phase-9-evidence.json.
+Never supply a guessed `license_verified` or assign CC0 to unknown model outputs to make a test proceed. Refer to the configured verified provenance and the user's source information. Record evidence and missing inputs in the current project.
 
 ## Current verification and next phase readiness
 

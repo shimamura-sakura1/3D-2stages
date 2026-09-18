@@ -1,11 +1,60 @@
 """Load a bounded executable style; no semantic inference or fallback."""
 from pathlib import Path
+import hashlib
+import json
 import math
-from runtime.io import load_data, inside
+import re
+import copy
+import yaml
+from runtime.io import inside
 from runtime.errors import BoundaryError
 
 CLASSES = {'painted_metal','bare_metal','concrete','rubber','glass','emissive'}
 CONDITIONS = {'clean','lightly_weathered','weathered'}
+RUBRIC_CATEGORIES = {'plasticity', 'material_separation', 'surface_uniformity', 'composition',
+                    'depth_separation', 'lighting_flatness', 'contact_shadow',
+                    'atmospheric_depth', 'style_compatibility'}
+
+
+class UniqueKeyLoader(yaml.SafeLoader):
+    """Style data never expands environment variables or executes supplied code."""
+    def construct_mapping(self, node, deep=False):
+        self.flatten_mapping(node)
+        keys = [self.construct_object(key, deep=deep) for key, _ in node.value]
+        if len(keys) != len(set(keys)):
+            raise ValueError('duplicate style field')
+        return super().construct_mapping(node, deep=deep)
+
+
+def style_path(root, relative):
+    target = inside(root, relative)
+    cursor = Path(root)
+    for part in Path(str(relative).replace('\\', '/')).parts:
+        cursor = cursor / part
+        if cursor.is_symlink() or getattr(cursor, 'is_junction', lambda: False)():
+            raise BoundaryError('Linked style paths are unsupported')
+    return target
+
+
+def style_files(style):
+    paths = ['profile.yaml', *style['components'].values(), *style['resources'].values()]
+    if 'provenance' in style:
+        paths.append(style['provenance'])
+    else:
+        # Legacy rubric location remains part of scene and delivery guards.
+        paths.append('critic/rubric.yaml')
+    if style.get('project_import'):
+        paths.append('package-lock.json')
+    return list(dict.fromkeys(paths))
+
+
+def design_reviewed(style):
+    signature = style.get('signature', {})
+    reviewer = signature.get('reviewed_by')
+    reviewer_valid = (isinstance(reviewer, str) and bool(reviewer.strip()) and reviewer != 'unreviewed')
+    if 'format_version' not in style:
+        reviewer_valid = reviewer == 'Codex'
+    return reviewer_valid and signature.get('review_status') == 'design_reviewed'
 
 def number(value, low, high):
     if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or not low<=value<=high:
@@ -15,17 +64,22 @@ def vector(value, low, high):
     if not isinstance(value,list) or len(value)!=3:raise ValueError('three numeric components')
     for x in value:number(x,low,high)
 
-def apply_signature(style):
+def apply_signature(style, *, require_review=True):
     """Validate and consume an author-reviewed signature, without touching geometry."""
     signature=style['signature']
     if set(signature)!={'id','version','reviewed_by','review_status','evidence_scope','dimensions'}:
         raise ValueError('signature fields')
     if signature['id']!=style['id'] or signature['version']!=style['version']:
         raise ValueError('signature identity')
-    if signature['reviewed_by']!='Codex' or signature['review_status']!='design_reviewed':
+    if (not isinstance(signature['reviewed_by'], str) or not signature['reviewed_by'].strip()
+            or signature['review_status'] not in ('unreviewed', 'design_reviewed')):
+        raise ValueError('signature review fields')
+    if require_review and not design_reviewed(style):
         raise ValueError('signature design review is not artistic approval')
     evidence=signature['evidence_scope']
-    if not isinstance(evidence,dict) or set(evidence)!={'original_calibration','original_pump','user_station'} or any(not isinstance(v,str) or not v.strip() for v in evidence.values()):
+    if (not isinstance(evidence,dict) or not evidence
+            or ('format_version' not in style and set(evidence)!={'original_calibration','original_pump','user_station'})
+            or any(not isinstance(k,str) or not k.strip() or not isinstance(v,str) or not v.strip() for k,v in evidence.items())):
         raise ValueError('signature evidence scope')
     d=signature['dimensions']
     fields={'geometry':{'preserve_approved'},'surface':{'bump_scale'},'palette':CLASSES|{'vegetation'},'roughness':{'offset'},'weathering':{'variation_scale'},'lighting':{'key_scale','fill_scale'},'fog':{'density_scale'},'depth':{'required_layers'},'composition':{'focal_length_mm_range'},'emissive':{'strength_scale'},'detail_density':{'noise_scale'}}
@@ -55,27 +109,106 @@ class StyleRegistry:
     def __init__(self, root=None):
         self.root = Path(root) if root is not None else Path(__file__).resolve().parents[1]/'styles'
 
-    def load(self, name, *, version=None, require_resources=True):
+    def load(self, name, *, version=None, require_resources=True, project_root=None):
         version='1.0.0' if version is None else version
-        if not isinstance(version,str) or version not in ('1.0.0','1.1.0'):
+        if not isinstance(version,str) or len(version)>32 or re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+',version) is None:
             raise BoundaryError(f'Unknown style version: {version}')
+        if not isinstance(name,str) or re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}',name) is None:
+            raise BoundaryError('Unknown style identifier')
+        if project_root is not None:
+            local = style_path(project_root, f'styles/{name}/versions/{version}')
+            if local.exists():
+                result = self.load_package(local, require_resources=require_resources)
+                lock_path = style_path(local, 'package-lock.json')
+                lock = json.loads(lock_path.read_text(encoding='utf-8')) if lock_path.is_file() else None
+                if (not isinstance(lock,dict) or lock.get('style_id')!=name or lock.get('version')!=version
+                        or lock.get('files')!=result['source_hashes']):
+                    raise BoundaryError('Imported style hash inventory missing or changed; use style-import')
+                result['project_import'] = True
+                return result
         folder=inside(self.root,name)
-        if version!='1.0.0':folder=inside(folder,'versions/'+version)
+        if version!='1.0.0' or not (folder/'profile.yaml').is_file():folder=inside(folder,'versions/'+version)
         if not (folder/'profile.yaml').is_file():
-            raise BoundaryError(f'Unknown style: {name}')
+            raise BoundaryError(f'Unknown style or version: {name}@{version}')
+        result = self._load_folder(folder, require_resources=require_resources)
+        if result['id']!=name or result['version']!=version:
+            raise BoundaryError('Invalid style definition: profile identity/version')
+        return result
+
+    def load_package(self, folder, *, require_resources=True, require_review=True):
+        result = self._load_folder(folder, require_resources=require_resources, require_review=require_review)
+        if 'format_version' not in result:
+            raise BoundaryError('User style package requires explicit format_version; see docs/v02/user-styles.md')
+        return result
+
+    def _load_folder(self, folder, *, require_resources=True, require_review=True):
+        folder = Path(folder).absolute()
+        if folder.is_symlink() or getattr(folder, 'is_junction', lambda: False)():
+            raise BoundaryError('Linked style directory is unsupported')
+        folder = folder.resolve()
+        raw_files = {}
+        def read(relative):
+            raw = style_path(folder, relative).read_bytes()
+            raw_files[relative] = raw
+            value = yaml.load(raw.decode('utf-8'), Loader=UniqueKeyLoader)
+            json.dumps(value, allow_nan=False)
+            return value
         try:
-            p=load_data(folder/'profile.yaml')
-            if p['id']!=name or p['version']!=version:
-                raise ValueError('profile identity/version')
+            p=read('profile.yaml')
+            if not isinstance(p,dict):raise ValueError('profile must be an object')
+            custom = 'format_version' in p
+            if custom:
+                from runtime.validators import validate_contract
+                validate_contract('style_package',p)
+                if tuple(p['blender_minimum']) < (4,2,0):raise ValueError('Blender minimum must be at least 4.2')
+            elif p['version'] not in ('1.0.0','1.1.0'):
+                raise ValueError('Unknown legacy style version; declare a user package format_version')
+            refined = custom or p['version']=='1.1.0'
             expected_components={'materials','lighting','atmosphere','camera','color','render'}
-            if version=='1.1.0':expected_components.add('signature')
+            if refined:expected_components.add('signature')
+            if custom:expected_components.add('critic')
             if set(p['components'])!=expected_components or set(p['resources'])!={'library','calibration'}:
                 raise ValueError('profile components/resources')
+            declared = ['profile.yaml', *p['components'].values(), *p['resources'].values()]
+            if custom:declared.append(p['provenance'])
+            resolved = [style_path(folder,path) for path in declared]
+            if len(set(resolved))!=len(resolved):raise ValueError('style file paths must be distinct')
+            if any(path.name in ('package-lock.json','calibration-request.json','calibration-result.json','preview.png') for path in resolved):
+                raise ValueError('reserved style output path')
             result={**p,'root':str(folder)}
+            priors = copy.deepcopy(p.get('direction_prior', {}))
             for key,path in p['components'].items():
-                result[key]=load_data(inside(folder,path))
+                result[key]=read(path)
+                if not isinstance(result[key],dict):raise ValueError('component must be an object: '+key)
+                component=result[key]
+                if 'execution_default' in component:
+                    if not isinstance(component['execution_default'],dict):raise ValueError('execution_default must be an object')
+                    result[key]={**{k:v for k,v in component.items() if k not in ('execution_default','direction_prior')},
+                                 **component['execution_default']}
+                if 'direction_prior' in component:
+                    if not isinstance(component['direction_prior'],dict):raise ValueError('direction_prior must be an object')
+                    priors[key]=copy.deepcopy(component['direction_prior'])
+                    result[key].pop('direction_prior',None)
+            if custom:
+                for key in ('lighting','atmosphere','camera','color'):
+                    profile_name = result[key].get('profile')
+                    if not isinstance(profile_name,str) or re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}',profile_name) is None:
+                        raise ValueError('component profile: '+key)
+                rubric=result['critic']
+                if (rubric.get('profile_version')!=p['version'] or not isinstance(rubric.get('categories'),dict)
+                        or set(rubric['categories'])!=RUBRIC_CATEGORIES
+                        or any(not isinstance(v,str) or not v.strip() for v in rubric['categories'].values())
+                        or not isinstance(rubric.get('score_semantics'),str) or not rubric['score_semantics'].strip()):
+                    raise ValueError('style critic rubric')
+                provenance=read(p['provenance'])
+                if (not isinstance(provenance,dict) or provenance.get('style_id')!=p['id'] or provenance.get('version')!=p['version']
+                        or not isinstance(provenance.get('evidence_limits'),list) or not provenance['evidence_limits']
+                        or any(not isinstance(v,str) or not v.strip() for v in provenance['evidence_limits'])):
+                    raise ValueError('style provenance identity/evidence_limits')
             definitions=result['materials']
-            classes=CLASSES|({'vegetation'} if version=='1.1.0' else set())
+            if not isinstance(definitions.get('materials'),dict) or not isinstance(definitions.get('conditions'),dict):
+                raise ValueError('materials and conditions must be objects')
+            classes=CLASSES|({'vegetation'} if refined else set())
             if set(definitions['materials'])!=classes or set(definitions['conditions'])!=CONDITIONS:
                 raise ValueError('material/condition set')
             expected={'base_color','roughness','metallic','transmission','emission_strength','bump_distance','noise_scale','roughness_variation','ior'}
@@ -89,8 +222,8 @@ class StyleRegistry:
             for value in definitions['conditions'].values():
                 if set(value)!={'roughness_add','variation_scale'} or not 0<=value['roughness_add']<=.2 or not 0<=value['variation_scale']<=2:
                     raise ValueError('condition values')
-            if result['lighting']['profile']!='overcast': raise ValueError('lighting profile')
-            if version=='1.1.0':
+            if not custom and result['lighting']['profile']!='overcast': raise ValueError('lighting profile')
+            if refined:
                 for condition in definitions['conditions'].values():
                     number(condition['roughness_add'],0,.2);number(condition['variation_scale'],0,2)
                 for params in definitions['materials'].values():
@@ -112,12 +245,18 @@ class StyleRegistry:
                     if type(render[key]) is not int:raise ValueError('integer render setting')
                     number(render[key],low,high)
                 if render['renderer']!='cycles' or type(render['denoise']) is not bool:raise ValueError('refined render settings')
-                apply_signature(result)
+                apply_signature(result, require_review=require_review)
             for key,path in p['resources'].items():
-                resource=inside(folder,path)
-                if require_resources and (not resource.is_file() or resource.read_bytes()[:7]!=b'BLENDER'):
+                resource=style_path(folder,path)
+                if resource.is_file():raw_files[path]=resource.read_bytes()
+                if (require_resources or resource.exists()) and (path not in raw_files or raw_files[path][:7]!=b'BLENDER'):
                     raise BoundaryError(f'Missing Blender resource: {path}')
                 result[key]=str(resource)
+            if custom:
+                result['source_hashes']={path:hashlib.sha256(raw).hexdigest() for path,raw in sorted(raw_files.items())}
+            result['direction_prior']=priors
+            result['execution_default']={key:copy.deepcopy(result[key]) for key in
+                                          ('lighting','atmosphere','camera','color','render')}
             return result
-        except (KeyError,TypeError,ValueError,OSError) as exc:
+        except (KeyError,TypeError,ValueError,OverflowError,OSError,yaml.YAMLError) as exc:
             raise BoundaryError(f'Invalid style definition: {exc}') from exc

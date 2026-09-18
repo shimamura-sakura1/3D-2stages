@@ -116,13 +116,12 @@ source_modified = false
 无效输入返回退出码2和结构化 error，不产生输出。已有非空输出目录拒绝覆盖。
 
 ```text
-python scripts/check_visual_contracts.py --output NEW_AUDIT_DIR < tests/fixtures/v02/industrial_station.json
+python scripts/check_visual_contracts.py --output NEW_AUDIT_DIR < YOUR_AUDIT_BUNDLE.json
 ```
 
-该 fixture 是虚构工业站台的**结构测试输入**，并非渲染结果；里面的图像 hash、文件路径、
-视觉评分和 Reviewer 是测试值，未生成图片，也没有对真实画面做出评价。
+输入 bundle 应包含完整、相互一致的项目文档；结构检查本身不生成图片或评价画面。
 审计核对跨文档 ID/版本、reference roles、几何层级、材质指向、render hash、review 图像和 revision。
 它不检查每张引用图片实际存在、不加载 Shader，也不替代生产资产许可和文件完整性验证。
 输出 status=valid / approval_granted=false / execution=not_performed。
 
-Phase 1 的证据和 readiness 见 [phase-1.md](phase-1.md)。
+外部视觉方向与本地计划的数据关系见 [Render Director 接入](render-director.md)。

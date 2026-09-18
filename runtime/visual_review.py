@@ -36,6 +36,8 @@ def _render_context(manager, manifest=None, *, allowed_states):
         require(m['state'] in allowed_states,
                 'No current successful preview is available for review')
         plans = current_documents(manager, m, PLAN_KINDS)
+        from runtime.render_director import verify_compiled_plans
+        verify_compiled_plans(manager,m,plans)
         documents = {**validate_scene_plans(manager, m, plans), **plans}
         metadata = current_documents(manager, m, ('render_metadata',))['render_metadata']
         validate_contract('render_metadata', metadata)
@@ -60,8 +62,8 @@ def _render_context(manager, manifest=None, *, allowed_states):
         validate_png(image_path, plan['preview']['width'], plan['preview']['height'])
         documents['render_metadata'] = metadata
         unique(documents.values(), 'document_id', 'current document identity')
-        style = StyleRegistry().load(metadata['style_profile'], version=documents['style_assignment']['profile_version'])
-        rubric = load_data(inside(style['root'], 'critic/rubric.yaml'))
+        style = StyleRegistry().load(metadata['style_profile'], version=documents['style_assignment']['profile_version'], project_root=manager.root)
+        rubric = style['critic'] if 'critic' in style else load_data(inside(style['root'], 'critic/rubric.yaml'))
         require(isinstance(rubric, dict) and isinstance(rubric.get('categories'), dict) and
                 set(rubric['categories']) == set(CATEGORIES), 'Missing or invalid nine-category critic rubric')
         require(isinstance(rubric.get('score_semantics'), str) and bool(rubric['score_semantics'].strip()),

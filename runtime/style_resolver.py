@@ -2,8 +2,8 @@
 from runtime.style_registry import StyleRegistry
 from runtime.errors import BoundaryError
 
-def resolve_material(profile, material_class, condition, *, registry=None, version=None):
-    style=(registry or StyleRegistry()).load(profile,version=version)
+def resolve_material(profile, material_class, condition, *, registry=None, version=None, project_root=None):
+    style=(registry or StyleRegistry()).load(profile,version=version,project_root=project_root)
     definitions=style['materials']
     if material_class not in definitions['materials']:
         raise BoundaryError(f'Unknown material class: {material_class}')

@@ -750,6 +750,121 @@
         ],
         "additionalProperties": false
       }
+    },
+    "render_direction": {
+      "type": "object",
+      "properties": {
+        "current_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "artifact_path": {
+          "$ref": "visual_common.schema.json#/$defs/path"
+        },
+        "hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "context_path": {
+          "$ref": "visual_common.schema.json#/$defs/path"
+        },
+        "context_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "scene_context_path": {
+          "$ref": "visual_common.schema.json#/$defs/path"
+        },
+        "scene_context_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "hash"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "current_id": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "artifact_path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "context_path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "context_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "scene_context_path": {
+                "$ref": "visual_common.schema.json#/$defs/path"
+              },
+              "scene_context_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "current_id",
+              "revision",
+              "artifact_path",
+              "hash",
+              "context_path",
+              "context_hash",
+              "scene_context_path",
+              "scene_context_hash"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "current_id",
+        "revision",
+        "artifact_path",
+        "hash",
+        "context_path",
+        "context_hash",
+        "scene_context_path",
+        "scene_context_hash",
+        "reviews",
+        "history"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [

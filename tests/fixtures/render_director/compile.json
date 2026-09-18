@@ -1,0 +1,356 @@
+{
+  "context": {
+    "schema_version": "1.0",
+    "project": {
+      "project_id": "industrial_station",
+      "scene_version": 1
+    },
+    "intent": {
+      "visual_brief_id": "visual_brief_01",
+      "user_prompt": "Quiet industrial station",
+      "user_constraints": [
+        "Stage 0 intent: {\"visual_goal\": [\"atmosphere\", \"composition\", \"material_coherence\"], \"required_elements\": [\"readable_platform\"], \"avoid\": [\"uniform_gloss\"]}"
+      ],
+      "preserve": [
+        "approved_geometry"
+      ]
+    },
+    "scene": {
+      "scene_type": "industrial_environment",
+      "primary_subject": {
+        "object_id": "machine"
+      },
+      "secondary_subjects": [
+        {
+          "object_id": "platform"
+        },
+        {
+          "object_id": "wall"
+        }
+      ],
+      "bounds": {
+        "center": [
+          0.0,
+          0.0,
+          2.0
+        ],
+        "size": [
+          6.0,
+          2.0,
+          3.0
+        ]
+      },
+      "environment_summary": "Test measured bounds\nProduction facts: {\"primary_subject_bounds\": {\"center\": [0, 0, 2], \"size\": [1, 1, 2]}, \"secondary_subject_bounds\": [{\"object_id\": \"platform\", \"bounds\": {\"center\": [0, 0, 2], \"size\": [6, 2, 0.3]}}, {\"object_id\": \"wall\", \"bounds\": {\"center\": [0, 0, 2], \"size\": [6, 0.2, 3]}}], \"ground_z\": 0, \"scene_observations\": [], \"style_direction_prior\": {\"camera\": {\"focal_length\": {\"preferred\": [32, 50], \"allowed\": [24, 70]}}}}"
+    },
+    "style": {
+      "id": "industrial_acg_v1",
+      "version": "1.0.0"
+    },
+    "references": [
+      {
+        "id": "ref_material",
+        "role": "material_readability",
+        "path": "references/user/ref_material-0ee9d3efa4257584a9337aa42a1618e0b761e1eda28d83b7f852b44fa6c4e9fd.svg",
+        "description": "{\"source_role\": \"material_language\", \"source\": {\"kind\": \"user\", \"creator\": \"test fixture\", \"license\": \"unknown\", \"license_verified\": false, \"attribution\": \"unverified fixture, planning only\"}}"
+      }
+    ],
+    "previous": {
+      "direction": null,
+      "render": null,
+      "review": null
+    }
+  },
+  "direction": {
+    "schema_version": "1.0",
+    "project_id": "industrial_station",
+    "scene_version": 1,
+    "direction_id": "rd_test",
+    "revision": 0,
+    "scene_type": "industrial_environment",
+    "intent": {
+      "primary_goal": [
+        "material_readability"
+      ]
+    },
+    "camera": {
+      "subject_ref": "machine",
+      "framing": {
+        "type": "three_quarter"
+      },
+      "azimuth_deg": 35,
+      "elevation_deg": 25,
+      "focal_length_mm": 40,
+      "subject_coverage": {
+        "target": 0.55
+      },
+      "target": {
+        "mode": "subject_center",
+        "offset_normalized": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "composition": {
+      "hierarchy": "strong_single_anchor",
+      "foreground": {
+        "role": "support",
+        "required": false
+      },
+      "midground": {
+        "required": true
+      },
+      "background": {
+        "required": true
+      },
+      "negative_space": {
+        "amount": "moderate"
+      }
+    },
+    "lighting": {
+      "key": {
+        "reference_frame": "camera_subject",
+        "azimuth_deg": 135,
+        "elevation_deg": 40,
+        "softness": "large"
+      },
+      "fill": {
+        "ratio_to_key": 0.25
+      },
+      "silhouette_separation": "strong"
+    },
+    "atmosphere": {
+      "amount": "subtle",
+      "depth_priority": "moderate"
+    },
+    "exposure": {
+      "intent": "preserve_highlights"
+    },
+    "material_readability": {
+      "priority": [
+        "roughness_contrast"
+      ],
+      "strategy": "Lateral light"
+    },
+    "avoid": [],
+    "preserve": [
+      "approved_geometry"
+    ],
+    "changed_fields": []
+  },
+  "scene_context": {
+    "scene": {
+      "scene_type": "industrial_environment",
+      "primary_subject": {
+        "object_id": "machine",
+        "bounds": {
+          "center": [
+            0,
+            0,
+            2
+          ],
+          "size": [
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      "secondary_subjects": [
+        {
+          "object_id": "platform",
+          "bounds": {
+            "center": [
+              0,
+              0,
+              2
+            ],
+            "size": [
+              6,
+              2,
+              0.3
+            ]
+          }
+        },
+        {
+          "object_id": "wall",
+          "bounds": {
+            "center": [
+              0,
+              0,
+              2
+            ],
+            "size": [
+              6,
+              0.2,
+              3
+            ]
+          }
+        }
+      ],
+      "bounds": {
+        "center": [
+          0.0,
+          0.0,
+          2.0
+        ],
+        "size": [
+          6.0,
+          2.0,
+          3.0
+        ]
+      },
+      "ground_z": 0,
+      "environment_summary": "Test measured bounds"
+    },
+    "production": {
+      "project_id": "industrial_station",
+      "scene_version": 1,
+      "geometry_hash": "503437289da29e7cc72201127c11b7c56f080e9047c79c1b6d8307b48a7d2ba2",
+      "scene_spec_hash": "72d36a9d36c056012892b4f00a8eadda95d3f80a2cc3f2976ba6c91e9088ba66",
+      "blockout_hash": "55098d869c47c1c48d37292865082ecde4b9f19edf62ad2cf63cc0737d2f1ba2"
+    }
+  },
+  "style": {
+    "id": "industrial_acg_v1",
+    "version": "1.0.0",
+    "camera": {
+      "profile": "environment",
+      "focal_length_mm": 48,
+      "clip_start": 0.1,
+      "clip_end": 500
+    },
+    "lighting": {
+      "profile": "overcast",
+      "world_color": [
+        0.55,
+        0.65,
+        0.8
+      ],
+      "world_strength": 0.35,
+      "key_location": [
+        -3,
+        -4,
+        7
+      ],
+      "key_energy": 1500,
+      "key_size": 7,
+      "fill_location": [
+        4,
+        2,
+        5
+      ],
+      "fill_energy": 850,
+      "fill_size": 5
+    },
+    "atmosphere": {
+      "profile": "default",
+      "density": 0.008,
+      "color": [
+        0.68,
+        0.74,
+        0.8
+      ]
+    },
+    "color": {
+      "profile": "default",
+      "view_transform": "AgX",
+      "exposure": 0,
+      "gamma": 1
+    },
+    "render": {
+      "renderer": "cycles",
+      "width": 960,
+      "height": 640,
+      "samples": 32,
+      "seed": 19,
+      "denoise": true
+    },
+    "execution_default": {
+      "lighting": {
+        "profile": "overcast",
+        "world_color": [
+          0.55,
+          0.65,
+          0.8
+        ],
+        "world_strength": 0.35,
+        "key_location": [
+          -3,
+          -4,
+          7
+        ],
+        "key_energy": 1500,
+        "key_size": 7,
+        "fill_location": [
+          4,
+          2,
+          5
+        ],
+        "fill_energy": 850,
+        "fill_size": 5
+      },
+      "atmosphere": {
+        "profile": "default",
+        "density": 0.008,
+        "color": [
+          0.68,
+          0.74,
+          0.8
+        ]
+      },
+      "camera": {
+        "profile": "environment",
+        "focal_length_mm": 48,
+        "clip_start": 0.1,
+        "clip_end": 500
+      },
+      "color": {
+        "profile": "default",
+        "view_transform": "AgX",
+        "exposure": 0,
+        "gamma": 1
+      },
+      "render": {
+        "renderer": "cycles",
+        "width": 960,
+        "height": 640,
+        "samples": 32,
+        "seed": 19,
+        "denoise": true
+      }
+    },
+    "direction_prior": {
+      "camera": {
+        "focal_length": {
+          "preferred": [
+            32,
+            50
+          ],
+          "allowed": [
+            24,
+            70
+          ]
+        }
+      }
+    }
+  },
+  "review": {
+    "schema_version": "1.0",
+    "render_id": "test_render",
+    "project_id": "industrial_station",
+    "scene_version": 1,
+    "direction_id": "rd_test",
+    "direction_revision": 0,
+    "render_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "findings": [],
+    "recommended_changes": {},
+    "preserve": [
+      "approved_geometry"
+    ],
+    "limitations": [
+      "Structural I/O fixture; no rendered image or approval"
+    ]
+  }
+}

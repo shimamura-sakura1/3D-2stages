@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "context": {
+      "$ref": "render_context.schema.json"
+    },
+    "direction": {
+      "$ref": "render_direction.schema.json"
+    },
+    "scene_context": {
+      "$ref": "scene_context.schema.json"
+    },
+    "style": {
+      "type": "object"
+    },
+    "review": {
+      "anyOf": [
+        {
+          "$ref": "render_review.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "context",
+    "direction",
+    "scene_context",
+    "style"
+  ],
+  "additionalProperties": false
+}

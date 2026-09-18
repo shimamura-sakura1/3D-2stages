@@ -17,6 +17,9 @@ def resolved_material(material, mapping):
 def resolved_lighting(style, plan):
     """Resolve intensity and rotate key/fill positions around the world Z axis."""
     value = copy.deepcopy(style)
+    if 'world_setup' in plan:
+        value.update(copy.deepcopy(plan['world_setup']))
+        return value
     factor = {'low': .65, 'medium': 1, 'high': 1.45}[plan['intensity']]
     for key in ('key_energy', 'fill_energy', 'world_strength'): value[key] *= factor
     radians = math.radians(plan.get('azimuth_offset_degrees', 0))
@@ -143,7 +146,8 @@ def run(path,expected_sha,operation):
                 if camera is None:
                     camera=bpy.data.objects.new(name+'.camera',bpy.data.cameras.new(name+'.camera'));scene.collection.objects.link(camera);scene.camera=camera
                 camera.location=r['camera']['location'];sw['aim'](camera,r['camera']['target']);camera.data.type='PERSP';camera.data.lens=r['camera']['focal_length_mm']
-                camera.data.clip_start=p['style']['camera']['clip_start'];camera.data.clip_end=p['style']['camera']['clip_end']
+                camera.data.clip_start=r['camera'].get('clip_start',p['style']['camera']['clip_start']);camera.data.clip_end=r['camera'].get('clip_end',p['style']['camera']['clip_end'])
+                camera.data.sensor_fit='HORIZONTAL';camera.data.sensor_width=r['camera'].get('sensor_width_mm',36)
                 render={**p['style']['render'],**r['preview']};color={**p['style']['color'],'exposure':r['color']['exposure']}
                 sw['render_settings'](scene,render,color)
                 if r['renderer']=='eevee':scene.render.engine='BLENDER_EEVEE_NEXT'

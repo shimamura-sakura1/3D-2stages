@@ -13,6 +13,17 @@ from runtime.env_config import load_dotenv, resolve_environment
 DEFAULT_ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
 
 
+def filesystem_path(path):
+    """Resolve a physical path for Windows long-path I/O without changing stored names."""
+    path = Path(path)
+    if os.name != "nt" or str(path).startswith("\\\\?\\"):
+        return path
+    resolved = str(path.resolve())
+    if resolved.startswith("\\\\"):
+        return Path("\\\\?\\UNC\\" + resolved.lstrip("\\"))
+    return Path("\\\\?\\" + resolved)
+
+
 def load_data(path, env_file=None):
     try:
         load_dotenv(DEFAULT_ENV_FILE if env_file is None else env_file)
@@ -54,7 +65,7 @@ def atomic_write(path, data):
 
 def sha256(path):
     digest = hashlib.sha256()
-    with Path(path).open("rb") as stream:
+    with filesystem_path(path).open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()

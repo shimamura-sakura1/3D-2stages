@@ -4,6 +4,59 @@ import bpy
 from mathutils import Vector
 
 
+def world_bounds(scene):
+    """Measured world AABBs grouped by semantic ID, including repeated meshes."""
+    bpy.context.view_layer.update()
+    depsgraph=bpy.context.evaluated_depsgraph_get()
+    groups={}
+    for obj in scene.objects:
+        if obj.type!='MESH' or not obj.get('scene_object_id'):
+            continue
+        evaluated=obj.evaluated_get(depsgraph)
+        groups.setdefault(obj['scene_object_id'],[]).extend(
+            evaluated.matrix_world @ Vector(corner) for corner in evaluated.bound_box)
+    result={}
+    for identity,points in groups.items():
+        lo=[min(p[i] for p in points) for i in range(3)]
+        hi=[max(p[i] for p in points) for i in range(3)]
+        result[identity]={'center':[(a+b)/2 for a,b in zip(lo,hi)],'size':[b-a for a,b in zip(lo,hi)]}
+    return result
+
+
+def measure_scene_bounds(root, geometry, blockout):
+    """Build only an isolated measurement scene; no material/camera/manifest writes.
+
+    Call with validated approved geometry and the authored blockout. Production
+    retains authority to validate these same inputs at formal plan submission.
+    """
+    previous=bpy.context.window.scene
+    scene=bpy.data.scenes.new('two-stage.bounds')
+    bpy.context.window.scene=scene
+    try:
+        objects={}
+        for identity,result in geometry.items():
+            obj=import_geometry(scene,root,result);obj['scene_object_id']=identity
+            objects[identity]=obj
+        for placement in blockout['objects']:
+            base=objects[placement['object_id']]
+            for index in range(placement['repetition']):
+                obj=base if index==0 else base.copy()
+                if index:scene.collection.objects.link(obj)
+                transform=placement['transform']
+                obj.location=Vector(transform['location'])+Vector(placement['spacing'])*index
+                obj.rotation_euler=[math.radians(x) for x in transform['rotation']]
+                obj.scale=transform['scale']
+                if placement['parent'] is not None:obj.parent=objects[placement['parent']]
+        return world_bounds(scene)
+    finally:
+        bpy.context.window.scene=previous
+        for obj in list(scene.objects):
+            mesh=obj.data if obj.type=='MESH' else None
+            bpy.data.objects.remove(obj,do_unlink=True)
+            if mesh is not None and mesh.users==0:bpy.data.meshes.remove(mesh)
+        bpy.data.scenes.remove(scene)
+
+
 def primitive(scene,name,kind,size):
     if bpy.app.version<(4,2,0):raise RuntimeError('Blender 4.2 or newer required')
     if kind not in ('floor','wall','platform','column','rail','pipe'):raise RuntimeError('Unknown primitive')

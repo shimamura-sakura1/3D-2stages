@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format_version": {"const": "1.0"},
+    "id": {"$ref": "visual_common.schema.json#/$defs/id"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$", "maxLength": 32},
+    "blender_minimum": {
+      "type": "array", "minItems": 3, "maxItems": 3,
+      "items": {"type": "integer", "minimum": 0}
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "library": {"$ref": "visual_common.schema.json#/$defs/path"},
+        "calibration": {"$ref": "visual_common.schema.json#/$defs/path"}
+      },
+      "required": ["library", "calibration"], "additionalProperties": false
+    },
+    "components": {
+      "type": "object",
+      "properties": {
+        "materials": {"$ref": "visual_common.schema.json#/$defs/path"},
+        "lighting": {"$ref": "visual_common.schema.json#/$defs/path"},
+        "atmosphere": {"$ref": "visual_common.schema.json#/$defs/path"},
+        "camera": {"$ref": "visual_common.schema.json#/$defs/path"},
+        "color": {"$ref": "visual_common.schema.json#/$defs/path"},
+        "render": {"$ref": "visual_common.schema.json#/$defs/path"},
+        "signature": {"$ref": "visual_common.schema.json#/$defs/path"},
+        "critic": {"$ref": "visual_common.schema.json#/$defs/path"}
+      },
+      "required": ["materials", "lighting", "atmosphere", "camera", "color", "render", "signature", "critic"],
+      "additionalProperties": false
+    },
+    "provenance": {"$ref": "visual_common.schema.json#/$defs/path"}
+  },
+  "required": ["format_version", "id", "version", "blender_minimum", "resources", "components", "provenance"],
+  "additionalProperties": false
+}

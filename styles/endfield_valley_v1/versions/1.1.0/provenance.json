@@ -1,0 +1,65 @@
+{
+  "style_id": "endfield_valley_v1",
+  "version": "1.1.0",
+  "derived_from": {
+    "analysis": "analysis/out/style_proposal.yaml (unreviewed proposal)",
+    "clusters": "analysis/out/clusters.json (k=10)",
+    "frames": 81,
+    "representatives_used": [
+      "beta-test-control-center",
+      "beta-test-dijiang-growth-chamber",
+      "beta-test-mining-area-clinic",
+      "beta-test-originium-passage-b"
+    ]
+  },
+  "palette_binding": [
+    {
+      "material_class": "bare_metal",
+      "hex": "#879193",
+      "frame": "beta-test-control-center",
+      "visible_as": "galvanised mast, lighter than the coating"
+    },
+    {
+      "material_class": "concrete",
+      "hex": "#9b9081",
+      "frame": "beta-test-mining-area-clinic",
+      "visible_as": "warm concrete apron / plinth faces"
+    },
+    {
+      "material_class": "emissive",
+      "hex": "#9d6f40",
+      "frame": "beta-test-originium-passage-b",
+      "visible_as": "originium crystal emission"
+    },
+    {
+      "material_class": "glass",
+      "hex": "#c7d2ba",
+      "frame": "beta-test-dijiang-growth-chamber",
+      "visible_as": "pale glass panel lit through foliage"
+    },
+    {
+      "material_class": "painted_metal",
+      "hex": "#566363",
+      "frame": "beta-test-control-center",
+      "visible_as": "shed wall coating, cool grey-blue"
+    },
+    {
+      "material_class": "rubber",
+      "hex": "#252217",
+      "frame": "beta-test-mining-area-clinic",
+      "visible_as": "darkest tracks and tyres in the yard"
+    },
+    {
+      "material_class": "vegetation",
+      "hex": "#4b5c4b",
+      "frame": "beta-test-dijiang-growth-chamber",
+      "visible_as": "foliage mass inside the bay"
+    }
+  ],
+  "evidence_limits": [
+    "licence unverified on every frame; not for redistribution",
+    "rubber evidence is one frame's tracks and tyres only",
+    "no procedural calibration samples and no rendered prototype exist for this profile",
+    "signature ranges are proxies from screenshots, not measured material samples"
+  ]
+}

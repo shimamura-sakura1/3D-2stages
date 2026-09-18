@@ -9,6 +9,8 @@ two_stage_3d_skill_codex_spec_v0.1.md export-ignore
 tests/ export-ignore
 changes/ export-ignore
 changes/change-*.json filter=lfs diff=lfs merge=lfs -text
+# The Stage 0 template names this SVG by its exact SHA256; keep LF bytes on every host.
+examples/v02/reference.svg text eol=lf
 docs/governance/ export-ignore
 docs/superpowers/ export-ignore
 docs/v02/phase-* export-ignore
@@ -16,3 +18,7 @@ docs/v02/evidence.json export-ignore
 scripts/govern.py export-ignore
 scripts/govern.ps1 export-ignore
 scripts/test.ps1 export-ignore
+scripts/framework_support.py export-ignore
+scripts/export_production.py export-ignore
+scripts/sanitize_blend_paths.py export-ignore
+docs/v02/baseline.md export-ignore

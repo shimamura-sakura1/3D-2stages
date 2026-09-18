@@ -11,7 +11,7 @@ import tempfile
 from pathlib import Path
 
 from runtime.errors import BoundaryError
-from runtime.io import inside, load_data, sha256
+from runtime.io import filesystem_path, inside, load_data, sha256
 from runtime.validators import validate_contract, validate_manifest
 from runtime.visual_contracts import document_hash, require
 from runtime.visual_planning import current_documents, STAGE0_KINDS
@@ -113,6 +113,16 @@ def geometry_hashes(manifest):
 def formal_files(manager, manifest, *, exclude=()):
     """Enumerate formal history only; never walk/copy the project directory."""
     records = []
+    if manifest.get('render_direction'):
+        from runtime.render_context_builder import read_direction_state
+        read_direction_state(manager,manifest)
+        ref=manifest['render_direction']
+        for item in [*ref.get('history',[]),ref]:
+            for key,digest_key in [('artifact_path','hash'),('context_path','context_hash'),('scene_context_path','scene_context_hash')]:
+                path=inside(manager.root,item[key])
+                require(document_hash(load_data(path))==item[digest_key], 'Director history changed')
+                records.append(anchor(manager.root,path))
+        records.extend(anchor(manager.root,inside(manager.root,r['path'])) for r in ref['reviews'])
     for kind, entries in manifest['artifacts'].items():
         for entry in entries:
             if entry['path'] in exclude: continue
@@ -170,14 +180,14 @@ def capture_completion(manager, manifest, packet, metadata, job_path):
                         'preview': metadata['image']['path']}
     require(all(Path(packet['outputs'][k]).resolve() == inside(manager.root, v) for k,v in expected_outputs.items()),
             'Completion output paths mismatch')
-    from runtime.style_registry import StyleRegistry
-    style = StyleRegistry().load(docs['style_assignment']['style_profile'], version=docs['style_assignment']['profile_version'])
+    from runtime.style_registry import StyleRegistry, style_files
+    style = StyleRegistry().load(docs['style_assignment']['style_profile'], version=docs['style_assignment']['profile_version'], project_root=manager.root)
     require(packet['style'] == style, 'Completion selected style mismatch')
     workers = {k: str(REPOSITORY/'runtime'/v) for k,v in
                {'operations':'blender_operations.py','geometry':'blender_geometry_worker.py','style':'blender_style_worker.py'}.items()}
     require(packet['workers'] == workers, 'Completion worker identity mismatch')
     required_guards = [manager.path, *(Path(p) for p in workers.values())]
-    required_guards += [inside(style['root'], p) for p in ['profile.yaml', *style['components'].values(), *style['resources'].values(), 'critic/rubric.yaml']]
+    required_guards += [inside(style['root'], p) for p in style_files(style)]
     for kind in CURRENT_KINDS:
         entry = max((r for r in manifest['artifacts'][kind] if r['scene_version'] == manifest['scene_version']), key=lambda r:r['revision'])
         required_guards.append(inside(manager.root, entry['path']))
@@ -330,7 +340,7 @@ def delivery_inputs(manager, manifest, value):
 
 
 def verify_package(manager, record, value):
-    package = inside(manager.root, record['package'])
+    package = filesystem_path(inside(manager.root, record['package']))
     inventory_path = package/'inventory.json'
     require(inventory_path.is_file() and sha256(inventory_path) == record['inventory_sha256'], 'Missing or changed delivery inventory')
     inventory = load_data(inventory_path); validate_contract('delivery_inventory', inventory)
@@ -362,13 +372,14 @@ def publish_delivery(manager, manifest):
     digest = raw_hash(inventory)
     record = {'scene_version':manifest['scene_version'], 'pass_id':value['pass_id'],
               'package':'delivery/'+digest, 'inventory_sha256':digest, 'snapshot_sha256':document_hash(value)}
-    package = inside(manager.root, record['package'])
+    package = filesystem_path(inside(manager.root, record['package']))
     require(not package.exists(), 'Unregistered delivery package already occupies content address')
-    stage = Path(tempfile.mkdtemp(prefix='.delivery-stage-', dir=manager.root))
+    stage = filesystem_path(Path(tempfile.mkdtemp(prefix='.delivery-stage-', dir=manager.root)))
     published = False
     try:
         for name, source in sources.items():
-            target = inside(stage, name); target.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(source, target)
+            target = inside(stage, name); target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(filesystem_path(source), target)
         for name, data in generated.items(): inside(stage, name).write_bytes(data)
         (stage/'inventory.json').write_bytes(json_bytes(inventory))
         for item in inventory['files']:
