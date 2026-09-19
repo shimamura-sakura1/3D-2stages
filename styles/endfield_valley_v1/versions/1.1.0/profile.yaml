@@ -1,0 +1,20 @@
+id: endfield_valley_v1
+version: 1.1.0
+format_version: '1.0'
+provenance: provenance.json
+blender_minimum:
+- 4
+- 2
+- 0
+resources:
+  library: materials/library.blend
+  calibration: calibration/calibration.blend
+components:
+  materials: materials/definitions.yaml
+  lighting: lighting/overcast.yaml
+  atmosphere: atmosphere/default.yaml
+  camera: camera/environment.yaml
+  color: color/default.yaml
+  render: render/preview.yaml
+  signature: style_signature.yaml
+  critic: critic/rubric.yaml

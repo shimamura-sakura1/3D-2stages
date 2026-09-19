@@ -47,15 +47,6 @@ def find_blender(executable=None, *, platform=None, environ=None, home=None, app
     raise BoundaryError("Blender executable not found; install Blender 4.2+ or set --blender / BLENDER_EXECUTABLE")
 
 
-def find_framework(root, explicit=None, *, environ=None):
-    env = os.environ if environ is None else environ
-    value = explicit if explicit is not None else env.get("CONTRACT_GOVERN_HOME") or Path(root).resolve().parent / "contract-govern-skil"
-    path = Path(value).expanduser().resolve()
-    if not (path / "skillctl/__main__.py").is_file() or not (path / "spec/SPEC.md").is_file():
-        raise BoundaryError("Governance framework not found; set CONTRACT_GOVERN_HOME or --framework to the designated contract-govern-skil checkout")
-    return path
-
-
 def environment_report(root, blender=None):
     result = {"platform": sys.platform,
               "python": {"executable": sys.executable, "version": list(sys.version_info[:3]), "prefix": sys.prefix},
@@ -65,8 +56,4 @@ def environment_report(root, blender=None):
         result["blender"].update(status="found", executable=find_blender(blender))
     except BoundaryError as exc:
         result["blender"].update(status="unavailable", reason=str(exc))
-    try:
-        result["governance"] = {"status": "found", "framework": str(find_framework(root))}
-    except BoundaryError as exc:
-        result["governance"] = {"status": "unavailable", "reason": str(exc)}
     return result

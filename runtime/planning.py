@@ -6,6 +6,22 @@ from runtime.manifest_manager import ManifestManager
 from runtime.validators import validate_contract
 
 
+def visual_manifest(project_id, brief):
+    """Construct an unapproved visual plan; does not execute any Stage 0–3 work."""
+    return {"schema_version": "0.2", "project_id": project_id, "version": 0,
+            "mode": "plan_only", "user_brief": {"raw": brief, "refined": brief},
+            "assets": {}, "supplied_assets": {}, "auto_approve": False, "allow_partial": False,
+            "history": [], "state": "initialized", "scene_version": 1, "artifacts": {},
+            "approvals": [], "legacy_manifest": None, "migration_required_input": []}
+
+
+def create_visual_project(root, project_id, brief):
+    manager = ManifestManager(root)
+    manager.create(visual_manifest(project_id, brief))
+    inside(root, "user_brief.md").write_text(brief + "\n", encoding="utf-8")
+    return manager.read()
+
+
 def new_task(asset_id, description=None):
     task = load_data(files("templates").joinpath("asset_task.yaml"))
     task.update(asset_id=asset_id, name=asset_id)

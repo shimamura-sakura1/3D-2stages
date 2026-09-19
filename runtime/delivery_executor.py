@@ -4,7 +4,7 @@ import uuid
 from runtime.errors import BoundaryError
 from runtime.io import atomic_write, inside, load_data, sha256
 from runtime.stage2_executor import input_digest
-from runtime.validators import validate_contract, validate_result
+from runtime.validators import validate_contract, validate_result, require_legacy_manifest
 
 
 def verify_current_build(manager, manifest):
@@ -29,6 +29,7 @@ class DeliveryExecutor:
 
     def run(self):
         manifest = self.manager.read()
+        require_legacy_manifest(manifest)
         if manifest["mode"] == "plan_only":
             raise BoundaryError("Delivery prohibited in plan_only mode")
         target = manifest["delivery"]["target"]

@@ -19,9 +19,19 @@ class AssetRouter:
         self.policy = load_data(files("policies").joinpath("routing_policy.yaml"))
         self.licenses = load_data(files("policies").joinpath("licensing_policy.yaml"))
 
-    def legal(self, candidate, modification=False):
+    def legal(self, candidate, modification=False, *, generated_output=False):
         source = candidate["source"]
-        return (source.get("license_verified") is True and source.get("license") in self.licenses["allowed_licenses"]
+        license_id = source.get("license")
+        if not isinstance(license_id, str):
+            return False
+        scoped = self.licenses.get("generated_output_licenses", {}).get(license_id)
+        # Generated model terms must never activate from a library candidate.
+        if scoped is not None:
+            return (generated_output is True and source.get("license_verified") is True
+                    and all(source.get(key) == scoped[key] for key in ("provider", "asset_id", "original_url"))
+                    and source.get("attribution_required") is True
+                    and (not modification or source.get("modification_allowed") is True))
+        return (source.get("license_verified") is True and license_id in self.licenses["allowed_licenses"]
                 and (source["license"] != "cc_by" or source.get("attribution_required") is True)
                 and (not modification or source.get("modification_allowed") is True))
 

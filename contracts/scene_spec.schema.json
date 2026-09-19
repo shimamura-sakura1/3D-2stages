@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scene_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "world_scale": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "const": "meter"
+        },
+        "human_reference_height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "unit",
+        "human_reference_height"
+      ],
+      "additionalProperties": false
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "object_id": {
+            "$ref": "visual_common.schema.json#/$defs/id"
+          },
+          "role": {
+            "enum": [
+              "structure",
+              "prop",
+              "hero",
+              "vegetation"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "depth_layer": {
+            "enum": [
+              "foreground",
+              "midground",
+              "background"
+            ]
+          },
+          "repetition": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "size_m": {
+            "anyOf": [
+              {
+                "$ref": "visual_common.schema.json#/$defs/scale3"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "relation": {
+                  "enum": [
+                    "on",
+                    "near",
+                    "behind",
+                    "in_front_of",
+                    "next_to"
+                  ]
+                },
+                "object_id": {
+                  "$ref": "visual_common.schema.json#/$defs/id"
+                }
+              },
+              "required": [
+                "relation",
+                "object_id"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          }
+        },
+        "required": [
+          "object_id",
+          "role",
+          "description",
+          "depth_layer",
+          "repetition",
+          "size_m",
+          "relationships"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "composition": {
+      "type": "object",
+      "properties": {
+        "focal_subject": {
+          "$ref": "visual_common.schema.json#/$defs/id"
+        },
+        "primary_axis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "depth_layers": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "foreground",
+              "midground",
+              "background"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "focal_subject",
+        "primary_axis",
+        "depth_layers"
+      ],
+      "additionalProperties": false
+    },
+    "camera_intent": {
+      "type": "object",
+      "properties": {
+        "shot_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "perspective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "eye_level": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "shot_type",
+        "perspective",
+        "eye_level"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "scene_type",
+    "world_scale",
+    "objects",
+    "composition",
+    "camera_intent"
+  ],
+  "additionalProperties": false
+}

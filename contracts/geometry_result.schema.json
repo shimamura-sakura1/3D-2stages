@@ -1,0 +1,321 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "asset_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "route": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    "geometry": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "enum": [
+            "library",
+            "generated",
+            "procedural"
+          ]
+        },
+        "primitive": {
+          "enum": [
+            null,
+            "floor",
+            "wall",
+            "platform",
+            "column",
+            "rail",
+            "pipe"
+          ]
+        },
+        "model": {
+          "anyOf": [
+            {
+              "$ref": "visual_common.schema.json#/$defs/path"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "$ref": "visual_common.schema.json#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "source",
+        "primitive",
+        "model",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "scale": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "const": "meter"
+        },
+        "source_scale_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "dimensions_m": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "unit",
+        "source_scale_m",
+        "dimensions_m"
+      ],
+      "additionalProperties": false
+    },
+    "surface_semantics": {
+      "type": "object",
+      "properties": {
+        "material_class": {
+          "enum": [
+            "painted_metal",
+            "bare_metal",
+            "concrete",
+            "rubber",
+            "glass",
+            "emissive",
+            "vegetation"
+          ]
+        },
+        "condition": {
+          "enum": [
+            "clean",
+            "lightly_weathered",
+            "weathered"
+          ]
+        }
+      },
+      "required": [
+        "material_class",
+        "condition"
+      ],
+      "additionalProperties": false
+    },
+    "surface_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "original_surface",
+              "hy3d_paint"
+            ]
+          },
+          "path": {
+            "$ref": "visual_common.schema.json#/$defs/path"
+          },
+          "sha256": {
+            "$ref": "visual_common.schema.json#/$defs/sha256"
+          },
+          "role": {
+            "const": "reference_only"
+          }
+        },
+        "required": [
+          "kind",
+          "path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "original_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "creator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license_verified": {
+          "type": "boolean"
+        },
+        "attribution_required": {
+          "type": "boolean"
+        },
+        "modification_allowed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "provider",
+        "asset_id",
+        "original_url",
+        "creator",
+        "license",
+        "license_verified",
+        "attribution_required",
+        "modification_allowed"
+      ],
+      "additionalProperties": false
+    },
+    "recipe": {
+      "type": "object",
+      "properties": {
+        "searched_providers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "operation": {
+          "enum": [
+            "library_direct",
+            "library_modify",
+            "generate_shape",
+            "procedural",
+            "generate_geometry"
+          ]
+        },
+        "modification": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "scale"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_sha256": {
+          "anyOf": [
+            {
+              "$ref": "visual_common.schema.json#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reference_sha256": {
+          "type": "array",
+          "items": {
+            "$ref": "visual_common.schema.json#/$defs/sha256"
+          }
+        },
+        "backend": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "conditioning_mode": {
+          "const": "image_only"
+        },
+        "surface_operation": {
+          "type": "object",
+          "properties": {
+            "operation": {
+              "const": "generate_surface_source"
+            },
+            "gateway_operation": {
+              "const": "retexture_mesh"
+            },
+            "input_geometry_sha256": {
+              "$ref": "visual_common.schema.json#/$defs/sha256"
+            }
+          },
+          "required": [
+            "operation",
+            "gateway_operation",
+            "input_geometry_sha256"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "searched_providers",
+        "operation",
+        "modification",
+        "source_sha256",
+        "reference_sha256",
+        "backend"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "asset_id",
+    "revision",
+    "scene_version",
+    "route",
+    "geometry",
+    "scale",
+    "surface_semantics",
+    "surface_sources",
+    "provenance",
+    "recipe"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

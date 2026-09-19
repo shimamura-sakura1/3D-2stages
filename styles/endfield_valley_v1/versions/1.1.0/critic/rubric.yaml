@@ -1,0 +1,13 @@
+profile_version: 1.1.0
+scope: User-supplied Endfield valley style proposal; design guidance, not user artistic approval.
+score_semantics: 'Subjective problem severity: 0 means no visible problem, 1 means severe. Scores are not measurements or approval thresholds.'
+categories:
+  plasticity: Check whether painted metal, concrete and foliage all look like the same glossy plastic.
+  material_separation: Distinguish coating, bare metal, warm concrete, dark rubber, pale glass, warm emission and muted foliage by surface response as well as color.
+  surface_uniformity: Check readable material-specific variation; inherited physical parameters are a starting point, not measurements from screenshots.
+  composition: Assess focal hierarchy and industrial environment silhouettes against the user's brief and declared references.
+  depth_separation: Check foreground, midground and background where the scene calls for landscape depth; a calibration chart has a narrower purpose.
+  lighting_flatness: Check directional daylight, a readable key/fill hierarchy and soft contact gradients.
+  contact_shadow: Check grounding and contact without requiring uniformly dark ambient occlusion.
+  atmospheric_depth: Assess restrained haze at the scene's scale; a small material calibration may need none.
+  style_compatibility: Compare muted grey-green coating, warmer concrete, subdued foliage and warm emissive accents against the supplied reference scope. Screenshot license metadata remains unverified. No artistic approval is inferred.

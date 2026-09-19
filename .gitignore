@@ -1,11 +1,6 @@
-__pycache__/
-.pytest_cache/
-*.egg-info/
-.venv/
-build/
-dist/
-projects/
 .env
+projects/
 .deps/
-.skillctl/
-ssh-deployment-report/
+__pycache__/
+*.egg-info/
+*.blend1

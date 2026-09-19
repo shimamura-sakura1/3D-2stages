@@ -1,0 +1,9 @@
+classes:
+- painted_metal
+- bare_metal
+- concrete
+- rubber
+- glass
+- emissive
+rule: Resolve classes and conditions; retain source surface only as an explicitly
+  selected input.

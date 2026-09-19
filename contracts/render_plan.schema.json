@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "purpose": {
+      "enum": [
+        "preview",
+        "final"
+      ]
+    },
+    "renderer": {
+      "enum": [
+        "cycles",
+        "eevee"
+      ]
+    },
+    "camera": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "visual_common.schema.json#/$defs/id"
+        },
+        "location": {
+          "$ref": "visual_common.schema.json#/$defs/vector3"
+        },
+        "target": {
+          "$ref": "visual_common.schema.json#/$defs/vector3"
+        },
+        "focal_length_mm": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "clip_start": {
+          "type": "number",
+          "minimum": 0.001,
+          "maximum": 1000000.0
+        },
+        "clip_end": {
+          "type": "number",
+          "minimum": 0.001,
+          "maximum": 1000000000.0
+        },
+        "sensor_width_mm": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "rotation": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000.0,
+            "maximum": 1000000.0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "profile",
+        "location",
+        "target",
+        "focal_length_mm"
+      ],
+      "additionalProperties": false
+    },
+    "preview": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 16384
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 16384
+        },
+        "samples": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65536
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "samples"
+      ],
+      "additionalProperties": false
+    },
+    "color": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "visual_common.schema.json#/$defs/id"
+        },
+        "exposure": {
+          "type": "number",
+          "minimum": -20,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "profile",
+        "exposure"
+      ],
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "image_path": {
+          "$ref": "visual_common.schema.json#/$defs/path"
+        }
+      },
+      "required": [
+        "image_path"
+      ],
+      "additionalProperties": false
+    },
+    "render_direction": {
+      "type": "object",
+      "properties": {
+        "direction_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "direction_id",
+        "revision"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "purpose",
+    "renderer",
+    "camera",
+    "preview",
+    "color",
+    "output"
+  ],
+  "additionalProperties": false
+}

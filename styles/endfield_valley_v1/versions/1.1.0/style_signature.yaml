@@ -1,0 +1,70 @@
+id: endfield_valley_v1
+version: 1.1.0
+reviewed_by: user
+review_status: design_reviewed
+evidence_scope:
+  user_design_review: >-
+    The user approved this signature for design use.
+    This records signature design acceptance; missing library and calibration resources remain pending.
+  original_calibration: NONE. No procedural calibration samples were authored for
+    this profile; the palette comes from 81 wiki screenshots.
+  original_pump: NONE. No rendered pump or prototype render was produced.
+  user_station: 81 endfield.wiki.gg environment screenshots, licence unverified. Cluster
+    representatives only; composition and material language evidence, no style approval
+    and no redistribution right.
+dimensions:
+  geometry:
+    preserve_approved: true
+  surface:
+    bump_scale: 0.8456
+  palette:
+    bare_metal:
+    - 0.5294
+    - 0.5686
+    - 0.5765
+    concrete:
+    - 0.6078
+    - 0.5647
+    - 0.5059
+    emissive:
+    - 0.6157
+    - 0.4353
+    - 0.251
+    glass:
+    - 0.7804
+    - 0.8235
+    - 0.7294
+    painted_metal:
+    - 0.3373
+    - 0.3882
+    - 0.3882
+    rubber:
+    - 0.1451
+    - 0.1333
+    - 0.0902
+    vegetation:
+    - 0.2941
+    - 0.3608
+    - 0.2941
+  roughness:
+    offset: 0.0002
+  weathering:
+    variation_scale: 0.6114
+  lighting:
+    key_scale: 1.6917
+    fill_scale: 0.6908
+  fog:
+    density_scale: 0.6922
+  depth:
+    required_layers:
+    - foreground
+    - midground
+    - background
+  composition:
+    focal_length_mm_range:
+    - 29
+    - 54
+  emissive:
+    strength_scale: 0.605
+  detail_density:
+    noise_scale: 0.9342

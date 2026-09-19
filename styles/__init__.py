@@ -1,0 +1,1 @@
+"""Packaged executable style resources."""

@@ -1,0 +1,111 @@
+visual_brief:
+  schema_version: '0.2'
+  project_id: v02_demo
+  scene_version: 1
+  document_id: visual_brief_01
+  revision: 0
+  mood:
+    primary:
+    - quiet
+    secondary:
+    - isolated
+  visual_language:
+    environment: stylized_pbr
+    realism: semi_realistic
+    character_compatibility: anime
+  priorities:
+  - atmosphere
+  - composition
+  - material_coherence
+  constraints:
+    avoid:
+    - uniform_gloss
+    required:
+    - readable_platform
+reference_board:
+  schema_version: '0.2'
+  project_id: v02_demo
+  scene_version: 1
+  document_id: reference_board_01
+  revision: 0
+  references:
+  - reference_id: ref_material
+    path: references/selected/ref_material-77fc4dcd7277e6fff5aff45b58ef456dbada2a23fc2dc85eb04f7308c8f5b45f.svg
+    roles:
+    - material_language
+    weight: 1.0
+    source:
+      kind: library
+      creator: TwoStage3D
+      license: cc0
+      license_verified: true
+      attribution: 'Original TwoStage3D vector diagram, authored 2026-09-14; source
+        and CC0 dedication: examples/v02/LICENSE.md. Material language only.'
+scene_spec:
+  schema_version: '0.2'
+  project_id: v02_demo
+  scene_version: 1
+  document_id: scene_spec_01
+  revision: 0
+  scene_type: industrial_station
+  world_scale:
+    unit: meter
+    human_reference_height: 1.7
+  objects:
+  - object_id: platform
+    role: structure
+    description: platform
+    depth_layer: foreground
+    repetition: 1
+    size_m:
+    - 6
+    - 2
+    - 0.3
+    relationships: []
+  - object_id: machine
+    role: hero
+    description: machine
+    depth_layer: midground
+    repetition: 1
+    size_m:
+    - 1
+    - 1
+    - 2
+    relationships: []
+  - object_id: wall
+    role: structure
+    description: wall
+    depth_layer: background
+    repetition: 1
+    size_m:
+    - 6
+    - 0.2
+    - 3
+    relationships: []
+  composition:
+    focal_subject: machine
+    primary_axis: railway longitudinal
+    depth_layers:
+    - foreground
+    - midground
+    - background
+  camera_intent:
+    shot_type: wide_environment
+    perspective: moderate
+    eye_level: slightly_low
+style_assignment:
+  schema_version: '0.2'
+  project_id: v02_demo
+  scene_version: 1
+  document_id: style_assignment_01
+  revision: 0
+  style_profile: industrial_acg_v1
+  profile_version: 1.1.0
+  lighting_profile: overcast
+  atmosphere_profile: default
+  camera_profile: environment
+  color_profile: default
+  references:
+  - reference_id: ref_material
+    roles:
+    - material_language

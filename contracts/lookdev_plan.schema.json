@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "project_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "document_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "style_assignment_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "material_map_id": {
+      "$ref": "visual_common.schema.json#/$defs/id"
+    },
+    "lighting": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "visual_common.schema.json#/$defs/id"
+        },
+        "intensity": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "azimuth_offset_degrees": {
+          "type": "number",
+          "minimum": -45,
+          "maximum": 45
+        },
+        "world_setup": {
+          "type": "object",
+          "properties": {
+            "key_location": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000.0,
+                "maximum": 1000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "key_target": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000.0,
+                "maximum": 1000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "key_energy": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100000000.0
+            },
+            "key_size": {
+              "type": "number",
+              "minimum": 0.001,
+              "maximum": 1000000.0
+            },
+            "key_type": {
+              "enum": [
+                "AREA"
+              ]
+            },
+            "key_color": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "fill_location": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000.0,
+                "maximum": 1000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "fill_target": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -1000000.0,
+                "maximum": 1000000.0
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "fill_energy": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100000000.0
+            },
+            "fill_size": {
+              "type": "number",
+              "minimum": 0.001,
+              "maximum": 1000000.0
+            },
+            "fill_type": {
+              "enum": [
+                "AREA"
+              ]
+            },
+            "fill_color": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "key_location",
+            "key_target",
+            "key_energy",
+            "key_size",
+            "key_type",
+            "key_color",
+            "fill_location",
+            "fill_target",
+            "fill_energy",
+            "fill_size",
+            "fill_type",
+            "fill_color"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "profile",
+        "intensity"
+      ],
+      "additionalProperties": false
+    },
+    "atmosphere": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "visual_common.schema.json#/$defs/id"
+        },
+        "amount": {
+          "enum": [
+            "none",
+            "subtle",
+            "medium",
+            "dense"
+          ]
+        }
+      },
+      "required": [
+        "profile",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "render_direction": {
+      "type": "object",
+      "properties": {
+        "direction_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "direction_id",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "render_direction_mapping": {
+      "type": "object",
+      "properties": {
+        "lighting_source": {
+          "const": "relative_direction"
+        }
+      },
+      "required": [
+        "lighting_source"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_id",
+    "scene_version",
+    "document_id",
+    "revision",
+    "style_assignment_id",
+    "material_map_id",
+    "lighting",
+    "atmosphere"
+  ],
+  "additionalProperties": false
+}
