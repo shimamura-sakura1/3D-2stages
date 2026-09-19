@@ -1237,6 +1237,33 @@
       "introduced_in": "S24",
       "status": "unresolved",
       "supersedes": []
+    },
+    {
+      "id": "REQ-DEVELOPMENT-HANDOFF-001",
+      "description": "Maintain dev/v3 as complete source and main as the consumer projection, with machine-local setup and guarded release preparation. Development helpers are outside the production Router; formal acceptance is not claimed for this affected-test-only iteration.",
+      "claims": [
+        {
+          "id": "REQ-DEVELOPMENT-HANDOFF-001-C1",
+          "kind": "behavior",
+          "statement": "Host setup verifies the installed Blender version and public external schemas, preserves existing credentials and saves supplied paths only in ignored local settings."
+        },
+        {
+          "id": "REQ-DEVELOPMENT-HANDOFF-001-C2",
+          "kind": "behavior",
+          "statement": "Release preparation requires a clean dev/v3 source and a separate clean main worktree of the same repository, excludes maintenance content, rejects untracked collisions and preserves private project files."
+        }
+      ],
+      "implemented_by": [
+        "scripts.setup_dev",
+        "scripts.prepare_release",
+        "development-guide"
+      ],
+      "verified_by": [
+        "T-DEVELOPMENT-HANDOFF"
+      ],
+      "introduced_in": "S25",
+      "status": "unresolved",
+      "supersedes": []
     }
   ]
 }

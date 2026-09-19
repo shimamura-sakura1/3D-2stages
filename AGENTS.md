@@ -2,11 +2,17 @@
 
 ## 修改本 Skill 的强制规范
 
-用户明确要求：**所有对本 Skill 的修改必须严格遵循 `/Users/tachibanakanade/contract-govern-skil` 下的定义。**
+用户明确要求：**所有对本 Skill 的修改必须严格遵循指定 Contract-Governed Skill 框架的定义。**
 
 开始修改前读取该框架的 `README.md`、`spec/SPEC.md`、`lifecycle/EVOLVE.md`、`lifecycle/TEST_POLICY.md`，复杂格式问题再查 `contract_governed_skill_agent_build_guide_v3.md`。这是维护协议；生产编排的唯一入口仍是本仓库 `SKILL.md`。
 
-在 Windows 或其他 checkout 上，定位同一框架的本地副本：显式 `--framework`、`CONTRACT_GOVERN_HOME`、本项目同级 `contract-govern-skil`，按此顺序解析。不能把 macOS 绝对路径或旧的 `D:/contract-govern skill` 当作通用路径。找不到时明确报告缺失，不能跳过治理或换用另一套标准。
+在每台机器上定位同一框架的本地副本：显式 `--framework`、`CONTRACT_GOVERN_HOME`、本项目同级 `contract-govern-skil`，按此顺序解析。机器绝对路径不能作为共享默认值。找不到时明确报告缺失，不能跳过治理或换用另一套标准。
+
+## 分支与换机开发
+
+- `dev/v3` 是完整开发分支，`main` 只保存用户可用的发行内容。通过 `scripts/prepare_release.py` 从已提交开发源码导出到独立 main 工作目录，不直接合并开发分支。
+- 新电脑先读 [docs/development.md](docs/development.md)，使用 `scripts/setup_dev.py` 检查并保存本机路径；凭据、环境和路径只存放在忽略的 `.env`、`.deps` 或宿主配置。
+- 当前宿主类型、Blender 位置和 MCP 连通性必须实际检查。历史机器的验证记录不能当作本机状态；MCP 桥接在线不等于 Blender 插件可用。
 
 严格执行：新 requirement/claims → 明确 Router 插入点 → 新测试先运行并确认缺失行为失败 → impact → 修改 → 同步 interface/requirements/tests manifest → 新 skill.version → validate / contract-test / 全部 active 历史回归 → 真实代表性操作 → accept。
 
@@ -26,7 +32,7 @@
 
 ## 已知事实与证据范围
 
-截至 2026-09-13，本机是 Apple Silicon macOS。独立 Conda `two-stage-3d` 用于项目，`two-stage-3d-mcp` 用于 MCP。Blender 4.5.13 LTS 和 MCP 1.9.1 已完成真实操作包导出/渲染验证，记录位于忽略的 `.deps/blender-setup/SETUP.md`。这些只是本机证据，不能推断其他机器已安装或在线。
+2026-09-13 的历史验证发生在 Apple Silicon macOS，使用独立 Conda `two-stage-3d` 和 `two-stage-3d-mcp`，验证过 Blender 4.5.13 LTS 和 MCP 1.9.1 的操作包导出与渲染。各台机器自己的记录放在忽略的 `.deps/blender-setup/SETUP.md`。这些证据不能推断当前或其他机器已安装、在线或使用相同版本。
 
 `projects/hy3d-smoke/` 有一次真实 shape 客户端测试产物；它不等于完整 Stage 1 门禁、审核和交付已通过。用户已选择完整 Stage 1 测试沿用其中 `input/demo.png`，参考图与生成结果的许可信息仍待补充，不能编造已核实许可。
 

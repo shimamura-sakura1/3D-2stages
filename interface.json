@@ -2,7 +2,7 @@
   "spec_version": "0.1",
   "skill": {
     "id": "two-stage-3d",
-    "version": "S24"
+    "version": "S25"
   },
   "artifacts": [
     {
@@ -1994,6 +1994,30 @@
       "enforcement": {
         "mode": "runtime"
       }
+    },
+    {
+      "id": "development-guide",
+      "path": "docs/development.md",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "type": "knowledge"
+    },
+    {
+      "id": "scripts.setup_dev",
+      "path": "scripts/setup_dev.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "type": "script"
+    },
+    {
+      "id": "scripts.prepare_release",
+      "path": "scripts/prepare_release.py",
+      "enforcement": {
+        "mode": "advisory"
+      },
+      "type": "script"
     }
   ],
   "relations": [

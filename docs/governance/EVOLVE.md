@@ -1,6 +1,6 @@
 # 如何迭代这个 Skill
 
-生产工作从 SKILL.md 的 Execution Router 进入；修改 Skill 本身时必须严格遵循用户指定的 Contract-Governed Skill 定义，本机路径为 `/Users/tachibanakanade/contract-govern-skil`。先读取该框架 README、spec/SPEC.md、lifecycle/EVOLVE.md 与 lifecycle/TEST_POLICY.md，再使用本项目入口执行；本文不替代外部规范。项目持久要求保存在 AGENTS.md，平台设置见 ../platforms.md。
+生产工作从 SKILL.md 的 Execution Router 进入；修改 Skill 本身时必须严格遵循用户指定的 Contract-Governed Skill 定义，通过 `--framework`、`CONTRACT_GOVERN_HOME` 或同级 checkout 定位。先读取该框架 README、spec/SPEC.md、lifecycle/EVOLVE.md 与 lifecycle/TEST_POLICY.md，再使用本项目入口执行；本文不替代外部规范。项目持久要求保存在 AGENTS.md，换机和分支发布步骤见 [开发说明](../development.md)，平台设置见 ../platforms.md。
 
 ## 每次改动
 

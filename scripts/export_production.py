@@ -23,7 +23,7 @@ def selected_files(root):
     for path in (root/'docs').rglob('*.md'):
         relative=path.relative_to(root).as_posix()
         if any(part in ('governance','superpowers') for part in path.parts):continue
-        if path.name.startswith('phase-') or path.name=='baseline.md':continue
+        if path.name.startswith('phase-') or path.name in ('baseline.md','development.md'):continue
         selected.add(relative)
     # Style resources are declared by their profile, never an arbitrary recursive
     # copy of analysis inputs, user conversations, screenshots or local reviews.

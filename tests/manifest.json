@@ -2122,6 +2122,37 @@
         ],
         "timeout_seconds": 120
       }
+    },
+    {
+      "id": "T-DEVELOPMENT-HANDOFF",
+      "type": "regression",
+      "status": "active",
+      "covers": [
+        "REQ-DEVELOPMENT-HANDOFF-001-C1",
+        "REQ-DEVELOPMENT-HANDOFF-001-C2"
+      ],
+      "exercises": [
+        "scripts.setup_dev",
+        "scripts.prepare_release"
+      ],
+      "depends_on_artifacts": [
+        "scripts.setup_dev",
+        "scripts.prepare_release",
+        "scripts.export_production"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_developer_setup.py",
+          "tests/test_release_preparation.py"
+        ],
+        "timeout_seconds": 120
+      }
     }
   ]
 }
