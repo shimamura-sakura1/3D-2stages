@@ -1264,6 +1264,136 @@
       "introduced_in": "S25",
       "status": "unresolved",
       "supersedes": []
+    },
+    {
+      "id": "REQ-VISUAL-TASK-001",
+      "description": "Prepare and collect visual tasks without granting production approval.",
+      "claims": [
+        {
+          "id": "REQ-VISUAL-TASK-001-C1",
+          "kind": "behavior",
+          "statement": "Task preparation snapshots separate inputs; submission records a candidate without changing production stage or approvals."
+        },
+        {
+          "id": "REQ-VISUAL-TASK-001-C2",
+          "kind": "rejection",
+          "statement": "Stale writers, changed inputs, invalid direction identity and unauthorized execution reject atomically."
+        }
+      ],
+      "implemented_by": [
+        "runtime.visual_tasks"
+      ],
+      "verified_by": [
+        "T-VISUAL-TASK"
+      ],
+      "introduced_in": "S26",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-VISUAL-LOCAL-001",
+      "description": "Built-in Agent visual decisions compile into guarded production plans and bounded revisions.",
+      "claims": [
+        {
+          "id": "REQ-VISUAL-LOCAL-001-C1",
+          "kind": "behavior",
+          "statement": "Separate approved inputs and explicit execution choices compile deterministically and are atomically adopted with production plans."
+        },
+        {
+          "id": "REQ-VISUAL-LOCAL-001-C2",
+          "kind": "rejection",
+          "statement": "Invalid executable directions, unreviewed or excessive changes reject without granting approval; empty recommendations permit final review."
+        }
+      ],
+      "implemented_by": [
+        "runtime.visual_tasks"
+      ],
+      "verified_by": [
+        "T-VISUAL-LOCAL"
+      ],
+      "introduced_in": "S27",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-VISUAL-OPTIONAL-001",
+      "description": "Select an optional compatible Agent implementation and bounded knowledge without requiring either for local work.",
+      "claims": [
+        {
+          "id": "REQ-VISUAL-OPTIONAL-001-C1",
+          "kind": "behavior",
+          "statement": "Automatic selection uses a compatible available implementation; missing optional inputs retain built-in execution and omit inapplicable knowledge."
+        },
+        {
+          "id": "REQ-VISUAL-OPTIONAL-001-C2",
+          "kind": "rejection",
+          "statement": "An explicitly required unavailable implementation rejects; canonical knowledge retains applicability and evidence without mutating the source."
+        },
+        {
+          "id": "REQ-VISUAL-OPTIONAL-001-C3",
+          "kind": "activation",
+          "statement": "Compatible callable implementations activate automatically; absent optional execution or knowledge uses the main path, while explicit unavailable execution rejects."
+        }
+      ],
+      "implemented_by": [
+        "runtime.visual_tasks"
+      ],
+      "verified_by": [
+        "T-VISUAL-OPTIONAL"
+      ],
+      "introduced_in": "S28",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-VISUAL-RESUME-001",
+      "description": "Resume caller-owned visual tasks without duplicate execution or stale acceptance.",
+      "claims": [
+        {
+          "id": "REQ-VISUAL-RESUME-001-C1",
+          "kind": "behavior",
+          "statement": "Repeated preparation reuses the unchanged pending task and confirmed interrupted attempts resume within a finite limit."
+        },
+        {
+          "id": "REQ-VISUAL-RESUME-001-C2",
+          "kind": "rejection",
+          "statement": "Running or completed tasks cannot restart; failed adoption is atomic and progress-only Manifest versions do not invalidate unchanged source inputs."
+        }
+      ],
+      "implemented_by": [
+        "runtime.visual_tasks"
+      ],
+      "verified_by": [
+        "T-VISUAL-RESUME"
+      ],
+      "introduced_in": "S29",
+      "status": "active",
+      "supersedes": []
+    },
+    {
+      "id": "REQ-VISUAL-RELEASE-001",
+      "description": "Distribute a self-contained scene production Skill and deliver only anchored accepted visual evidence.",
+      "claims": [
+        {
+          "id": "REQ-VISUAL-RELEASE-001-C1",
+          "kind": "behavior",
+          "statement": "Accepted task inputs, decisions and execution choices enter guarded render and final delivery evidence; unaccepted candidates are excluded."
+        },
+        {
+          "id": "REQ-VISUAL-RELEASE-001-C2",
+          "kind": "rejection",
+          "statement": "Delivery still requires immutable completion evidence and explicit final approval; consumer distribution contains runtime resources without optional hard dependencies or development-only files."
+        }
+      ],
+      "implemented_by": [
+        "runtime.visual_tasks"
+      ],
+      "verified_by": [
+        "T-VISUAL-RELEASE"
+      ],
+      "introduced_in": "S30",
+      "status": "active",
+      "supersedes": []
     }
   ]
 }

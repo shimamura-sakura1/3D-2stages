@@ -59,3 +59,7 @@ python -m runtime.cli migrate-v02 LEGACY_PROJECT
 [provenance 支持](../hy3d-provenance.md)，不能把该输出标成 CC0，也不能扩展至库资产或参考图。
 `doctor` 是本机发现，`hy3d-health` 是服务协议探测，二者都不是推理或渲染结果。
 实际机器状态与日期证据分别记录；离线示例不证明远程 GPU、Windows 实机或美术验收通过。
+
+## From a new scene to delivery
+
+Main refines the brief and asks for missing decisions, prepares the scene breakdown and records explicit visual approval. It acquires and reviews geometry, measures the approved scene, authors a structured visual direction, compiles plans, executes Blender setup and renders a real preview. It views that image, records the nine-category diagnosis and performs only supported, budgeted refinements. Final delivery follows explicit user approval. [Task tracking](task-tracking.md) preserves progress across sessions; no additional visual implementation or knowledge collection is needed for the basic workflow.

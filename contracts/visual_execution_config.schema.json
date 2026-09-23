@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "mode": {
+      "enum": [
+        "auto",
+        "main",
+        "external"
+      ]
+    },
+    "home": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "python": {
+      "type": "string",
+      "minLength": 1
+    },
+    "knowledge_home": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

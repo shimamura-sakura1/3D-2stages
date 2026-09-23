@@ -13,7 +13,35 @@ SCENE_TYPES = {'hero_prop','industrial_environment','industrial_megastructure','
 SCENE_ALIASES = {'industrial_station':'industrial_environment'}
 
 
-def build_scene_context(manifest, scene_spec, bounds_by_object, *, blockout_plan, ground_z, environment_summary, scene_type=None):
+def visual_task_inputs(manifest, documents, measured, style):
+    """Project approved sources into separate visual inputs without choosing a shot."""
+    brief=documents['visual_brief'];constraints=brief['constraints'];scene=measured['scene']
+    from runtime.style_registry import visual_priors
+    priors=visual_priors(style)
+    result={
+        'visual_brief':{'schema_version':'1.0','brief_id':brief['document_id'],
+            'user_intent':manifest['user_brief']['raw'],'visual_goals':list(brief['priorities']),
+            'constraints':[*constraints['required'],*constraints.get('user_constraints',[]),
+                'Approved mood: '+json.dumps(brief['mood'],ensure_ascii=False),
+                'Approved visual language: '+json.dumps(brief['visual_language'],ensure_ascii=False)],
+            'preserve':sorted(set(['approved_geometry',*constraints.get('preserve',[])])),
+            'avoid':list(constraints['avoid'])},
+        'scene_context':{'schema_version':'1.0','scene_id':manifest['project_id'],'scene_version':manifest['scene_version'],
+            'scene_type':scene['scene_type'],'primary_subject':{'id':scene['primary_subject']['object_id']},
+            'secondary_subjects':[{'id':x['object_id']} for x in scene['secondary_subjects']],
+            'scene_summary':scene['environment_summary'],'bounds':copy.deepcopy(scene['bounds']),
+            'available_camera_constraints':{'primary_subject_bounds':copy.deepcopy(scene['primary_subject']['bounds']),
+                'ground_z':scene['ground_z'],'target_modes':['subject_center'],'approved_geometry_immutable':True},
+            'available_lighting_constraints':{'reference_frames':['camera_subject'],'light_types':['AREA']}},
+        'style_context':{'schema_version':'1.0','style_id':style['id'],'style_version':style['version'],
+            'camera_priors':copy.deepcopy(priors.get('camera',{})), 'composition_priors':copy.deepcopy(priors.get('composition',{})),
+            'lighting_priors':copy.deepcopy(priors.get('lighting',{})),
+            'atmosphere_priors':copy.deepcopy(priors.get('atmosphere',{})),
+            'material_readability_priors':copy.deepcopy(priors.get('material_readability',{})),'visual_constraints':[],'avoid':[]}}
+    return result
+
+
+def build_scene_context(manifest, scene_spec, bounds_by_object, *, blockout_plan, ground_z, environment_summary, scene_type=None, visual_task=False):
     """Consume measured world-space AABBs after geometry/placement, not guessed sizes.
 
     The caller obtains these from Blender (including parent transforms, rotation,
@@ -29,7 +57,7 @@ def build_scene_context(manifest, scene_spec, bounds_by_object, *, blockout_plan
     require(set(bounds_by_object) == objects, 'Measured world bounds must cover every object')
     primary = scene_spec['composition']['focal_subject']
     scene_type = scene_type or SCENE_ALIASES.get(scene_spec['scene_type'],scene_spec['scene_type'])
-    require(scene_type in SCENE_TYPES, 'Supply an explicit supported Render Director scene_type')
+    require(visual_task or scene_type in SCENE_TYPES, 'Supply an explicit supported Render Director scene_type')
     subjects = [{'object_id': key, 'bounds': copy.deepcopy(bounds_by_object[key])} for key in sorted(objects)]
     # Validate each measurement before indexing it or performing arithmetic.
     for item in subjects:

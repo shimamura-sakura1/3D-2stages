@@ -1,0 +1,103 @@
+{
+  "valid_request": {
+    "inputs": {
+      "previous_render_direction": "inputs/previous_render_direction.json",
+      "previous_render_review": "inputs/previous_render_review.json",
+      "render_image": "inputs/render/preview.png",
+      "scene_context": "inputs/scene_context.json",
+      "scene_state": "inputs/scene_state.json",
+      "style_context": "inputs/style_context.json",
+      "visual_brief": "inputs/visual_brief.json"
+    },
+    "operation": "refine_direction",
+    "outputs": {
+      "error": "outputs/error.json",
+      "render_direction": "outputs/result.json"
+    },
+    "schema_version": "1.0",
+    "task_id": "fixture-refine_direction"
+  },
+  "invalid_request": {
+    "inputs": {
+      "previous_render_direction": "inputs/previous_render_direction.json",
+      "previous_render_review": "inputs/previous_render_review.json",
+      "render_image": "inputs/render/preview.png",
+      "scene_context": "inputs/scene_context.json",
+      "scene_state": "inputs/scene_state.json",
+      "style_context": "inputs/style_context.json"
+    },
+    "operation": "refine_direction",
+    "outputs": {
+      "error": "outputs/error.json",
+      "render_direction": "outputs/result.json"
+    },
+    "schema_version": "1.0",
+    "task_id": "fixture-refine_direction"
+  },
+  "expected_result": {
+    "atmosphere": {
+      "background_separation": "Wall behind the cylinder",
+      "contrast": "Restrained contrast with a readable cylinder gradient",
+      "depth": "Shallow architectural depth",
+      "emissive_role": "No emissive focal competition",
+      "fog": "Very subtle haze; keep contact and material readability"
+    },
+    "avoid": [
+      "uniform_gloss"
+    ],
+    "camera": {
+      "azimuth_deg": -55,
+      "elevation_deg": 18,
+      "focal_length_mm": 45,
+      "shot_type": "three quarter specimen with platform context",
+      "subject_coverage": 0.55,
+      "subject_ref": "machine",
+      "target": {
+        "mode": "subject_center",
+        "offset_normalized": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "composition": {
+      "background": "The wall supplies a calm backdrop",
+      "depth_layering": "Front platform lip, cylinder, rear wall",
+      "foreground": "Platform lip anchors the object",
+      "hierarchy": "Cylinder primary, concrete platform secondary, plain wall tertiary",
+      "midground": "The upright cylinder is the focal form",
+      "negative_space": "Keep readable clearance above the cylinder",
+      "scale_cues": [
+        "platform thickness",
+        "wall height"
+      ],
+      "silhouette": "Separate the top and side contour from the wall",
+      "subject_placement": "Centered with breathing room above"
+    },
+    "direction_id": "specimen-direction-1",
+    "lighting": {
+      "fill": {
+        "ratio_to_key": 0.15
+      },
+      "hierarchy": "Key dominates fill, wall remains secondary",
+      "key": {
+        "azimuth_deg": 80,
+        "elevation_deg": 45,
+        "reference_frame": "camera_subject",
+        "softness": "Broad area source for a soft curved highlight"
+      },
+      "silhouette_separation": "Lateral key reveals cylinder curvature",
+      "subject_background_separation": "Teal cylinder against neutral wall"
+    },
+    "parent_direction_id": "specimen-direction-0",
+    "preserve": [
+      "approved_geometry",
+      "camera",
+      "composition",
+      "atmosphere"
+    ],
+    "revision": 1,
+    "schema_version": "1.0"
+  }
+}

@@ -113,6 +113,9 @@ def geometry_hashes(manifest):
 def formal_files(manager, manifest, *, exclude=()):
     """Enumerate formal history only; never walk/copy the project directory."""
     records = []
+    if manifest.get('visual_direction'):
+        from runtime.visual_tasks import formal_task_files
+        records.extend(anchor(manager.root,path) for path in formal_task_files(manager,manifest))
     if manifest.get('render_direction'):
         from runtime.render_context_builder import read_direction_state
         read_direction_state(manager,manifest)

@@ -23,6 +23,17 @@ from runtime.stage2_executor import Stage2Executor
 def parser():
     cli = argparse.ArgumentParser(description="Reviewable 3D scene production")
     sub = cli.add_subparsers(dest="command", required=True)
+    for name in ('prepare','start','status','submit','interrupt','collect'):
+        task=sub.add_parser('visual-task-'+name,help='Manage a visual task; an Agent supplies the decision')
+        task.add_argument('project')
+        if name=='prepare':task.add_argument('--request',required=True)
+        else:task.add_argument('--task-id',required=True)
+        if name=='submit':
+            task.add_argument('--decision',required=True)
+        if name in ('submit','collect'):
+            task.add_argument('--execution')
+        if name=='interrupt':task.add_argument('--reason',required=True)
+        if name!='status':task.add_argument('--expected-version',required=True,type=int)
     context = sub.add_parser('render-context', help='Build external RenderContext from measured scene bounds')
     context.add_argument('project')
     context.add_argument('--scene-context', required=True)
@@ -40,11 +51,13 @@ def parser():
     revision.add_argument('project')
     revision.add_argument('--revision', required=True)
     revision.add_argument('--render-direction')
+    revision.add_argument('--visual-task')
     revision.add_argument('--expected-version', type=int, required=True)
     critic = sub.add_parser('visual-review-submit', help='Record a current agent-authored render diagnosis without approving')
     critic.add_argument('project')
     critic.add_argument('--review', required=True)
     critic.add_argument('--director-review')
+    critic.add_argument('--visual-task')
     critic.add_argument('--expected-version', type=int, required=True)
     sub.add_parser('preview-prepare', help='Reserve a new preview pass and prepare MCP execution').add_argument('project')
     preview = sub.add_parser('preview-complete', help='Validate current worker output and record formal render metadata')
@@ -54,6 +67,7 @@ def parser():
     sceneplans.add_argument('project')
     sceneplans.add_argument('--plans', required=True)
     sceneplans.add_argument('--render-direction')
+    sceneplans.add_argument('--visual-task')
     sceneplans.add_argument('--scene-context')
     sceneplans.add_argument('--expected-version', type=int, required=True)
     sub.add_parser('scene-prepare', help='Prepare guarded semantic Blender operations; does not execute Blender').add_argument('project')
@@ -197,6 +211,18 @@ def execute(args):
         tasks = [new_task(asset) for asset in args.asset] + [load_data(p) for p in args.task]
         return create_project(args.project, args.id, args.brief, args.mode, tasks, args.refined)
     manager = ManifestManager(args.project)
+    if args.command.startswith('visual-task-'):
+        from runtime import visual_tasks
+        action=args.command.removeprefix('visual-task-')
+        if action=='prepare':return visual_tasks.prepare(manager,load_data(args.request),expected_version=args.expected_version)
+        if action=='start':return visual_tasks.start(manager,args.task_id,expected_version=args.expected_version)
+        if action=='status':return visual_tasks.status(manager,args.task_id)
+        if action=='interrupt':return visual_tasks.interrupt(manager,args.task_id,args.reason,expected_version=args.expected_version)
+        if action=='collect':
+            from runtime.visual_task_adapter import collect
+            return collect(manager,args.task_id,execution=load_data(args.execution) if args.execution else None,expected_version=args.expected_version)
+        return visual_tasks.submit(manager,args.task_id,load_data(args.decision),
+            execution=load_data(args.execution) if args.execution else None,expected_version=args.expected_version)
     if args.command == 'render-context':
         from runtime.render_context_builder import project_context
         return project_context(manager,load_data(args.scene_context),review=args.review)
@@ -217,10 +243,10 @@ def execute(args):
         return current_render_context(manager)
     if args.command == 'revision-apply':
         return manager.apply_visual_revision(load_data(args.revision), expected_version=args.expected_version,
-            render_direction=load_data(args.render_direction) if args.render_direction else None)
+            render_direction=load_data(args.render_direction) if args.render_direction else None,visual_task=args.visual_task)
     if args.command == 'visual-review-submit':
         return manager.submit_render_review(load_data(args.review), expected_version=args.expected_version,
-            director_review=load_data(args.director_review) if args.director_review else None)
+            director_review=load_data(args.director_review) if args.director_review else None,visual_task=args.visual_task)
     if args.command in ('preview-prepare', 'preview-complete'):
         from runtime.preview_renderer import PreviewRenderer
         renderer = PreviewRenderer(manager)
@@ -228,7 +254,7 @@ def execute(args):
     if args.command == 'scene-plans-submit':
         return manager.submit_scene_plans(load_data(args.plans), expected_version=args.expected_version,
             render_direction=load_data(args.render_direction) if args.render_direction else None,
-            scene_context=load_data(args.scene_context) if args.scene_context else None)
+            scene_context=load_data(args.scene_context) if args.scene_context else None,visual_task=args.visual_task)
     if args.command == 'scene-prepare':
         from runtime.scene_production import prepare_scene
         return prepare_scene(manager)

@@ -1,3 +1,5 @@
+> Compatibility reference for existing legacy directed projects. Current visual production uses [visual tasks](task-tracking.md); optional implementation details are in the [internal adapter guide](visual-task-adapters.md). The historical requirements and examples below apply only to that legacy path.
+
 # Render Director 接入
 
 本 Skill 负责场景数据、执行计划、Blender 操作、版本、来源与审核。

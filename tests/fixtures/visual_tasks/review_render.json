@@ -1,0 +1,73 @@
+{
+  "valid_request": {
+    "inputs": {
+      "previous_render_direction": "inputs/previous_render_direction.json",
+      "render_image": "inputs/render/preview.png",
+      "scene_context": "inputs/scene_context.json",
+      "scene_state": "inputs/scene_state.json",
+      "style_context": "inputs/style_context.json",
+      "visual_brief": "inputs/visual_brief.json"
+    },
+    "operation": "review_render",
+    "outputs": {
+      "error": "outputs/error.json",
+      "render_review": "outputs/result.json"
+    },
+    "schema_version": "1.0",
+    "task_id": "fixture-review_render"
+  },
+  "invalid_request": {
+    "inputs": {
+      "previous_render_direction": "inputs/previous_render_direction.json",
+      "render_image": "inputs/render/preview.png",
+      "scene_context": "inputs/scene_context.json",
+      "scene_state": "inputs/scene_state.json",
+      "style_context": "inputs/style_context.json"
+    },
+    "operation": "review_render",
+    "outputs": {
+      "error": "outputs/error.json",
+      "render_review": "outputs/result.json"
+    },
+    "schema_version": "1.0",
+    "task_id": "fixture-review_render"
+  },
+  "expected_result": {
+    "direction_id": "specimen-direction-0",
+    "direction_revision": 0,
+    "findings": [
+      {
+        "category": "lighting",
+        "observation": "Viewed the actual 960x640 PNG: the teal cylinder reads clearly but its front/right face is fairly evenly lit; a slightly lower fill should strengthen the value gradient without changing the framing.",
+        "severity": "minor"
+      }
+    ],
+    "preserve": [
+      "approved_geometry",
+      "camera",
+      "composition",
+      "atmosphere"
+    ],
+    "recommended_changes": {
+      "atmosphere": {},
+      "camera": {},
+      "composition": {},
+      "lighting": {
+        "fill_ratio": "Lower fill-to-key ratio from 0.25 to 0.15; preserve key direction and source softness."
+      }
+    },
+    "render_path": "inputs/render/preview.png",
+    "review_id": "live-specimen-review-0",
+    "schema_version": "1.0",
+    "successful_decisions": [
+      {
+        "category": "composition",
+        "observation": "Cylinder silhouette is legible against the neutral wall; platform front edge establishes depth and the cylinder remains the focal form."
+      },
+      {
+        "category": "lighting",
+        "observation": "Soft lighting preserves restrained teal and pale concrete; no competing emissive highlight is visible."
+      }
+    ]
+  }
+}

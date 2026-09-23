@@ -21,3 +21,7 @@ Resource and image SHA256 at validation:
   ".deps/v02-phase2/calibration_preview.png": "39d4c22b9c7abee51807b26c6fe5aad15365f9f59d9eceb63f142795f5c68bd6"
 }
 ```
+
+## Style inputs to visual tasks
+
+Visual tasks receive sourced `direction_prior` and selected semantic rules separately from executable defaults. Every actually read semantic YAML file contributes to the task digest. Main interprets visual recommendations; runtime compiles explicit execution choices and validates Style limits. Style knowledge does not become current-scene observations, and executable defaults are not fabricated photographic advice.

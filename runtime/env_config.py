@@ -12,6 +12,16 @@ ENV_NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 ENV_REFERENCE = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)\}")
 
 
+def visual_execution_config(explicit=None):
+    """Optional machine configuration; no installation paths enter shared defaults."""
+    config={'mode':os.environ.get('VISUAL_EXECUTION_MODE','auto')}
+    for key,variable in [('home','VISUAL_EXECUTOR_HOME'),('python','VISUAL_EXECUTOR_PYTHON'),('knowledge_home','VISUAL_KNOWLEDGE_HOME')]:
+        if os.environ.get(variable):config[key]=os.environ[variable]
+    if 'home' not in config and os.environ.get('RENDER_DIRECTOR_HOME'):config['home']=os.environ['RENDER_DIRECTOR_HOME']
+    config.update(explicit or {})
+    return config
+
+
 def _dotenv_value(raw, line_number):
     value = raw.strip()
     if not value:

@@ -30,6 +30,18 @@ def unique(items, key, label):
 def validate_visual_manifest(manifest):
     """Validate represented approval evidence, never create it from technical success."""
     from runtime.validators import validate_manifest
+    tasks=manifest.get('visual_tasks',{})
+    for task_id,record in tasks.items():
+        require(record['task_id']==task_id and record['scene_version']<=manifest['scene_version'],'Invalid visual task identity')
+        prefix=f'stage2/visual_tasks/{task_id}/'
+        require(all(path.startswith(prefix) for path in record['files']),'Visual task file outside its task directory')
+        require(record['request_path'] in record['files'] and record['context_path'] in record['files'],'Task snapshot missing')
+        if record['result_path'] is not None:require(record['result_path'] in record['files'],'Task result missing')
+        require(record['events'] and record['events'][-1]['status']==record['status'],'Task event state mismatch')
+    for key,operations in (('visual_direction',('create_direction','refine_direction')),('visual_review_task',('review_render',))):
+        if manifest.get(key):
+            require(manifest[key] in tasks and tasks[manifest[key]]['status']=='accepted','Unaccepted visual task reference')
+            require(tasks[manifest[key]]['operation'] in operations and tasks[manifest[key]]['scene_version']==manifest['scene_version'],'Invalid current visual task operation or scene')
     if manifest["legacy_manifest"] is not None:
         validate_manifest(manifest["legacy_manifest"])
     current = manifest["scene_version"]

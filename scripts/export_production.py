@@ -58,10 +58,7 @@ def export_production(root,destination):
     # Runtime interface inventory has no claims, tests, or maintenance enforcement.
     for artifact in artifacts:artifact.pop('enforcement',None)
     public={'spec_version':interface['spec_version'],'skill':interface['skill'],'artifacts':artifacts,
-            'relations':[r for r in interface.get('relations',[]) if r['from']['artifact'] in ids and r['to']['artifact'] in ids],
-            'external_dependencies':[{'id':'render-director','entries':['analyze','review','refine'],
-                'input':'contracts/render_context.schema.json',
-                'outputs':['contracts/render_direction.schema.json','contracts/render_review.schema.json']}]}
+            'relations':[r for r in interface.get('relations',[]) if r['from']['artifact'] in ids and r['to']['artifact'] in ids]}
     (destination/'interface.json').write_text(json.dumps(public,indent=2)+'\n',encoding='utf-8')
     package=destination/'pyproject.toml';text=package.read_text(encoding='utf-8')
     text=re.sub(r'(?ms)^\[project.optional-dependencies\].*?(?=^\[|\Z)','',text)

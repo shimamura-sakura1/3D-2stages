@@ -18,16 +18,14 @@ python -m pip install -e ".[dev]"
 
 历史验收记录通过 Git LFS 保存，必须拉取实际内容；不要把 LFS 指针文件当作 JSON 记录。`requirements-tested.txt` 是历史测试环境记录，当前项目依赖入口为 `pyproject.toml`。
 
-在本项目同级获取维护框架和兼容的 Render Director：
+在本项目同级获取维护框架：
 
 ```sh
 git clone https://github.com/shimamura-sakura1/contract-govern-skil.git ../contract-govern-skil
 git -C ../contract-govern-skil checkout d6996c6201c2ad9b364add42363b05c70cb42d62
-git clone https://github.com/shimamura-sakura1/render-director.git ../render-director-compatible
-git -C ../render-director-compatible checkout c6f16c9bd17f043a4f5c46091b7f3fdbc7da355a
 ```
 
-此 Skill 当前使用 RenderContext / RenderDirection / RenderReview 1.0 和 `analyze`、`review`、`refine` 入口。Render Director 的后续提交已经改为另一套文件任务接口，不能直接用其最新分支替代。初始化检查会比较三份公开 Schema 的实际内容，接口不匹配就报告不兼容。上述兼容提交与本仓库三份 Schema 已逐项比对；这不等于已经完成真实外部 Agent 渲染联调。
+基础开发和 main 的视觉生产不要求安装其他视觉 Skill 或知识库。可选实现的当前文件任务协议会检查十份公开 Schema、实际入口和解释器依赖；不可用时走 main，显式指定时才作为缺口报告。旧的三 Schema 检查仅诊断历史协议，不能作为新协议就绪依据。按需配置见 [内部适配](v02/visual-task-adapters.md)，不再默认要求固定旧提交。
 
 ## 配置这台机器
 
@@ -42,7 +40,7 @@ python scripts/setup_dev.py
 然后把以下 `BLENDER_PATH` 换成这台机器的可执行文件路径，写入本地配置：
 
 ```sh
-python scripts/setup_dev.py --blender "BLENDER_PATH" --framework ../contract-govern-skil --render-director ../render-director-compatible --write-local
+python scripts/setup_dev.py --blender "BLENDER_PATH" --framework ../contract-govern-skil --write-local
 python scripts/setup_dev.py
 python -m runtime.cli doctor
 ```
@@ -66,7 +64,7 @@ python scripts/govern.py --framework ../contract-govern-skil validate
 python -m pytest -q tests/test_developer_setup.py tests/test_release_preparation.py tests/test_production_distribution.py
 ```
 
-测试范围应根据实际修改确定。用户指定只做相关测试时，不运行会隐式触发全部历史测试的 `test --requirement` 或 `accept`，也不生成虚假的验收记录。静态检查和相关测试通过不等于完成正式全量验收。
+阶段开发只跑新增和相关测试，保存首次失败、影响分析、最终结果和实际 I/O。正式验收按本次授权通过 `scripts/govern.py accept` 执行校验、契约测试和全部 active 历史测试，避免事先无必要地再跑一遍全量。S26—S30 是开发阶段标识；只有工具生成成功记录才是 accepted。未完成真实验证的能力继续 unresolved。
 
 `projects/`、参考图、私人资产库和本机诊断通常被忽略，不随代码克隆。需要继续某个建模项目时另行传递它的项目目录及依赖资产，保留相对层级；服务凭据单独配置。迁机后重新生成 MCP 操作包，不执行旧包里的绝对路径。
 

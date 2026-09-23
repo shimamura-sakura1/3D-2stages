@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "review_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "direction_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "direction_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "render_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "category",
+          "severity",
+          "observation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "successful_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observation": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "category",
+          "observation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "recommended_changes": {
+      "type": "object",
+      "properties": {
+        "camera": {
+          "type": "object"
+        },
+        "composition": {
+          "type": "object"
+        },
+        "lighting": {
+          "type": "object"
+        },
+        "atmosphere": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "camera",
+        "composition",
+        "lighting",
+        "atmosphere"
+      ],
+      "additionalProperties": false
+    },
+    "preserve": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "review_id",
+    "direction_id",
+    "direction_revision",
+    "render_path",
+    "findings",
+    "successful_decisions",
+    "recommended_changes",
+    "preserve"
+  ],
+  "additionalProperties": false
+}

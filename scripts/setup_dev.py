@@ -18,7 +18,7 @@ def load_local(root):
     if not path.exists():
         return {}
     data = json.loads(path.read_text(encoding='utf-8'))
-    if not isinstance(data, dict) or any(k not in {'blender', 'framework', 'render_director'} or not isinstance(v, str) for k, v in data.items()):
+    if not isinstance(data, dict) or any(k not in {'blender', 'framework', 'render_director', 'knowledge'} or not isinstance(v, str) for k, v in data.items()):
         raise ValueError('Invalid local development settings')
     return data
 
@@ -97,7 +97,12 @@ def inspect_host(root, settings):
                     break
         except (ValueError, OSError):
             director['status'] = 'incompatible'
-    return {'platform': sys.platform, 'python': {'executable': sys.executable, 'version': list(sys.version_info[:3]), 'supported': sys.version_info >= (3,11)}, 'dependencies': dependencies, 'blender': blender, 'framework': framework, 'render_director': director, 'mcp': {'status': 'not_checked', 'required_checks': ['get_addon_status', 'get_scene_info']}, 'ready_for_development': sys.version_info >= (3,11) and all(x['status']=='ready' for x in [blender,framework,director,*dependencies.values()])}
+    from runtime.visual_task_adapter import select_executor
+    configured=settings.get('render_director') or os.environ.get('RENDER_DIRECTOR_HOME')
+    visual=select_executor({'mode':'auto','home':configured})
+    if visual['executor']=='external':director={'status':'ready','path':visual['home'],'protocol':'file-task'}
+    knowledge=checkout(settings.get('knowledge') or os.environ.get('VISUAL_KNOWLEDGE_HOME'),['README.md','AGENT.md','SPEC.md'])
+    return {'platform': sys.platform, 'python': {'executable': sys.executable, 'version': list(sys.version_info[:3]), 'supported': sys.version_info >= (3,11)}, 'dependencies': dependencies, 'visual_execution': visual, 'knowledge': knowledge, 'blender': blender, 'framework': framework, 'render_director': director, 'mcp': {'status': 'not_checked', 'required_checks': ['get_addon_status', 'get_scene_info']}, 'ready_for_development': sys.version_info >= (3,11) and all(x['status']=='ready' for x in [blender,framework,*dependencies.values()])}
 
 
 def configure(root, updates, write=False):
@@ -116,10 +121,11 @@ def main():
     parser.add_argument('--blender')
     parser.add_argument('--framework')
     parser.add_argument('--render-director')
+    parser.add_argument('--knowledge')
     parser.add_argument('--write-local', action='store_true')
     args = parser.parse_args()
     try:
-        updates = {key: getattr(args,key) for key in ('blender','framework','render_director') if getattr(args,key) is not None}
+        updates = {key: getattr(args,key) for key in ('blender','framework','render_director','knowledge') if getattr(args,key) is not None}
         report = configure(ROOT, updates, args.write_local)
         print(json.dumps(report, ensure_ascii=False, indent=2))
         return 0 if report['ready_for_development'] else 1

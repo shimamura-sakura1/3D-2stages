@@ -1941,7 +1941,8 @@
           "pytest",
           "-q",
           "tests/test_render_director.py",
-          "tests/test_render_director_revision.py"
+          "tests/test_render_director_revision.py",
+          "tests/test_visual_task_legacy_cli.py"
         ],
         "timeout_seconds": 1200
       }
@@ -1969,7 +1970,9 @@
         "README",
         "scripts.export_production",
         "scripts.sanitize_blend_paths",
-        "runtime.style_registry"
+        "runtime.style_registry",
+        "platform-guide",
+        "render-director-guide"
       ],
       "tags": [],
       "runner": {
@@ -1980,7 +1983,8 @@
           "pytest",
           "-q",
           "tests/test_production_distribution.py",
-          "tests/test_v02_readme.py"
+          "tests/test_v02_readme.py",
+          "tests/test_visual_task_consumer_guides.py"
         ],
         "timeout_seconds": 1200
       }
@@ -2152,6 +2156,207 @@
           "tests/test_release_preparation.py"
         ],
         "timeout_seconds": 120
+      }
+    },
+    {
+      "id": "T-VISUAL-TASK",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-VISUAL-TASK-001-C1",
+        "REQ-VISUAL-TASK-001-C2"
+      ],
+      "exercises": [
+        "runtime.visual_tasks"
+      ],
+      "depends_on_artifacts": [
+        "runtime.visual_tasks"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_visual_task_contracts.py",
+          "tests/test_visual_task_io.py"
+        ],
+        "timeout_seconds": 1200
+      }
+    },
+    {
+      "id": "T-VISUAL-TASK-IO-VALID",
+      "type": "contract",
+      "status": "active",
+      "covers": [],
+      "exercises": [
+        "runtime.visual_tasks"
+      ],
+      "depends_on_artifacts": [
+        "runtime.visual_tasks"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "runtime",
+        "artifact": "runtime.visual_tasks",
+        "cases": [
+          {
+            "id": "valid",
+            "fixture": "tests/fixtures/visual_tasks/valid.json",
+            "expect": "valid",
+            "expected_exit_code": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "T-VISUAL-TASK-IO-INVALID",
+      "type": "contract",
+      "status": "active",
+      "covers": [],
+      "exercises": [
+        "runtime.visual_tasks"
+      ],
+      "depends_on_artifacts": [
+        "runtime.visual_tasks"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "runtime",
+        "artifact": "runtime.visual_tasks",
+        "cases": [
+          {
+            "id": "invalid",
+            "fixture": "tests/fixtures/visual_tasks/invalid.json",
+            "expect": "invalid",
+            "expected_exit_code": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "T-VISUAL-LOCAL",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-VISUAL-LOCAL-001-C1",
+        "REQ-VISUAL-LOCAL-001-C2"
+      ],
+      "exercises": [
+        "runtime.visual_tasks"
+      ],
+      "depends_on_artifacts": [
+        "runtime.visual_tasks"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_visual_task_context.py",
+          "tests/test_visual_task_compile.py",
+          "tests/test_visual_task_local_flow.py",
+          "tests/test_visual_task_revision.py"
+        ],
+        "timeout_seconds": 1200
+      }
+    },
+    {
+      "id": "T-VISUAL-OPTIONAL",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-VISUAL-OPTIONAL-001-C1",
+        "REQ-VISUAL-OPTIONAL-001-C2",
+        "REQ-VISUAL-OPTIONAL-001-C3"
+      ],
+      "exercises": [
+        "runtime.visual_tasks"
+      ],
+      "depends_on_artifacts": [
+        "runtime.visual_tasks"
+      ],
+      "tags": [
+        "conditional-positive",
+        "conditional-default",
+        "conditional-rejection"
+      ],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_visual_task_selection.py",
+          "tests/test_visual_task_adapter.py",
+          "tests/test_visual_task_knowledge.py",
+          "tests/test_visual_task_setup.py"
+        ],
+        "timeout_seconds": 1200
+      }
+    },
+    {
+      "id": "T-VISUAL-RESUME",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-VISUAL-RESUME-001-C1",
+        "REQ-VISUAL-RESUME-001-C2"
+      ],
+      "exercises": [
+        "runtime.visual_tasks"
+      ],
+      "depends_on_artifacts": [
+        "runtime.visual_tasks"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_visual_task_resume.py",
+          "tests/test_visual_task_atomicity.py"
+        ],
+        "timeout_seconds": 1200
+      }
+    },
+    {
+      "id": "T-VISUAL-RELEASE",
+      "type": "requirement",
+      "status": "active",
+      "covers": [
+        "REQ-VISUAL-RELEASE-001-C1",
+        "REQ-VISUAL-RELEASE-001-C2"
+      ],
+      "exercises": [
+        "runtime.visual_tasks"
+      ],
+      "depends_on_artifacts": [
+        "runtime.visual_tasks"
+      ],
+      "tags": [],
+      "runner": {
+        "type": "command",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_visual_task_delivery.py",
+          "tests/test_visual_task_distribution.py",
+          "tests/test_visual_task_examples.py",
+          "tests/test_visual_task_end_to_end.py"
+        ],
+        "timeout_seconds": 1200
       }
     }
   ]

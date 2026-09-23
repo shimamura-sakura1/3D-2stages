@@ -52,7 +52,8 @@ class ManifestManager:
                         or value["assets"] or value["supplied_assets"] or value["legacy_manifest"] is not None
                         or value["migration_required_input"]
                         or value.get('completion_evidence') or value.get('final_reviews') or value.get('deliveries')
-                        or value.get('render_direction')):
+                        or value.get('render_direction') or value.get('visual_tasks')
+                        or value.get('visual_direction') or value.get('visual_review_task')):
                     raise BoundaryError("New visual projects must be empty, initialized and unapproved; migration drafts are not installable")
                 atomic_write(self.path, value)
                 return value
@@ -88,6 +89,15 @@ class ManifestManager:
                 raise BoundaryError('Stale project version; reload before submitting')
             # Mutators return staged documents; no file writes until validation succeeds.
             pending = mutate(value) or []
+            # Freeze accepted task provenance in the same transaction as production.
+            for task in value.get('visual_tasks',{}).values():
+                if task['status']=='accepted':
+                    from runtime.visual_tasks import acceptance_path,encoded
+                    path=acceptance_path(task)
+                    if path not in task['files']:
+                        import hashlib
+                        raw=encoded(task);task['files'][path]=hashlib.sha256(raw).hexdigest()
+                        pending.append((path,raw))
             value['version'] += 1
             value['history'].append({'time': datetime.now(timezone.utc).isoformat(),
                                      'action': action, 'asset_id': None, 'detail': ''})
@@ -236,7 +246,7 @@ class ManifestManager:
             m['state'] = target
         return self._visual_change('geometry_review', mutate, expected_version)
 
-    def submit_scene_plans(self, plans, *, expected_version, render_direction=None, scene_context=None):
+    def submit_scene_plans(self, plans, *, expected_version, render_direction=None, scene_context=None, visual_task=None):
         from runtime.scene_production import validate_scene_plans, PLAN_KINDS
         from runtime.visual_contracts import document_hash
         from runtime.visual_planning import current_documents
@@ -247,7 +257,13 @@ class ManifestManager:
             direction_pending = []
             if m['mode'] not in ('full_pipeline', 'stage2_only', 'repair') or m['state'] not in ('geometry_approved', 'blockout_pending'):
                 raise BoundaryError('Scene plans require approved geometry and authorized execution')
-            if render_direction is not None:
+            if visual_task is not None:
+                if render_direction is not None:raise BoundaryError('Choose one visual protocol')
+                from runtime.visual_tasks import accept_direction
+                plans=accept_direction(self,m,visual_task,plans)
+            elif m.get('visual_direction'):
+                raise BoundaryError('Visual task plans require reviewed refinement')
+            elif render_direction is not None:
                 from runtime.render_director import initial_direction
                 plans, direction_pending = initial_direction(self,m,copy.deepcopy(render_direction),scene_context,plans)
             elif m.get('render_direction'):
@@ -291,10 +307,10 @@ class ManifestManager:
                 m['state'] = target
         return self._visual_change('scene_setup_complete', mutate, expected_version)
 
-    def apply_visual_revision(self, revision, *, expected_version, render_direction=None):
+    def apply_visual_revision(self, revision, *, expected_version, render_direction=None, visual_task=None):
         from runtime.revision_controller import stage_revision
         return self._visual_change('visual_revision_applied',
-                                   lambda m: stage_revision(self, m, revision, render_direction=render_direction), expected_version)
+                                   lambda m: stage_revision(self, m, revision, render_direction=render_direction,visual_task=visual_task), expected_version)
 
     def reserve_preview(self, *, expected_version):
         from runtime.scene_production import PLAN_KINDS, validate_scene_plans
@@ -358,7 +374,7 @@ class ManifestManager:
             return pending
         return self._visual_change('preview_recorded', mutate, expected_version)
 
-    def submit_render_review(self, review, *, expected_version, director_review=None):
+    def submit_render_review(self, review, *, expected_version, director_review=None, visual_task=None):
         """Persist an explicit diagnosis; artistic approval remains a separate user gate."""
         from runtime.visual_review import validate_render_review
         from runtime.visual_contracts import document_hash
@@ -367,7 +383,12 @@ class ManifestManager:
         def mutate(m):
             validate_render_review(self, m, review)
             pending = []
-            if m.get('render_direction'):
+            if m.get('visual_direction'):
+                if visual_task is None or director_review is not None:raise BoundaryError('Current visual task review required')
+                from runtime.visual_tasks import accept_review
+                accept_review(self,m,visual_task,review)
+            elif visual_task is not None:raise BoundaryError('No registered visual task direction')
+            elif m.get('render_direction'):
                 if director_review is None:
                     raise BoundaryError('Directed renders require an external RenderReview')
                 from runtime.render_director import stage_review

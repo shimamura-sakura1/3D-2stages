@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+    },
+    "operation": {
+      "enum": [
+        "create_direction",
+        "review_render",
+        "refine_direction"
+      ]
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "enum": [
+        "prepared",
+        "running",
+        "result_available",
+        "accepted",
+        "failed",
+        "interrupted"
+      ]
+    },
+    "executor": {
+      "enum": [
+        "main",
+        "external"
+      ]
+    },
+    "request_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "files": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "source_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "status",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "result_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "execution_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "selection": {
+      "type": "object"
+    },
+    "recovery": {
+      "type": "object",
+      "properties": {
+        "next_action": {
+          "enum": [
+            "continue",
+            "accept_result",
+            "start",
+            "verify_execution",
+            "resume",
+            "resolve_error",
+            "collect_result",
+            "prepare_new_task"
+          ]
+        },
+        "published_outputs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "next_action",
+        "published_outputs"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "task_id",
+    "operation",
+    "scene_version",
+    "status",
+    "executor",
+    "request_path",
+    "context_path",
+    "files",
+    "source_hash",
+    "source_version",
+    "attempt",
+    "events",
+    "result_path",
+    "execution_path",
+    "selection"
+  ],
+  "additionalProperties": false
+}

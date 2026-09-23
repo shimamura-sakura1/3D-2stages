@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "execution": {
+          "const": "agent_required"
+        }
+      },
+      "required": [
+        "operations",
+        "execution"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "$ref": "visual_task_record.schema.json"
+    }
+  ]
+}
