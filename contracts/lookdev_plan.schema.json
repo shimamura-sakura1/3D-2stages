@@ -210,6 +210,19 @@
         "lighting_source"
       ],
       "additionalProperties": false
+    },
+    "visual_task": {
+      "type": "object",
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+        }
+      },
+      "required": [
+        "task_id"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [

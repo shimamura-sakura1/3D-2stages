@@ -21,6 +21,30 @@ def radial(azimuth, elevation):
 def compile_render_direction(render_direction, scene_context, resolved_style):
     d = validate_contract('render_direction',render_direction)
     validate_contract('scene_context',scene_context)
+    return _compile_direction(d,scene_context,resolved_style)
+
+
+def compile_visual_direction(direction, scene_context, style, execution, task_id):
+    validate_contract('visual_compile_request',{'direction':direction,'scene_context':scene_context,'execution':execution,'task_id':task_id})
+    camera=direction['camera'];key=direction['lighting']['key']
+    require(camera['target']['mode']=='subject_center' and key['reference_frame']=='camera_subject','Unsupported camera target or light reference frame')
+    require(0<camera['subject_coverage']<=1 and camera['focal_length_mm']>0,'Invalid executable camera framing')
+    require(camera['subject_ref']==scene_context['scene']['primary_subject']['object_id'],'Direction subject mismatch')
+    # Feed the existing geometric solver explicit numbers, never qualitative prose.
+    normalized={'direction_id':task_id,'revision':direction['revision'],
+        'project_id':scene_context['production']['project_id'],'scene_version':scene_context['production']['scene_version'],
+        'scene_type':scene_context['scene']['scene_type'],'camera':copy.deepcopy(camera),
+        'lighting':copy.deepcopy(direction['lighting']),'atmosphere':{'amount':execution['fog_amount']}}
+    normalized['camera']['subject_coverage']={'target':camera['subject_coverage']}
+    normalized['lighting']['key']['softness']=execution['softness']
+    look,render=_compile_direction(normalized,scene_context,style)
+    for plan in (look,render):
+        del plan['render_direction'];plan['visual_task']={'task_id':task_id}
+    validate_contract('lookdev_plan',look);validate_contract('render_plan',render)
+    return look,render
+
+
+def _compile_direction(d,scene_context,resolved_style):
     scene, prod = scene_context['scene'], scene_context['production']
     require((d['project_id'],d['scene_version']) == (prod['project_id'],prod['scene_version']), 'Direction project/scene mismatch')
     require(d['scene_type'] == scene['scene_type'], 'Direction scene type mismatch')

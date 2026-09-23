@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "direction": {
+      "$ref": "visual_task_direction.schema.json"
+    },
+    "scene_context": {
+      "$ref": "scene_context.schema.json"
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "softness": {
+          "enum": [
+            "small",
+            "medium",
+            "large"
+          ]
+        },
+        "fog_amount": {
+          "enum": [
+            "none",
+            "subtle",
+            "medium",
+            "dense"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "softness",
+        "fog_amount",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+    }
+  },
+  "required": [
+    "direction",
+    "scene_context",
+    "execution",
+    "task_id"
+  ],
+  "additionalProperties": false
+}

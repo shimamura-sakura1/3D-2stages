@@ -2,7 +2,7 @@
   "spec_version": "0.1",
   "skill": {
     "id": "two-stage-3d",
-    "version": "S25"
+    "version": "S30"
   },
   "artifacts": [
     {
@@ -1134,6 +1134,153 @@
       "id": "contracts.directed_plans.schema",
       "type": "schema",
       "path": "contracts/directed_plans.schema.json"
+    },
+    {
+      "id": "contracts.visual_task_brief.schema",
+      "path": "contracts/visual_task_brief.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_command.schema",
+      "path": "contracts/visual_task_command.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_direction.schema",
+      "path": "contracts/visual_task_direction.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_error.schema",
+      "path": "contracts/visual_task_error.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_knowledge.schema",
+      "path": "contracts/visual_task_knowledge.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_record.schema",
+      "path": "contracts/visual_task_record.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_references.schema",
+      "path": "contracts/visual_task_references.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_request.schema",
+      "path": "contracts/visual_task_request.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_result.schema",
+      "path": "contracts/visual_task_result.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_review.schema",
+      "path": "contracts/visual_task_review.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_scene.schema",
+      "path": "contracts/visual_task_scene.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_scene_state.schema",
+      "path": "contracts/visual_task_scene_state.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_task_style.schema",
+      "path": "contracts/visual_task_style.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "runtime.visual_tasks",
+      "path": "runtime/visual_tasks.py",
+      "type": "script",
+      "runtime_binding": {
+        "runner": [
+          "python",
+          "runtime/visual_tasks.py"
+        ],
+        "input": {
+          "mode": "stdin-json",
+          "schema": "contracts/visual_task_command.schema.json"
+        },
+        "outputs": [
+          {
+            "kind": "stdout-json",
+            "schema": "contracts/visual_task_result.schema.json"
+          }
+        ],
+        "error_contract": {
+          "nonzero_on_invalid_input": true,
+          "schema": "contracts/visual_task_error.schema.json",
+          "channel": "stderr"
+        },
+        "timeout_seconds": 60
+      }
+    },
+    {
+      "id": "contracts.visual_compile_request.schema",
+      "path": "contracts/visual_compile_request.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "prompts.visual_task_direction.md",
+      "path": "prompts/visual_task_direction.md",
+      "type": "knowledge"
+    },
+    {
+      "id": "prompts.visual_task_review.md",
+      "path": "prompts/visual_task_review.md",
+      "type": "knowledge"
+    },
+    {
+      "id": "prompts.visual_task_refinement.md",
+      "path": "prompts/visual_task_refinement.md",
+      "type": "knowledge"
+    },
+    {
+      "id": "runtime.visual_task_adapter.py",
+      "path": "runtime/visual_task_adapter.py",
+      "type": "script"
+    },
+    {
+      "id": "runtime.knowledge_resolver.py",
+      "path": "runtime/knowledge_resolver.py",
+      "type": "script"
+    },
+    {
+      "id": "contracts.visual_execution_config.schema",
+      "path": "contracts/visual_execution_config.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_knowledge_item.schema",
+      "path": "contracts/visual_knowledge_item.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "contracts.visual_knowledge_pack.schema",
+      "path": "contracts/visual_knowledge_pack.schema.json",
+      "type": "schema"
+    },
+    {
+      "id": "docs.v02.visual-task-adapters.md",
+      "path": "docs/v02/visual-task-adapters.md",
+      "type": "knowledge"
+    },
+    {
+      "id": "docs.v02.task-tracking.md",
+      "path": "docs/v02/task-tracking.md",
+      "type": "knowledge"
     }
   ],
   "relations": [
@@ -3226,21 +3373,1446 @@
       "to": {
         "artifact": "render-director-guide"
       }
-    }
-  ],
-  "external_dependencies": [
+    },
     {
-      "id": "render-director",
-      "entries": [
-        "analyze",
-        "review",
-        "refine"
-      ],
-      "input": "contracts/render_context.schema.json",
-      "outputs": [
-        "contracts/render_direction.schema.json",
-        "contracts/render_review.schema.json"
-      ]
+      "id": "workflow-visual-tasks",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.visual_tasks"
+      }
+    },
+    {
+      "id": "visual-dep-241",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-242",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.env_config"
+      }
+    },
+    {
+      "id": "visual-dep-243",
+      "type": "uses",
+      "from": {
+        "artifact": "workflow-cli"
+      },
+      "to": {
+        "artifact": "runtime.visual_task_adapter.py"
+      }
+    },
+    {
+      "id": "visual-dep-244",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_acquisition"
+      },
+      "to": {
+        "artifact": "runtime.asset_search"
+      }
+    },
+    {
+      "id": "visual-dep-245",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_acquisition"
+      },
+      "to": {
+        "artifact": "runtime.asset_router"
+      }
+    },
+    {
+      "id": "visual-dep-246",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_acquisition"
+      },
+      "to": {
+        "artifact": "runtime.geometry_router"
+      }
+    },
+    {
+      "id": "visual-dep-247",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_acquisition"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-248",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_acquisition"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-249",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_acquisition"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-250",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_acquisition"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-251",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_router"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-252",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_router"
+      },
+      "to": {
+        "artifact": "runtime.asset_router"
+      }
+    },
+    {
+      "id": "visual-dep-253",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_router"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-254",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.geometry_router"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-255",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.hy3d_surface"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-256",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.hy3d_surface"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-257",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.knowledge_resolver.py"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-258",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.knowledge_resolver.py"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-259",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.knowledge_resolver.py"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-260",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-261",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-262",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.geometry_acquisition"
+      }
+    },
+    {
+      "id": "visual-dep-263",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.scene_production"
+      }
+    },
+    {
+      "id": "visual-dep-264",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.preview_renderer"
+      }
+    },
+    {
+      "id": "visual-dep-265",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.visual_delivery"
+      }
+    },
+    {
+      "id": "visual-dep-266",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.visual_tasks"
+      }
+    },
+    {
+      "id": "visual-dep-267",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.manifest_manager"
+      },
+      "to": {
+        "artifact": "runtime.render_director"
+      }
+    },
+    {
+      "id": "visual-dep-268",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.preview_renderer"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-269",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.preview_renderer"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-270",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.preview_renderer"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-271",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.preview_renderer"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-272",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.preview_renderer"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-273",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.preview_renderer"
+      },
+      "to": {
+        "artifact": "runtime.scene_production"
+      }
+    },
+    {
+      "id": "visual-dep-274",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.reference_manager"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-275",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.reference_manager"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-276",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.reference_manager"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-277",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_context_builder"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-278",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_context_builder"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-279",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_context_builder"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-280",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_context_builder"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-281",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_context_builder"
+      },
+      "to": {
+        "artifact": "runtime.style_registry"
+      }
+    },
+    {
+      "id": "visual-dep-282",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_context_builder"
+      },
+      "to": {
+        "artifact": "runtime.visual_review"
+      }
+    },
+    {
+      "id": "visual-dep-283",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_direction_adapter"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-284",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_direction_adapter"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-285",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_direction_adapter"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-286",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_director"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-287",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_director"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-288",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_director"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-289",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_director"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-290",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_director"
+      },
+      "to": {
+        "artifact": "runtime.style_registry"
+      }
+    },
+    {
+      "id": "visual-dep-291",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_director"
+      },
+      "to": {
+        "artifact": "runtime.render_context_builder"
+      }
+    },
+    {
+      "id": "visual-dep-292",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_director"
+      },
+      "to": {
+        "artifact": "runtime.visual_review"
+      }
+    },
+    {
+      "id": "visual-dep-293",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_director"
+      },
+      "to": {
+        "artifact": "runtime.visual_tasks"
+      }
+    },
+    {
+      "id": "visual-dep-294",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-295",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-296",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-297",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-298",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "runtime.state_machine"
+      }
+    },
+    {
+      "id": "visual-dep-299",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "runtime.visual_tasks"
+      }
+    },
+    {
+      "id": "visual-dep-300",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.revision_controller"
+      },
+      "to": {
+        "artifact": "runtime.render_director"
+      }
+    },
+    {
+      "id": "visual-dep-301",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.scene_production"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-302",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.scene_production"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-303",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.scene_production"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-304",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.scene_production"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-305",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.scene_production"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-306",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.scene_production"
+      },
+      "to": {
+        "artifact": "runtime.geometry_acquisition"
+      }
+    },
+    {
+      "id": "visual-dep-307",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.scene_production"
+      },
+      "to": {
+        "artifact": "runtime.render_director"
+      }
+    },
+    {
+      "id": "visual-dep-308",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.scene_production"
+      },
+      "to": {
+        "artifact": "runtime.blender_operations"
+      }
+    },
+    {
+      "id": "visual-dep-309",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.scene_production"
+      },
+      "to": {
+        "artifact": "runtime.visual_tasks"
+      }
+    },
+    {
+      "id": "visual-dep-310",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-311",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_registry"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-312",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.style_resolver"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-313",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.user_styles"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-314",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.user_styles"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-315",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_contracts"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-316",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-317",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-318",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-319",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-320",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-321",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.scene_production"
+      }
+    },
+    {
+      "id": "visual-dep-322",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.geometry_acquisition"
+      }
+    },
+    {
+      "id": "visual-dep-323",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.visual_review"
+      }
+    },
+    {
+      "id": "visual-dep-324",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.state_machine"
+      }
+    },
+    {
+      "id": "visual-dep-325",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.visual_tasks"
+      }
+    },
+    {
+      "id": "visual-dep-326",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.render_context_builder"
+      }
+    },
+    {
+      "id": "visual-dep-327",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_delivery"
+      },
+      "to": {
+        "artifact": "runtime.reference_manager"
+      }
+    },
+    {
+      "id": "visual-dep-328",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_planning"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-329",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_planning"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-330",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_planning"
+      },
+      "to": {
+        "artifact": "runtime.reference_manager"
+      }
+    },
+    {
+      "id": "visual-dep-331",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_planning"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-332",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-333",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-334",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-335",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-336",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-337",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "runtime.render_director"
+      }
+    },
+    {
+      "id": "visual-dep-338",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_review"
+      },
+      "to": {
+        "artifact": "runtime.visual_delivery"
+      }
+    },
+    {
+      "id": "visual-dep-339",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-340",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-341",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-342",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-343",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.visual_planning"
+      }
+    },
+    {
+      "id": "visual-dep-344",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.style_registry"
+      }
+    },
+    {
+      "id": "visual-dep-345",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.render_context_builder"
+      }
+    },
+    {
+      "id": "visual-dep-346",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.render_direction_adapter"
+      }
+    },
+    {
+      "id": "visual-dep-347",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.render_director"
+      }
+    },
+    {
+      "id": "visual-dep-348",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.scene_production"
+      }
+    },
+    {
+      "id": "visual-dep-349",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.visual_review"
+      }
+    },
+    {
+      "id": "visual-dep-350",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.env_config"
+      }
+    },
+    {
+      "id": "visual-dep-351",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.visual_task_adapter.py"
+      }
+    },
+    {
+      "id": "visual-dep-352",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.knowledge_resolver.py"
+      }
+    },
+    {
+      "id": "visual-dep-353",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.revision_controller"
+      }
+    },
+    {
+      "id": "visual-dep-354",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.reference_manager"
+      }
+    },
+    {
+      "id": "visual-dep-355",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.preview_renderer"
+      }
+    },
+    {
+      "id": "visual-dep-356",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "runtime.manifest_manager"
+      }
+    },
+    {
+      "id": "visual-dep-357",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_task_adapter.py"
+      },
+      "to": {
+        "artifact": "runtime.io"
+      }
+    },
+    {
+      "id": "visual-dep-358",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_task_adapter.py"
+      },
+      "to": {
+        "artifact": "runtime.validators"
+      }
+    },
+    {
+      "id": "visual-dep-359",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_task_adapter.py"
+      },
+      "to": {
+        "artifact": "runtime.visual_contracts"
+      }
+    },
+    {
+      "id": "visual-dep-360",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_task_adapter.py"
+      },
+      "to": {
+        "artifact": "runtime.errors"
+      }
+    },
+    {
+      "id": "visual-dep-361",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_task_adapter.py"
+      },
+      "to": {
+        "artifact": "runtime.visual_tasks"
+      }
+    },
+    {
+      "id": "visual-dep-362",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_brief.schema"
+      }
+    },
+    {
+      "id": "visual-dep-363",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_command.schema"
+      }
+    },
+    {
+      "id": "visual-dep-364",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_direction.schema"
+      }
+    },
+    {
+      "id": "visual-dep-365",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_error.schema"
+      }
+    },
+    {
+      "id": "visual-dep-366",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_knowledge.schema"
+      }
+    },
+    {
+      "id": "visual-dep-367",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_record.schema"
+      }
+    },
+    {
+      "id": "visual-dep-368",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_references.schema"
+      }
+    },
+    {
+      "id": "visual-dep-369",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_request.schema"
+      }
+    },
+    {
+      "id": "visual-dep-370",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_result.schema"
+      }
+    },
+    {
+      "id": "visual-dep-371",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_review.schema"
+      }
+    },
+    {
+      "id": "visual-dep-372",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_scene.schema"
+      }
+    },
+    {
+      "id": "visual-dep-373",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_scene_state.schema"
+      }
+    },
+    {
+      "id": "visual-dep-374",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_tasks"
+      },
+      "to": {
+        "artifact": "contracts.visual_task_style.schema"
+      }
+    },
+    {
+      "id": "visual-dep-375",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.render_direction_adapter"
+      },
+      "to": {
+        "artifact": "contracts.visual_compile_request.schema"
+      }
+    },
+    {
+      "id": "visual-dep-376",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.visual_task_adapter.py"
+      },
+      "to": {
+        "artifact": "contracts.visual_execution_config.schema"
+      }
+    },
+    {
+      "id": "visual-dep-377",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.knowledge_resolver.py"
+      },
+      "to": {
+        "artifact": "contracts.visual_knowledge_item.schema"
+      }
+    },
+    {
+      "id": "visual-dep-378",
+      "type": "uses",
+      "from": {
+        "artifact": "runtime.knowledge_resolver.py"
+      },
+      "to": {
+        "artifact": "contracts.visual_knowledge_pack.schema"
+      }
+    },
+    {
+      "id": "visual-dep-379",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "prompts.visual_task_direction.md"
+      }
+    },
+    {
+      "id": "visual-dep-380",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "prompts.visual_task_review.md"
+      }
+    },
+    {
+      "id": "visual-dep-381",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "prompts.visual_task_refinement.md"
+      }
+    },
+    {
+      "id": "visual-dep-382",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "docs.v02.task-tracking.md"
+      }
+    },
+    {
+      "id": "visual-dep-383",
+      "type": "reads",
+      "from": {
+        "artifact": "SKILL"
+      },
+      "to": {
+        "artifact": "docs.v02.visual-task-adapters.md"
+      }
     }
   ]
 }

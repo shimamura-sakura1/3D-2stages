@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "direction_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "parent_direction_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "camera": {
+      "type": "object",
+      "properties": {
+        "subject_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shot_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "azimuth_deg": {
+          "type": "number"
+        },
+        "elevation_deg": {
+          "type": "number"
+        },
+        "focal_length_mm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "subject_coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "minLength": 1
+            },
+            "offset_normalized": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "mode",
+            "offset_normalized"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "subject_ref",
+        "shot_type",
+        "azimuth_deg",
+        "elevation_deg",
+        "focal_length_mm",
+        "subject_coverage",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "composition": {
+      "type": "object",
+      "properties": {
+        "hierarchy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_placement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "foreground": {
+          "type": "string",
+          "minLength": 1
+        },
+        "midground": {
+          "type": "string",
+          "minLength": 1
+        },
+        "background": {
+          "type": "string",
+          "minLength": 1
+        },
+        "depth_layering": {
+          "type": "string",
+          "minLength": 1
+        },
+        "negative_space": {
+          "type": "string",
+          "minLength": 1
+        },
+        "silhouette": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scale_cues": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "hierarchy",
+        "subject_placement",
+        "foreground",
+        "midground",
+        "background",
+        "depth_layering",
+        "negative_space",
+        "silhouette",
+        "scale_cues"
+      ],
+      "additionalProperties": false
+    },
+    "lighting": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "object",
+          "properties": {
+            "reference_frame": {
+              "type": "string",
+              "minLength": 1
+            },
+            "azimuth_deg": {
+              "type": "number"
+            },
+            "elevation_deg": {
+              "type": "number"
+            },
+            "softness": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "reference_frame",
+            "azimuth_deg",
+            "elevation_deg",
+            "softness"
+          ],
+          "additionalProperties": false
+        },
+        "fill": {
+          "type": "object",
+          "properties": {
+            "ratio_to_key": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "ratio_to_key"
+          ],
+          "additionalProperties": false
+        },
+        "silhouette_separation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_background_separation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hierarchy": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "key",
+        "fill",
+        "silhouette_separation",
+        "subject_background_separation",
+        "hierarchy"
+      ],
+      "additionalProperties": false
+    },
+    "atmosphere": {
+      "type": "object",
+      "properties": {
+        "depth": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fog": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contrast": {
+          "type": "string",
+          "minLength": 1
+        },
+        "background_separation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "emissive_role": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "depth",
+        "fog",
+        "contrast",
+        "background_separation",
+        "emissive_role"
+      ],
+      "additionalProperties": false
+    },
+    "preserve": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "avoid": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "direction_id",
+    "revision",
+    "parent_direction_id",
+    "camera",
+    "composition",
+    "lighting",
+    "atmosphere",
+    "preserve",
+    "avoid"
+  ],
+  "additionalProperties": false
+}

@@ -87,7 +87,7 @@ def revise_plans(plans, actions):
     return revised
 
 
-def stage_revision(manager, manifest, revision, *, render_direction=None):
+def stage_revision(manager, manifest, revision, *, render_direction=None, visual_task=None):
     revision = copy.deepcopy(revision)
     if isinstance(revision, dict): revision.setdefault('max_preview_passes', 3)
     validate_contract('revision_plan', revision)
@@ -132,7 +132,15 @@ def stage_revision(manager, manifest, revision, *, render_direction=None):
     plans = {k: context['documents'][k] for k in PLAN_KINDS}
     revised = revise_plans(plans, revision['actions'])
     direction_pending = []
-    if manifest.get('render_direction'):
+    if manifest.get('visual_direction'):
+        require(visual_task is not None and render_direction is None,'A matching visual refinement task is required')
+        from runtime.visual_tasks import revise_task
+        revised['semantic_material_map']=copy.deepcopy(plans['semantic_material_map'])
+        revised['semantic_material_map']['revision']+=1
+        revised=revise_task(manager,manifest,visual_task,revision,revised)
+    elif visual_task is not None:
+        raise BoundaryError('No registered visual task direction')
+    elif manifest.get('render_direction'):
         require(render_direction is not None, 'Directed revision requires a new validated RenderDirection')
         from runtime.render_director import refined_direction
         # Keep the material map unchanged; the external director cannot revise shaders.

@@ -865,6 +865,22 @@
         "history"
       ],
       "additionalProperties": false
+    },
+    "visual_tasks": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "visual_task_record.schema.json"
+      }
+    },
+    "visual_direction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "visual_review_task": {
+      "type": [
+        "string",
+        "null"
+      ]
     }
   },
   "required": [

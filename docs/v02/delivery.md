@@ -19,3 +19,7 @@ Delivery stages only explicitly enumerated formal project files and their histor
 The manager checks anchors again under its writer lock before publishing the immutable package and changing state to `delivered`. A failed copy or conflicting unregistered package leaves the Manifest and prior packages intact. Repeated delivery requires the current expected version and revalidates the registered package; missing, corrupt or extra files reject. No new final render, GLB export or web publication is claimed. Historical MCP packets are host-bound execution evidence: regenerate them on a new machine before execution.
 
 Engineering tests use explicitly labeled worker/setup doubles and simulated user decisions in temporary projects. The actual mixed-source representative production acceptance remains pending remote HY3D evidence and real user decisions; `projects/industrial_station_v02` remains unapproved `plan_only`.
+
+## Visual task evidence
+
+Delivery includes the declared input files, actual accepted direction/review/refinement results, explicit execution interpretation and source digests for accepted visual tasks. Runtime reads the exact manifest records; it does not copy arbitrary candidate/output folders. Existing immutable completion receipts, geometry fingerprints, current image/critic and explicit final user approval still gate delivery. Technical test approvals and synthetic PNG fixtures do not establish artistic acceptance.

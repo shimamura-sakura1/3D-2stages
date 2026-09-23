@@ -105,6 +105,18 @@ def apply_signature(style, *, require_review=True):
     for role in ('key','fill'):style['lighting'][role+'_energy']*=d['lighting'][role+'_scale']
     style['atmosphere']['density']*=d['fog']['density_scale']
 
+def visual_priors(style):
+    """Read authored visual priors; shader defaults are not aesthetic mandates."""
+    result={key:copy.deepcopy(style.get('direction_prior',{}).get(key,{}))
+            for key in ('camera','composition','lighting','atmosphere','material_readability')}
+    root=Path(style['root'])
+    for path in sorted((root/'semantic').glob('*.yaml')):
+        data=yaml.safe_load(inside(root,path.relative_to(root).as_posix()).read_text(encoding='utf-8'))
+        key='material_readability' if path.stem in ('materials','material') else path.stem
+        if key in result and isinstance(data,dict):result[key]['authored_semantics']=data
+    return result
+
+
 class StyleRegistry:
     def __init__(self, root=None):
         self.root = Path(root) if root is not None else Path(__file__).resolve().parents[1]/'styles'

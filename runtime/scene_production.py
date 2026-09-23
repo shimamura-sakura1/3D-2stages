@@ -75,6 +75,9 @@ def prepare_scene(manager):
     directory=f'stage2/builds/{build_id}/{inputs_digest[:16]}'
     root=Path(__file__).resolve().parents[1]
     dependencies=[manager.path]
+    if m.get('visual_direction'):
+        from runtime.visual_tasks import formal_task_files
+        dependencies.extend(formal_task_files(manager,m))
     if m.get('render_direction'):
         ref=m['render_direction']
         dependencies.extend(inside(manager.root,ref[k]) for k in ('artifact_path','context_path','scene_context_path'))

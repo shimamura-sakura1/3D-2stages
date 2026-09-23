@@ -63,6 +63,12 @@ def initial_direction(manager, manifest, direction, scene_context, plans):
 
 
 def validate_plan_reference(manifest, plans):
+    if manifest.get('visual_direction'):
+        require(not manifest.get('render_direction'),'Mixed visual protocols')
+        require(all(plans[k].get('visual_task')=={'task_id':manifest['visual_direction']} and not plans[k].get('render_direction') for k in ('lookdev_plan','render_plan')),'Visual task plan reference mismatch')
+        require('world_setup' in plans['lookdev_plan']['lighting'],'Visual task lighting missing')
+        return
+    require(not any(plans[k].get('visual_task') for k in ('lookdev_plan','render_plan')),'Unregistered visual task reference')
     expected = manifest.get('render_direction')
     sources = [plans[k].get('render_direction') for k in ('lookdev_plan','render_plan')]
     if expected:
@@ -76,6 +82,9 @@ def validate_plan_reference(manifest, plans):
 
 def verify_compiled_plans(manager, manifest, plans):
     """Recompilation detects edits that would silently break direction provenance."""
+    if manifest.get('visual_direction'):
+        from runtime.visual_tasks import verify_plans
+        return verify_plans(manager,manifest,plans)
     if not manifest.get('render_direction'):
         return
     state = read_direction_state(manager,manifest)

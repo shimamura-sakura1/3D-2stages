@@ -20,3 +20,9 @@ Input guards include the manifest, current documents, geometry/surface files, st
 `scene-setup-complete PROJECT --packet PACKET --sha256 HASH` verifies current inputs, actual blend bytes and matching before/after geometry receipt, then records completed blockout/lookdev and enters render_pending through ManifestManager. It grants no visual approval. Actual preview metadata is recorded through preview-complete.
 
 使用外部视觉导演时，参阅 [Render Director 接入](render-director.md)。
+
+## Current visual planning
+
+Main authors direction through a create_direction task using actual measured geometry, brief and Style priors. `build_scene_context(..., visual_task=True)` permits a descriptive scene type instead of the legacy four-category restriction. Prepare and start as described in [task tracking](task-tracking.md), read the direction prompt, then submit the direction with explicit softness/fog execution choices and reasons. `scene-plans-submit PROJECT --plans PLANS --visual-task ID --expected-version N` compiles the task into camera/light plans using measured AABB framing and accepts both atomically. Main continues to setup and actual preview execution; a candidate JSON alone is not a built scene.
+
+The new task and legacy `--render-direction` parameters are mutually exclusive. Existing directed projects continue their original compatibility path; the old examples above apply only to that path.

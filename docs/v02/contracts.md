@@ -125,3 +125,9 @@ python scripts/check_visual_contracts.py --output NEW_AUDIT_DIR < YOUR_AUDIT_BUN
 输出 status=valid / approval_granted=false / execution=not_performed。
 
 外部视觉方向与本地计划的数据关系见 [Render Director 接入](render-director.md)。
+
+## Uniform visual task contract
+
+The `visual_task_*` schemas describe separated intent, measured structure, sourced Style priors, optional knowledge/observations/references, and three operation requests. Public direction/review results contain visual decisions; production identity, executor, input hashes, attempts and result references live in the production task record. `visual_task_command` / `visual_task_result` / `visual_task_error` describe the real stdin/stdout/stderr tool boundary. `python runtime/visual_tasks.py` accepts a JSON command; `{"command":"capabilities"}` is a read-only discovery example.
+
+Existing project manifests may omit `visual_tasks`. New task records are written only through ManifestManager with expected_version. A prepared task does not alter approvals or production stage. Candidate results must pass the existing plan, review or revision operation before becoming accepted. Old production schemas and historical direction files keep their original meaning. See [task tracking](task-tracking.md).

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "scene_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scene_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scene_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "primary_subject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "secondary_subjects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "scene_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bounds": {
+      "type": "object",
+      "properties": {
+        "center": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "size": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "center",
+        "size"
+      ],
+      "additionalProperties": false
+    },
+    "available_camera_constraints": {
+      "type": "object"
+    },
+    "available_lighting_constraints": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "scene_id",
+    "scene_version",
+    "scene_type",
+    "primary_subject",
+    "secondary_subjects",
+    "scene_summary",
+    "bounds",
+    "available_camera_constraints",
+    "available_lighting_constraints"
+  ],
+  "additionalProperties": false
+}

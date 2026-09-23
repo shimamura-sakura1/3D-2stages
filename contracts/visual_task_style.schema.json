@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "style_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "style_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "camera_priors": {
+      "type": "object"
+    },
+    "composition_priors": {
+      "type": "object"
+    },
+    "lighting_priors": {
+      "type": "object"
+    },
+    "atmosphere_priors": {
+      "type": "object"
+    },
+    "material_readability_priors": {
+      "type": "object"
+    },
+    "visual_constraints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "avoid": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "style_id",
+    "style_version",
+    "camera_priors",
+    "composition_priors",
+    "lighting_priors",
+    "atmosphere_priors",
+    "material_readability_priors",
+    "visual_constraints",
+    "avoid"
+  ],
+  "additionalProperties": false
+}

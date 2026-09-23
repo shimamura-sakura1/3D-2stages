@@ -76,6 +76,7 @@ Read:
 Optional Tools:
 - runtime/cli.py
 Action:
+- Inspect visual task records before dispatch: accepted results continue downstream; available results are validated and accepted first; reliable active evidence is queried or awaited; only confirmed unstarted or ended attempts may start or be taken over. Unknown status requires verification. Retain old records when production inputs change; task progress alone does not invalidate the input baseline. See docs/v02/task-tracking.md.
 - This dispatcher accepts schema 0.2 only. Use validated status, current artifact versions and existing explicit decisions; mode alone never implies approval. Record newly granted execution scope using `configure-v02` with expected-version. In plan_only, continue requested Stage 0 work or show the pending plan and END; do not acquire or render.
 - initialized/visual_planning/visual_review_required returns to Step 0V to author, revise or present the current direction. Already approved direction must not be resubmitted merely to resume geometry work.
 - visual_approved/geometry_pending/geometry_review_required enters Step 1G. Acquire only when authorized and allowed by state; pending review presents existing geometry, and rejected geometry uses the bounded reacquisition path.
@@ -117,15 +118,22 @@ Next:
 ### Step 5V — Stage 2: build separated Blender layers
 Type: agent
 Read:
+- prompts/visual_task_direction.md
 - docs/v02/render-director.md
+- docs/v02/task-tracking.md
 - docs/v02/production.md
 - docs/mcp_and_ssh.md
 - docs/v02/style-refinement.md
 Optional Tools:
+- runtime/visual_tasks.py
 - runtime/render_direction_adapter.py
 - runtime/cli.py
 Action:
-- For approved geometry, author blockout_plan and semantic_material_map, measure current scene bounds and build RenderContext. Invoke the external render-director analyze entry, validate its RenderDirection, then use scene-plans-submit with --render-direction and --scene-context to compile lookdev_plan and render_plan. Follow docs/v02/render-director.md. Prepare the MCP packet and execute only its registered semantic operations. Preserve the user's open scenes. Inspect actual output and unchanged geometry fingerprints when adjusting materials, lighting or camera. Complete setup only from current real receipts; rendering does not grant artistic approval.
+- For approved geometry, author blockout_plan and semantic_material_map, measure actual scene bounds, then prepare a create_direction visual task. Read its separated intent, structure and Style inputs; author a concrete direction and explicit execution choices with reasons. Submit the candidate, then use scene-plans-submit --visual-task to compile and atomically accept executable plans. Follow docs/v02/production.md. Prepare the MCP packet and execute only its registered semantic operations. Preserve open scenes and geometry fingerprints. Complete setup only from current real receipts; rendering does not grant artistic approval.
+If a compatible optional implementation is callable:
+- Use the selected task invocation and read docs/v02/visual-task-adapters.md for its actual file protocol. The caller enters its instructions serially, without spawning another autonomous Agent.
+Otherwise:
+- Main performs the same visual task using the local prompt. No repeated user question is needed. An explicit unavailable implementation must report its concrete gap. Invalid inputs, conflicting constraints and stale results must be corrected rather than bypassed by switching executors. Knowledge is optional; omit unavailable or inapplicable items.
 - When explicitly selecting industrial_acg_v1 profile_version 1.1.0, apply its bounded eleven-dimension signature and scoped critic rubric; preserve 1.0.0 as the default and inspect material separation, daylight hierarchy and approved geometry before review.
 - Use `scene-plans-submit`, `scene-prepare` and, after real MCP execution, `scene-setup-complete`. Preparation is not completion. Stage2-only requires the approved v0.2 geometry records expected by runtime; supplied legacy files alone do not satisfy that gate. See the production guide for receipt recovery and exact arguments.
 Next:
@@ -148,13 +156,14 @@ Next:
 ### Step 7V — Stage 3: diagnose the rendered image
 Type: agent
 Read:
-- docs/v02/render-director.md
+- prompts/visual_task_review.md
+- docs/v02/task-tracking.md
 - docs/v02/visual-review.md
 - prompts/render_critic.md
 Optional Tools:
 - runtime/cli.py
 Action:
-- For directed scenes, build render-context --review from the exact completed PNG, then invoke external render-director review. Submit its RenderReview alongside the existing visual_review using --director-review; preserve explicit image observations and user constraints.
+- For scenes with a visual task direction, prepare review_render from the exact completed PNG and current direction. View that image, author observations, successful decisions and only necessary changes, and submit the candidate. Submit the separate nine-category production diagnosis with visual-review-submit --visual-task. Qualitative severity is not a numeric rubric score; four empty change groups do not require rework. Main owns diagnosis and the next step. Existing legacy directed projects retain their documented compatibility interface.
 - Read review-context and view its actual PNG. Diagnose the nine rubric categories using subjective problem-severity scores and visible evidence. Use `visual-review-submit` to submit a current versioned visual_review; stale or unavailable evidence requires reinspection. Criticism only observes, diagnoses and recommends: it never changes Blender or grants final approval. For visual_revision continue to Step 8V; for final_review_required continue to Step 6 with the image and diagnosis for explicit final user review. When returning here after a final rejection, submit one new concrete revision_required diagnosis for the same current render before continuing to Step 8V.
 Next:
 - Step 6
@@ -164,12 +173,13 @@ Next:
 ### Step 8V — Stage 3: apply a bounded visual revision
 Type: agent
 Read:
-- docs/v02/render-director.md
+- prompts/visual_task_refinement.md
+- docs/v02/task-tracking.md
 - docs/v02/controlled-revision.md
 Optional Tools:
 - runtime/cli.py
 Action:
-- For directed scenes, invoke external render-director refine with the current context, review and direction. Pass the validated revision + 1 to revision-apply --render-direction together with the existing revision_plan. A review is never executable; preserve fields, geometry approval and preview limits remain production gates.
+- For scenes with a visual task direction, prepare refine_direction using the current direction, accepted review and preserved constraints. Produce a child direction with increasing revision and explicit execution choices. Submit the candidate, then revision-apply --visual-task with the current revision_plan. Runtime compares actual differences against supported actions and bounded amounts; a review itself is never executable. Geometry approval, preserved fields and preview limits remain production gates.
 - In visual_revision, select only current review recommendations within the six supported visual actions. Submit the exact current revision_plan using revision-apply and expected-version. The controller preserves geometry and approvals and writes new visual plan versions. Use at most three total preview attempts, including failures; at the ceiling or for geometry/regeneration recommendations, stop and present the concrete issue for user review. Preparation alone is not rendering or artistic approval.
 Next:
 - Step 6V
@@ -272,6 +282,6 @@ Next:
 
 Actual host paths and credentials belong in ignored `.env` or host MCP settings. Moving a project between machines requires regenerating absolute-path MCP packets. Worker proposals remain isolated; Python role checks are not OS sandboxes.
 
-Render Director is an external Skill dependency for directed scenes. Invoke its public analyze/review/refine entries through the host; do not copy its prompts, photographic knowledge or memory into this Skill. Missing dependency or unsupported decisions must be reported. Direct authored plans remain available when explicitly selected by the user.
+Visual planning, image critique, bounded revision and progress tracking belong to this Skill. Main owns task decomposition, execution selection and acceptance. Candidate results never advance production on their own. Main remains responsible for viewing actual images and completing the same result contract when no optional implementation or knowledge is configured. Legacy directed scenes keep their original contracts; consult docs/v02/render-director.md only for that compatibility path.
 
 Report technical execution separately from visual acceptance. Verify current capabilities, input/output rights and actual files. New scenes use Schema 0.2 through `init-v02`; `init` retains Schema 0.1 compatibility.

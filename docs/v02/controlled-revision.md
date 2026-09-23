@@ -32,3 +32,9 @@ Blockout, geometry source/version and approval records are retained byte-for-byt
 Out-of-range adjustments reject rather than silently clamping. Camera changes are relative to the current distance, so opposite directions are not exact inverse operations. Other additive adjustments reverse exactly within bounds. Unspecified optional fields preserve existing rendering behavior.
 
 使用外部视觉导演时，参阅 [Render Director 接入](render-director.md)。
+
+## Task-based refinement
+
+Main prepares refine_direction from the current accepted review and parent direction, preserves required values, and submits a child direction with increasing revision. Use `revision-apply PROJECT --revision REVISION --visual-task ID --expected-version N` to adopt the actual differences atomically. The new path supports bounded camera framing, light direction/fill ratio and fog changes. It rejects unreviewed composition/geometry/softness changes and currently does not implement roughness or exposure edits through a visual task. Existing legacy revision actions retain their compatibility behavior.
+
+Small/medium camera angles and focal length changes are bounded to 5/10 degrees or millimetres, coverage to .05/.1; key angles to 5/10 degrees, fill ratio to .1/.2; fog to one/two explicit levels. Current review, preserved fields, unchanged geometry and the existing total preview budget remain mandatory. Main must produce a supported revision or report the actual constraint; it cannot switch executors to evade it.
